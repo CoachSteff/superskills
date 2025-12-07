@@ -42,10 +42,20 @@ export CRAFT_API_KEY="<your_api_key>"
 ```
 
 Or create a `.env` file:
+
+**Global .env (repository root):**
 ```env
 CRAFT_API_ENDPOINT=https://api.craft.do/v1/your-endpoint
 CRAFT_API_KEY=your_api_key_here
 ```
+
+**Or skill-specific .env (superskills/craft/.env):**
+```env
+CRAFT_API_ENDPOINT=https://api.craft.do/v1/your-endpoint
+CRAFT_API_KEY=your_api_key_here
+```
+
+The skill-specific `.env` file takes priority and allows this skill to work independently with its own credentials.
 
 ### Step 4: Test Connection
 

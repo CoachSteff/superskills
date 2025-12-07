@@ -236,7 +236,10 @@ Individual files per skill: `/superskills/transcriber/.env`
     MICROSOFT_CLIENT_ID=your-client-id-here
     MICROSOFT_CLIENT_SECRET=your-client-secret-here
     MICROSOFT_TENANT_ID=your-tenant-id-here
+    MICROSOFT_APPLICATION_ID=your-application-id-here
     ```
+    
+    **Note:** The Application ID is the same as the Client ID (step 7). Some Microsoft APIs require it as a separate variable.
 
 **Cost:** Free with Microsoft 365 subscription
 
@@ -258,6 +261,29 @@ Individual files per skill: `/superskills/transcriber/.env`
 **Note:** API key may be included in the endpoint or provided separately.
 
 **Cost:** Included with Craft Pro subscription
+
+---
+
+### Notion (Notion)
+
+1. Go to https://www.notion.so/my-integrations
+2. Click **"+ New integration"**
+3. Name: "SuperSkills"
+4. Select your workspace
+5. Click **Submit**
+6. Copy the **Internal Integration Token**
+7. Add to `.env`:
+   ```bash
+   NOTION_API_KEY=secret_your-key-here
+   ```
+
+**Grant Access to Pages:**
+- Open any Notion page you want SuperSkills to access
+- Click **"••• More"** → **"Connections"** → **"Connect to"**
+- Select "SuperSkills"
+- Repeat for each page/database
+
+**Cost:** Free with Notion account
 
 ---
 
@@ -302,6 +328,48 @@ python3 -c "from superskills.transcriber.src import Transcriber; t = Transcriber
 ✅ Different team members manage different skills  
 ✅ You're sharing a specific skill with different credentials  
 ❌ You're just starting out (use global `.env` instead)
+
+---
+
+## Distributing Credentials to Skills
+
+Some skills have their own local `.env` files for convenience. Currently configured:
+- `superskills/craft/.env` - Craft Docs API credentials
+- `superskills/designer/.env` - Gemini/Midjourney credentials  
+- `superskills/narrator/.env` - ElevenLabs credentials
+- `superskills/transcriber/.env` - OpenAI/AssemblyAI credentials
+
+### Manual Distribution
+
+Copy credentials from root `.env` to skill-specific files:
+
+```bash
+# Example: Craft skill
+echo "CRAFT_API_ENDPOINT=$(grep CRAFT_API_ENDPOINT .env | cut -d '=' -f2-)" > superskills/craft/.env
+
+# Example: Designer skill
+echo "GEMINI_API_KEY=$(grep GEMINI_API_KEY .env | cut -d '=' -f2-)" > superskills/designer/.env
+```
+
+### Automated Distribution (Recommended)
+
+Use the distribution script to automatically sync credentials:
+
+```bash
+# Preview what will be distributed
+python scripts/distribute_credentials.py --dry-run
+
+# Distribute with backup
+python scripts/distribute_credentials.py --backup
+
+# Distribute to specific skill only
+python scripts/distribute_credentials.py --skill craft
+```
+
+**Benefits:**
+- ✅ Keeps skills isolated (different API keys per skill)
+- ✅ Easier sharing of individual skills
+- ✅ Skills work independently without root `.env`
 
 ---
 
@@ -642,9 +710,10 @@ def __init__(self):
 | **Designer** | `GEMINI_API_KEY` or `MIDJOURNEY_API_KEY` | https://makersuite.google.com/app/apikey |
 | **Narrator** | `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID` | https://elevenlabs.io/app/settings |
 | **Marketer** | `POSTIZ_API_KEY`, `POSTIZ_WORKSPACE_ID` | https://postiz.com/settings/api |
-| **Planner** | `MICROSOFT_CLIENT_ID`, `MICROSOFT_CLIENT_SECRET`, `MICROSOFT_TENANT_ID` | https://portal.azure.com |
+| **Planner** | `MICROSOFT_CLIENT_ID`, `MICROSOFT_CLIENT_SECRET`, `MICROSOFT_TENANT_ID`, `MICROSOFT_APPLICATION_ID` | https://portal.azure.com |
 | **EmailCampaigner** | `SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL` | https://app.sendgrid.com/settings/api_keys |
 | **Craft** | `CRAFT_API_ENDPOINT` | Craft Docs → Imagine tab |
+| **Notion** | `NOTION_API_KEY` | https://www.notion.so/my-integrations |
 | **SummarizAIer** | `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` | https://platform.openai.com/api-keys |
 
 ---

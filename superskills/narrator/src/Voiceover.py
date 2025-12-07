@@ -1,5 +1,5 @@
 """
-Voiceover.py - Single-segment voiceover generation for CoachSteff AI voice.
+Voiceover.py - Single-segment voiceover generation using ElevenLabs API.
 """
 import os
 import re
@@ -8,6 +8,7 @@ from pathlib import Path
 from datetime import datetime
 
 from elevenlabs.client import ElevenLabs
+from .VoiceConfig import VoiceConfig
 
 try:
     from pydub import AudioSegment
@@ -16,7 +17,7 @@ except ImportError:
     PYDUB_AVAILABLE = False
     print("Warning: pydub not available - audio metadata will be skipped")
 
-ContentType = Literal["educational", "marketing", "social", "podcast"]
+ContentType = Literal["educational", "marketing", "social", "podcast", "meditation"]
 
 class ScriptOptimizer:
     @staticmethod
@@ -44,29 +45,22 @@ class ScriptOptimizer:
         return result
 
 class VoiceoverGenerator:
-    # Voice settings by content type (for ElevenLabs v2)
-    VOICE_SETTINGS = {
-        "educational": {"stability": 0.70, "similarity_boost": 0.80, "style": 0.30, "use_speaker_boost": True},
-        "marketing": {"stability": 0.65, "similarity_boost": 0.75, "style": 0.40, "use_speaker_boost": True},
-        "social": {"stability": 0.60, "similarity_boost": 0.75, "style": 0.45, "use_speaker_boost": True},
-        "podcast": {"stability": 0.75, "similarity_boost": 0.85, "style": 0.35, "use_speaker_boost": True},
+    CONTENT_TYPE_TO_PROFILE = {
+        "educational": "narration",
+        "marketing": "narration",
+        "social": "narration",
+        "podcast": "podcast",
+        "meditation": "meditation",
     }
     
-    MODELS = {
-        "educational": "eleven_turbo_v2_5",  # Changed: stock voices don't support multilingual_v2
-        "marketing": "eleven_turbo_v2_5",
-        "social": "eleven_turbo_v2_5",
-        "podcast": "eleven_turbo_v2_5",  # Changed: stock voices don't support multilingual_v2
-    }
-    
-    def __init__(self, api_key: Optional[str] = None, output_dir: str = "output"):
+    def __init__(self, api_key: Optional[str] = None, output_dir: str = "output", profile_type: Optional[str] = None):
         self.api_key = api_key or os.getenv("ELEVENLABS_API_KEY")
         if not self.api_key:
             raise ValueError("ELEVENLABS_API_KEY not found")
         
-        self.voice_id = os.getenv("ELEVENLABS_VOICE_ID")
-        if not self.voice_id:
-            raise ValueError("ELEVENLABS_VOICE_ID not found")
+        self.voice_config = VoiceConfig()
+        self.profile_type = profile_type or "narration"
+        self.profile = self.voice_config.get_profile(self.profile_type)
         
         self.client = ElevenLabs(api_key=self.api_key)
         self.output_dir = Path(output_dir)
@@ -79,12 +73,18 @@ class VoiceoverGenerator:
             processed_script = self.optimizer.optimize_for_speech(script)
             processed_script = self.optimizer.add_pronunciation_guide(processed_script, custom_pronunciations)
         
-        settings = self.VOICE_SETTINGS[content_type]
-        model = self.MODELS[content_type]
+        profile_to_use = self.CONTENT_TYPE_TO_PROFILE.get(content_type, "narration")
+        if self.profile_type != profile_to_use:
+            profile = self.voice_config.get_profile(profile_to_use)
+        else:
+            profile = self.profile
         
-        print(f"Generating {content_type} voiceover with {model}...")
+        voice_settings = self.voice_config.get_voice_settings(profile_to_use)
+        model = profile["model"]
+        voice_id = profile["voice_id"]
         
-        # Use ElevenLabs v2 API - try with fallback models
+        print(f"Generating {content_type} voiceover with {model} (profile: {profile_to_use})...")
+        
         from elevenlabs.core.api_error import ApiError
         
         models_to_try = [model, "eleven_monolingual_v1", "eleven_flash_v2_5"]
@@ -94,12 +94,11 @@ class VoiceoverGenerator:
         for model_attempt in models_to_try:
             try:
                 audio_generator = self.client.text_to_speech.convert(
-                    voice_id=self.voice_id,
+                    voice_id=voice_id,
                     text=processed_script,
                     model_id=model_attempt,
-                    voice_settings=settings
+                    voice_settings=voice_settings
                 )
-                # Collect all chunks
                 chunks = []
                 for chunk in audio_generator:
                     chunks.append(chunk)
@@ -116,23 +115,20 @@ class VoiceoverGenerator:
                     raise
         
         if not chunks or not success_model:
-            raise ValueError(f"Voice ID {self.voice_id} is not compatible with any available models")
+            raise ValueError(f"Voice ID {voice_id} is not compatible with any available models")
         
-        model = success_model  # Update model name for metadata
+        model = success_model
         
-        # Generate filename if not provided
         if not output_filename:
             timestamp = datetime.now().strftime("%Y-%m-%d")
             output_filename = f"{timestamp}-{content_type}-voiceover.mp3"
         
         output_path = self.output_dir / output_filename
         
-        # Write audio chunks to file
         with open(output_path, 'wb') as f:
             for chunk in chunks:
                 f.write(chunk)
         
-        # Get audio metadata (if pydub available)
         word_count = len(processed_script.split())
         
         if PYDUB_AVAILABLE:
@@ -146,6 +142,7 @@ class VoiceoverGenerator:
                 return {
                     "output_file": str(output_path),
                     "content_type": content_type,
+                    "profile": profile_to_use,
                     "model": model,
                     "duration_seconds": round(duration_seconds, 2),
                     "word_count": word_count,
@@ -157,10 +154,10 @@ class VoiceoverGenerator:
         else:
             print(f"✓ Generated: {output_path}")
         
-        # Return without metadata if pydub unavailable
         return {
             "output_file": str(output_path),
             "content_type": content_type,
+            "profile": profile_to_use,
             "model": model,
             "word_count": word_count,
             "optimized": optimize_script,

@@ -227,10 +227,17 @@ SuperSkills uses a hybrid credential system with priority hierarchy:
 2. **Global `.env`** (repository root)
 3. **Per-skill `.env`** (superskills/{skill}/.env)
 
+**Currently configured skill-specific .env files:**
+- `superskills/craft/.env` - Craft Docs API
+- `superskills/designer/.env` - Gemini/Midjourney
+- `superskills/narrator/.env` - ElevenLabs
+- `superskills/transcriber/.env` - OpenAI/AssemblyAI
+
 **Security:**
 - All `.env` files gitignored
 - Only `.env.template` files committed
 - Validation script masks sensitive values
+- Use `scripts/distribute_credentials.py` to sync credentials to skills
 - See `docs/CREDENTIAL_SETUP.md` for API key setup
 
 ## License

@@ -8,6 +8,7 @@ from pathlib import Path
 import json
 
 from elevenlabs.client import ElevenLabs
+from .VoiceConfig import VoiceConfig
 
 try:
     from pydub import AudioSegment
@@ -20,6 +21,7 @@ except ImportError:
 class PodcastSegment:
     text: str
     content_type: str = "podcast"
+    profile_type: Optional[str] = None
     voice_name: str = "CoachSteff"
     output_filename: Optional[str] = None
     
@@ -28,40 +30,42 @@ class PodcastSegment:
             self.output_filename = f"segment_{id(self)}.mp3"
 
 class PodcastGenerator:
-    # Voice settings by content type (for ElevenLabs v2)
-    VOICE_SETTINGS = {
-        "podcast": {"stability": 0.75, "similarity_boost": 0.85, "style": 0.35, "use_speaker_boost": True},
-        "educational": {"stability": 0.70, "similarity_boost": 0.80, "style": 0.30, "use_speaker_boost": True},
-        "marketing": {"stability": 0.65, "similarity_boost": 0.75, "style": 0.40, "use_speaker_boost": True},
+    CONTENT_TYPE_TO_PROFILE = {
+        "educational": "narration",
+        "marketing": "narration",
+        "podcast": "podcast",
+        "meditation": "meditation",
     }
     
-    def __init__(self, api_key: Optional[str] = None, output_dir: str = "output"):
+    def __init__(self, api_key: Optional[str] = None, output_dir: str = "output", profile_type: Optional[str] = None):
         self.api_key = api_key or os.getenv("ELEVENLABS_API_KEY")
         if not self.api_key:
             raise ValueError("ELEVENLABS_API_KEY not found")
         
-        self.voice_id = os.getenv("ELEVENLABS_VOICE_ID")
-        if not self.voice_id:
-            raise ValueError("ELEVENLABS_VOICE_ID not found")
+        self.voice_config = VoiceConfig()
+        self.profile_type = profile_type or "podcast"
         
         self.client = ElevenLabs(api_key=self.api_key)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         
     def generate_segment(self, segment: PodcastSegment) -> str:
-        settings = self.VOICE_SETTINGS.get(segment.content_type, self.VOICE_SETTINGS["podcast"])
+        profile_to_use = segment.profile_type or self.CONTENT_TYPE_TO_PROFILE.get(segment.content_type, self.profile_type)
         
-        # Use ElevenLabs v2 API
+        profile = self.voice_config.get_profile(profile_to_use)
+        voice_settings = self.voice_config.get_voice_settings(profile_to_use)
+        model = profile["model"]
+        voice_id = profile["voice_id"]
+        
         audio_generator = self.client.text_to_speech.convert(
-            voice_id=self.voice_id,
+            voice_id=voice_id,
             text=segment.text,
-            model_id="eleven_turbo_v2_5",  # Changed: stock voices don't support multilingual_v2
-            voice_settings=settings
+            model_id=model,
+            voice_settings=voice_settings
         )
         
         output_path = self.output_dir / segment.output_filename
         
-        # Write audio to file
         with open(output_path, 'wb') as f:
             for chunk in audio_generator:
                 f.write(chunk)
@@ -84,49 +88,16 @@ class PodcastGenerator:
     def generate_podcast(self, segments: List[PodcastSegment], output_filename: str = "podcast.mp3", transition_ms: int = 500) -> Dict:
         print(f"Generating {len(segments)} segments...")
         segment_files = []
-        total_words = 0
-        segment_metadata = []
-        current_time = 0.0
-        
         for i, segment in enumerate(segments, 1):
             print(f"  [{i}/{len(segments)}] Generating segment...")
             file_path = self.generate_segment(segment)
             segment_files.append(file_path)
-            # Count words in segment
-            word_count = len(segment.text.split())
-            total_words += word_count
-            
-            # Get duration if pydub is available
-            duration = 0.0
-            if PYDUB_AVAILABLE:
-                try:
-                    segment_audio = AudioSegment.from_mp3(file_path)
-                    duration = segment_audio.duration_seconds
-                except:
-                    pass
-            
-            # Add segment metadata
-            segment_metadata.append({
-                "index": i - 1,
-                "start_time": current_time,
-                "duration": duration,
-                "word_count": word_count,
-                "content_type": segment.content_type
-            })
-            current_time += duration + (transition_ms / 1000.0)  # Add transition time
-        
         print("Stitching segments together...")
         final_path = self.stitch_segments(segment_files, output_filename, transition_ms)
-        
-        # Calculate total duration
-        total_duration = sum(seg["duration"] for seg in segment_metadata)
-        
         metadata = {
             "output_file": final_path,
-            "segments": segment_metadata,
+            "segments": len(segments),
             "segment_files": segment_files,
-            "total_duration_seconds": total_duration,
-            "total_words": total_words
         }
         metadata_path = self.output_dir / f"{Path(output_filename).stem}_metadata.json"
         with open(metadata_path, 'w') as f:

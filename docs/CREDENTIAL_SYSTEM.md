@@ -47,7 +47,7 @@ api_key = get_credential("OPENAI_API_KEY")
 
 ---
 
-### 3. Per-Skill Templates
+### 3. Per-Skill Templates & Distributed .env Files
 
 **Created 8 `.env.template` files:**
 
@@ -59,6 +59,13 @@ api_key = get_credential("OPENAI_API_KEY")
 6. `superskills/emailcampaigner/.env.template` - SendGrid
 7. `superskills/craft/.env.template` - Craft Docs
 8. `superskills/summarizaier/.env.template` - OpenAI/Anthropic
+
+**Created 4 skill-specific `.env` files (with actual credentials):**
+
+1. `superskills/craft/.env` - Craft API endpoint configured
+2. `superskills/designer/.env` - Gemini API key configured
+3. `superskills/narrator/.env` - ElevenLabs API + Voice ID configured
+4. `superskills/transcriber/.env` - OpenAI API key configured
 
 Each includes:
 - Required vs optional credentials clearly marked
@@ -80,6 +87,7 @@ Each includes:
   - SendGrid
   - Microsoft Graph (Azure setup)
   - Craft Docs
+  - Notion
   - Postiz
 - **Per-Skill Setup** - Advanced configuration
 - **Claude Desktop Integration** - Zero-config setup
@@ -91,8 +99,9 @@ Each includes:
 - ✅ Quick Start (4 steps)
 - ✅ Credential Storage Options (3 methods)
 - ✅ Credential Loading Flow (visual diagram)
-- ✅ Getting API Keys (8 services)
+- ✅ Getting API Keys (9 services: OpenAI, ElevenLabs, Gemini, SendGrid, Microsoft Graph, Craft, Notion, Postiz, etc.)
 - ✅ Per-Skill Setup
+- ✅ Credential Distribution Workflow
 - ✅ Claude Desktop Integration
 - ✅ Security Best Practices
 - ✅ Troubleshooting (7 common issues)

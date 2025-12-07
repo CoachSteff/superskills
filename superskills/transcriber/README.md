@@ -174,6 +174,18 @@ OPENAI_API_KEY=your_openai_api_key
 ASSEMBLYAI_API_KEY=your_assemblyai_api_key
 ```
 
+**Global .env (repository root):**
+```bash
+echo "OPENAI_API_KEY=sk-your-key" >> .env
+```
+
+**Or skill-specific .env (superskills/transcriber/.env):**
+```bash
+echo "OPENAI_API_KEY=sk-your-key" >> superskills/transcriber/.env
+```
+
+The skill-specific `.env` file takes priority and allows this skill to work independently with its own credentials.
+
 ## Configuration
 
 Edit `config/transcriber_config.yaml`:

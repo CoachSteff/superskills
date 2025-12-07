@@ -1,0 +1,32 @@
+{
+  "narration": {
+    "voice_id": "SMMOjVQfdxsjkBbDKPWy",
+    "voice_name": "Steff Basic",
+    "language": "Nederlands",
+    "model": "eleven_multilingual_v2",
+    "speed": 0.85,
+    "stability": 0.40,
+    "similarity_boost": 0.97,
+    "style": 0.12
+  },
+  "podcast": {
+    "voice_id": "Y8liEJ0I1PUVRbGdbUbn",
+    "voice_name": "Steff Pro",
+    "language": "English (British)",
+    "model": "eleven_multilingual_v2",
+    "speed": 0.90,
+    "stability": 0.35,
+    "similarity_boost": 0.97,
+    "style": 0.17
+  },
+  "meditation": {
+    "voice_id": "Y8liEJ0I1PUVRbGdbUbn",
+    "voice_name": "Steff Pro",
+    "language": "English (British)",
+    "model": "eleven_flash_v2_5",
+    "speed": 0.93,
+    "stability": 0.12,
+    "similarity_boost": 0.97,
+    "style": 0.97
+  }
+}

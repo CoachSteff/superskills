@@ -34,6 +34,19 @@ cp .env.template .env
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
+**Optional: Per-skill .env files**
+
+Some skills can use their own local `.env` files:
+```bash
+# Example: Transcriber skill only
+echo "OPENAI_API_KEY=your-key" > superskills/transcriber/.env
+
+# Or use distribution script to sync from root .env
+python scripts/distribute_credentials.py --skill transcriber
+```
+
+See `docs/CREDENTIAL_SETUP.md` for full credential distribution workflow.
+
 ### 4. Set Up Personal Profiles (Optional)
 ```bash
 # For each skill you plan to use:

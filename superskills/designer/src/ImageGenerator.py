@@ -35,30 +35,27 @@ class ImageGenerator:
         "blog-inline": {"width": 1000, "height": 667},
     }
     
-    # Brand style guidelines
-    BRAND_STYLE = (
-        "Modern, clean, professional design. "
-        "Approachable but authoritative. "
-        "Science-backed aesthetic, not gimmicky. "
-        "Clarity over decoration. "
-        "Professional color palette with approachable feel. "
-        "High contrast for accessibility."
-    )
-    
     def __init__(
         self,
         output_dir: str = "output/images",
-        provider: Literal["gemini", "midjourney"] = "gemini"
+        provider: Literal["gemini", "midjourney"] = "gemini",
+        brand_style: Optional[str] = None
     ):
         """Initialize image generator.
         
         Args:
             output_dir: Directory to save generated images
             provider: AI provider to use (gemini or midjourney)
+            brand_style: Optional brand style guidelines. If not provided,
+                        uses a clean, professional default aesthetic.
         """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.provider = provider
+        self.brand_style = brand_style or (
+            "Clean, professional design with accessibility focus. "
+            "Modern and approachable aesthetic."
+        )
         
         # Load API keys
         if provider == "gemini":
@@ -86,7 +83,7 @@ class ImageGenerator:
         Returns:
             Optimized prompt string
         """
-        style = style_override or self.BRAND_STYLE
+        style = style_override or self.brand_style
         
         # Add composition guidance based on platform
         composition = ""

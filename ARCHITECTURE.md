@@ -67,10 +67,31 @@ new-skills/{skill-name}/
 2. Global `.env` (repository root)
 3. Per-skill `.env` (superskills/{skill}/.env)
 
+**Example: Skill-Specific .env in Action**
+
+```bash
+# Global .env (root)
+OPENAI_API_KEY=sk-global-key-abc123
+GEMINI_API_KEY=AIza-global-key-xyz789
+
+# superskills/transcriber/.env (overrides global for this skill)
+OPENAI_API_KEY=sk-transcriber-specific-key-def456
+
+# When Transcriber runs:
+# Uses: sk-transcriber-specific-key-def456 (per-skill overrides global)
+```
+
+**Currently configured skill-specific .env files:**
+- `superskills/craft/.env` - Craft Docs API
+- `superskills/designer/.env` - Gemini/Midjourney  
+- `superskills/narrator/.env` - ElevenLabs
+- `superskills/transcriber/.env` - OpenAI/AssemblyAI
+
 **Security:**
 - All `.env` files gitignored
 - Only `.env.template` committed
 - Validation script masks values
+- Distribution script syncs credentials from root to skills
 
 ## Personal Profile System
 

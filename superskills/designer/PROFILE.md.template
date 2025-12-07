@@ -26,6 +26,12 @@
 - [Specialty 3 - e.g., Social media graphics]
 - [Specialty 4 - e.g., Presentation design]
 
+## Brand Style Guidelines
+**Visual Brand Description** (for AI image generation):
+[Your brand aesthetic in descriptive text - e.g., "Modern, clean, professional design with warm colors. Approachable but authoritative. High contrast for accessibility. Clarity over decoration."]
+
+**Note**: This style description will be used when generating images with the ImageGenerator. You can pass it as the `brand_style` parameter.
+
 ## Tools & Software
 - [Tool 1 - e.g., Figma, Sketch, Adobe Creative Suite]
 - [Tool 2 - e.g., Canva, Midjourney, DALL-E]

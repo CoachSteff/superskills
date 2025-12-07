@@ -49,7 +49,8 @@ CREDENTIALS = {
     "Planner": {
         "MICROSOFT_CLIENT_ID": "Microsoft Azure Client ID",
         "MICROSOFT_CLIENT_SECRET": "Microsoft Azure Secret",
-        "MICROSOFT_TENANT_ID": "Microsoft Azure Tenant"
+        "MICROSOFT_TENANT_ID": "Microsoft Azure Tenant",
+        "MICROSOFT_APPLICATION_ID": "Microsoft Application ID"
     },
     "EmailCampaigner": {
         "SENDGRID_API_KEY": "SendGrid API",
@@ -61,6 +62,9 @@ CREDENTIALS = {
     },
     "SummarizAIer": {
         "ANTHROPIC_API_KEY": "Anthropic Claude (alternative)"
+    },
+    "Notion": {
+        "NOTION_API_KEY": "Notion API Key"
     },
     "FeedbackCollector": {
         "TYPEFORM_API_KEY": "Typeform API",

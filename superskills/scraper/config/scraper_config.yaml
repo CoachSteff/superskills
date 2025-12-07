@@ -1,0 +1,87 @@
+# Scraper Configuration
+
+# Extraction strategies for common use cases
+extraction_strategies:
+  article:
+    description: "Extract article/blog post content"
+    fields:
+      - title
+      - author
+      - published_date
+      - content
+      - tags
+      - category
+    css_selectors:
+      title: "h1, .article-title, .post-title"
+      author: ".author, .byline, [rel='author']"
+      published_date: "time, .published, .date"
+      content: "article, .article-content, .post-content, main"
+      tags: ".tags a, .post-tags a"
+  
+  product:
+    description: "Extract e-commerce product information"
+    fields:
+      - name
+      - price
+      - description
+      - rating
+      - reviews
+      - availability
+      - images
+    css_selectors:
+      name: "h1.product-title, .product-name"
+      price: ".price, .product-price, [itemprop='price']"
+      description: ".product-description, .description"
+      rating: ".rating, .stars, [itemprop='ratingValue']"
+      reviews: ".reviews, .review-count"
+  
+  contact:
+    description: "Extract contact information from pages"
+    fields:
+      - name
+      - email
+      - phone
+      - address
+      - social_links
+      - company
+    patterns:
+      email: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+      phone: "\\+?[0-9]{1,3}?[-.\\s]?\\(?[0-9]{1,4}\\)?[-.\\s]?[0-9]{1,4}[-.\\s]?[0-9]{1,9}"
+  
+  listing:
+    description: "Extract list items (search results, directories, etc.)"
+    fields:
+      - items
+      - pagination
+    css_selectors:
+      items: ".listing-item, .search-result, .card"
+      pagination: ".pagination, .pager"
+
+# Browser configuration
+browser:
+  headless: true
+  user_agent: "Mozilla/5.0 (compatible; SuperSkillsBot/1.0; +https://superskills.dev)"
+  viewport:
+    width: 1920
+    height: 1080
+  timeout: 30000  # milliseconds
+  
+# Rate limiting
+rate_limiting:
+  max_concurrent: 3
+  delay_between_requests: 1000  # milliseconds
+  respect_robots_txt: true
+
+# Output formats
+output:
+  default_format: "json"
+  save_html: false
+  save_markdown: true
+  save_screenshots: false
+  
+# Content filters
+filters:
+  remove_scripts: true
+  remove_styles: true
+  remove_comments: true
+  clean_whitespace: true

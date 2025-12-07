@@ -1,0 +1,35 @@
+api:
+  base_endpoint: null  # Set via CRAFT_API_ENDPOINT environment variable
+  timeout: 30
+  retry_attempts: 3
+
+content:
+  default_format: "markdown"
+  supported_formats: ["markdown", "html", "json"]
+  
+blocks:
+  supported_types:
+    - text
+    - heading1
+    - heading2
+    - heading3
+    - bullet_list
+    - numbered_list
+    - code
+    - quote
+    - divider
+    - image
+    - link
+    - table
+
+export:
+  include_metadata: true
+  preserve_formatting: true
+  output_formats: ["md", "json", "html"]
+
+search:
+  default_limit: 50
+  max_results: 100
+
+sharing:
+  permissions: ["read", "write", "admin"]

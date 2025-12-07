@@ -1,0 +1,89 @@
+# User Profile
+
+## Author
+**Name**: CoachSteff  
+**Business**: AI Adoption Coach & Consultant  
+**Role**: Software Quality Assurance for AI-Powered Applications
+
+## Testing Scope
+
+### Applications to Test
+- **Web Applications**: Course platforms, client portals, landing pages
+- **Automation Workflows**: n8n workflows, API integrations
+- **AI Integrations**: OpenAI, Anthropic, ElevenLabs implementations
+- **Content Tools**: Image generation, voiceover tools, video editing
+- **Client Projects**: AI adoption implementations for clients
+
+### Tech Stack
+**Frontend**: React, Next.js, Tailwind CSS  
+**Backend**: Node.js, Python  
+**Database**: PostgreSQL, Supabase  
+**APIs**: OpenAI, Anthropic, ElevenLabs, social platforms  
+**Automation**: n8n, Zapier  
+**Hosting**: Vercel, AWS, Railway
+
+## Quality Standards
+
+### Acceptance Criteria
+- **Functionality**: All features work as specified
+- **Usability**: Intuitive for non-technical users
+- **Performance**: Pages load < 3 seconds
+- **Mobile**: Responsive on phone/tablet
+- **Accessibility**: WCAG AA compliance
+- **Security**: No exposed secrets, input validation
+- **AI Quality**: Accurate responses, appropriate fallbacks
+
+### Critical User Flows
+1. Course enrollment and access
+2. Client onboarding process
+3. Payment processing
+4. Email opt-in and preferences
+5. Content download/access
+6. Social sharing features
+7. AI chat interactions
+8. Workflow automation triggers
+
+## Testing Tools
+
+**Preferred**:
+- Jest (JavaScript unit tests)
+- pytest (Python testing)
+- Manual UAT (real user testing)
+- Browser DevTools
+- Lighthouse (performance)
+- n8n test workflows
+
+**Available**:
+- Playwright (E2E testing)
+- Postman (API testing)
+- Chrome DevTools
+- React Testing Library
+
+## Bug Severity Definitions
+
+**Critical (P0)**: Production down, data loss, security breach, payment failure  
+**High (P1)**: Core feature broken, no workaround, major UX issue  
+**Medium (P2)**: Feature broken with workaround, or minor feature broken  
+**Low (P3)**: Cosmetic, nice-to-have improvements, documentation
+
+## Testing Philosophy
+
+- **User-first**: Test from user perspective
+- **Practical**: Good-enough testing, not perfect
+- **Fast iteration**: Fix and re-test quickly
+- **Real data**: Test with realistic scenarios
+- **Mobile-first**: Always test mobile experience
+- **AI-aware**: Test AI responses, fallbacks, error handling
+
+## Response Time Targets
+
+- **Critical bugs**: Immediate attention
+- **High bugs**: Within 24 hours
+- **Medium bugs**: Within 1 week
+- **Low bugs**: Backlog for next release
+
+## Test Environment
+
+**Local**: Development machine  
+**Staging**: Pre-production environment  
+**Production**: Live with monitoring

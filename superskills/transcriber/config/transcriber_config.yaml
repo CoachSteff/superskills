@@ -1,0 +1,15 @@
+providers:
+  primary: "openai"
+  fallback: "assemblyai"
+
+transcription:
+  language: "auto"
+  temperature: 0.0
+  
+output:
+  formats: ["txt", "json", "srt", "vtt"]
+  include_timestamps: true
+  include_confidence: true
+
+batch:
+  max_concurrent: 3

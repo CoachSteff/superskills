@@ -1,0 +1,182 @@
+# User Profile
+
+## Author
+**Name**: CoachSteff  
+**Business**: AI Adoption Coach & Consultant  
+**Role**: Automation Specialist using n8n for content & business workflows
+
+## n8n Usage
+
+### Primary Use Cases
+1. **Content Distribution**: Publish to multiple platforms from single source
+2. **Lead Management**: Capture, enrich, and route leads
+3. **Research Automation**: Aggregate, summarize, and share insights
+4. **Course Delivery**: Automate student onboarding and email sequences
+5. **Social Media**: Schedule posts, monitor mentions, engage
+
+### n8n Instance
+- **Hosting**: Self-hosted on Railway/DigitalOcean
+- **Version**: Latest stable
+- **Access**: Web UI + API
+- **Backups**: Weekly workflow exports
+
+## Common Workflows
+
+### 1. Content Distribution Pipeline
+**Trigger**: Manual or Webhook (from Notion)  
+**Process**:
+- Fetch content from Notion database
+- Generate platform-specific variations (OpenAI)
+- Post to LinkedIn, Twitter, Instagram
+- Log results in Airtable
+- Send success notification to Slack
+
+**Nodes**: Notion, OpenAI, LinkedIn, Twitter, Instagram, Airtable, Slack
+
+### 2. Lead Capture & Enrichment
+**Trigger**: Webhook (from website form)  
+**Process**:
+- Receive lead data
+- Enrich with Clearbit/Hunter
+- Score lead based on criteria
+- IF high-score: Notify in Slack, add to CRM
+- IF low-score: Add to nurture email sequence
+- Log to Google Sheets
+
+**Nodes**: Webhook, HTTP Request, IF, Slack, Airtable, Email, Google Sheets
+
+### 3. Daily Research Digest
+**Trigger**: Schedule (8 AM daily)  
+**Process**:
+- Fetch from RSS feeds (AI news, productivity)
+- Summarize each article (Claude API)
+- Filter by relevance score
+- Create Notion page with digest
+- Send email summary
+- Post best insight to Twitter
+
+**Nodes**: Schedule, RSS, Anthropic, Filter, Notion, Email, Twitter
+
+### 4. Course Student Onboarding
+**Trigger**: Webhook (from payment processor)  
+**Process**:
+- Receive purchase notification
+- Create student record in Airtable
+- Grant course access (API call)
+- Send welcome email sequence (3 emails over 3 days)
+- Add to community (Slack/Discord invite)
+- Notify CoachSteff in Slack
+
+**Nodes**: Webhook, Airtable, HTTP Request, Email (SMTP), Slack, Wait
+
+### 5. Social Media Monitoring
+**Trigger**: Schedule (every 2 hours)  
+**Process**:
+- Check Twitter mentions and DMs
+- Check LinkedIn comments and messages
+- IF mention contains question:
+  - Analyze with Claude
+  - Draft response
+  - Send to CoachSteff for approval (Slack)
+- Log all mentions in database
+
+**Nodes**: Schedule, Twitter, LinkedIn, Anthropic, IF, Slack, Airtable
+
+## Integrations Used
+
+### AI Services
+- **OpenAI**: GPT-4 for content generation, variations
+- **Anthropic**: Claude for summarization, analysis
+- **ElevenLabs**: Text-to-speech for podcast snippets
+
+### Content & Publishing
+- **Notion**: Content database, research notes
+- **LinkedIn**: Posting, commenting
+- **Twitter**: Posting, monitoring
+- **Instagram**: Posting (via Buffer/Postiz API)
+- **Medium**: Cross-posting blog content
+
+### Data & Storage
+- **Airtable**: Lead database, content calendar, analytics
+- **Google Sheets**: Reports, logs, tracking
+- **PostgreSQL**: Custom database (via HTTP Request node)
+
+### Communication
+- **Slack**: Notifications, approvals, alerts
+- **Email (SMTP)**: Gmail for transactional emails
+- **Discord**: Community invites
+
+### Tools & Services
+- **HTTP Request**: Generic API calls (Clearbit, Hunter, custom APIs)
+- **Webhook**: Receive data from Typeform, Calendly, website forms
+- **RSS**: Monitor blogs, news sites
+
+## Credentials Configuration
+
+All credentials stored in n8n credentials manager:
+- OpenAI API key
+- Anthropic API key
+- LinkedIn OAuth
+- Twitter OAuth
+- Google OAuth (Sheets, Gmail)
+- Airtable API key
+- Slack webhook URLs
+- SMTP credentials (Gmail)
+- Custom API tokens
+
+## Workflow Organization
+
+### Folders
+- **Content**: Publishing and distribution workflows
+- **Leads**: Capture, enrichment, routing
+- **Research**: Monitoring and analysis
+- **Course**: Student onboarding and support
+- **Social**: Monitoring and engagement
+- **Testing**: Development and experiments
+
+### Naming Convention
+`[Category] - [Purpose] - [Version]`
+
+Examples:
+- `Content - LinkedIn Publisher - v2`
+- `Leads - Form to CRM - v1`
+- `Research - Daily Digest - v3`
+
+## Best Practices (Personal)
+
+1. **Always add error handling**: Error Trigger node + Slack notification
+2. **Document complex logic**: Sticky notes for IF conditions, expressions
+3. **Test with real data**: Use production-like test data
+4. **Version workflows**: Export before major changes
+5. **Monitor executions**: Check logs daily
+6. **Minimize API calls**: Batch operations when possible
+7. **Use environment variables**: For API keys, URLs
+
+## Optimization Priorities
+
+1. **Reliability**: Must complete successfully 95%+ of time
+2. **Speed**: Complete within 60 seconds for real-time workflows
+3. **Cost**: Minimize AI API calls (cache, batch)
+4. **Maintainability**: Clear naming, documentation
+5. **Scalability**: Handle 100+ items without timeout
+
+## Common Issues & Solutions
+
+**Issue**: Rate limits on LinkedIn posting  
+**Solution**: Add Wait node (10 min delay between posts)
+
+**Issue**: OpenAI timeout on long content  
+**Solution**: Split into batches, use streaming
+
+**Issue**: Webhook failures during high traffic  
+**Solution**: Add queue system (Airtable buffer)
+
+**Issue**: Workflow timeout on large datasets  
+**Solution**: Use Split In Batches with 10 items per batch
+
+## Monitoring & Alerts
+
+- **Error notifications**: Slack channel #n8n-errors
+- **Daily summary**: Email with execution stats
+- **Failed workflows**: Auto-retry once, then alert
+- **Webhook monitoring**: Healthchecks.io ping

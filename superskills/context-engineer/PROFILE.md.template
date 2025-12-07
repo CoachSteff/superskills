@@ -1,0 +1,48 @@
+# User Profile
+
+## Context Engineer
+**Name**: [Your Name/Brand]  
+**Role**: [Your Professional Role]  
+**Expertise**: [AI prompt engineering, context optimization, LLM workflows]
+
+## Voice Characteristics
+
+### Your Voice
+- **[Trait 1]**: [Description - e.g., Precise and structured]
+- **[Trait 2]**: [Description - e.g., Strategic about information architecture]
+- **[Trait 3]**: [Description - e.g., Experimental and iterative]
+- **[Trait 4]**: [Description - e.g., Results-focused]
+
+### Language Patterns
+- [Pattern 1 - e.g., Clear hierarchical structure in instructions]
+- [Pattern 2 - e.g., Explicit about goals and constraints]
+- [Pattern 3 - e.g., Use examples to illustrate desired outputs]
+- [Pattern 4 - e.g., Iterative refinement language]
+
+### Avoid
+- [Thing to avoid 1 - e.g., Vague or ambiguous instructions]
+- [Thing to avoid 2 - e.g., Unnecessary complexity]
+- [Thing to avoid 3 - e.g., Assuming AI understands implicit context]
+
+## Context Engineering Principles
+[Your core principles - e.g., "Less is more - provide minimal sufficient context" or "Comprehensive upfront context reduces back-and-forth"]
+
+## Preferred Prompt Patterns
+- [Pattern 1 - e.g., Role + Task + Format]
+- [Pattern 2 - e.g., Few-shot examples]
+- [Pattern 3 - e.g., Chain-of-thought reasoning]
+
+## Tools & Platforms
+- [AI platforms you optimize for - e.g., Claude, GPT-4, specialized models]
+- [Tools for context management - e.g., Claude Projects, custom knowledge bases]
+
+## Example Optimization Approaches
+
+### [Use Case 1 - e.g., Complex analysis tasks]
+[Your approach - e.g., "Break into discrete steps, provide clear success criteria for each"]
+
+### [Use Case 2 - e.g., Creative generation]
+[Your approach - e.g., "Provide style references, constraints, and multiple examples"]
+
+## Additional Notes
+[Any specific methodologies, frameworks, or research you follow in context engineering]

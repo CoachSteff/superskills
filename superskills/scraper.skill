@@ -1,0 +1,157 @@
+# Scraper SuperSkill
+
+## Description
+AI-friendly web scraping and data extraction using Crawl4AI. Extract clean, structured content from websites for research, analysis, and AI workflows.
+
+## Core Capabilities
+- **Web Scraping**: Extract content from single or multiple URLs
+- **Content Extraction**: Support for markdown, HTML, and structured data
+- **Async Operations**: High-performance concurrent scraping
+- **Smart Extraction**: Pre-defined strategies for articles, products, contacts
+- **AI-Friendly Output**: Clean markdown optimized for LLMs and RAG systems
+
+## Tools
+
+### WebScraper
+Main scraping class with async support.
+
+**Methods:**
+- `scrape(url, wait_for_selector=None, extraction_strategy=None)`: Scrape single URL
+- `scrape_multiple(urls, max_concurrent=3)`: Scrape multiple URLs concurrently
+- `save_batch(results, filename)`: Save multiple results to JSON
+
+**Extraction Modes:**
+- `markdown`: Clean markdown output (best for LLMs)
+- `html`: Full HTML content
+- `structured`: Cleaned HTML with structure preserved
+
+**Pre-defined Strategies:**
+- `article`: Extract blog posts and articles (title, author, date, content, tags)
+- `product`: Extract e-commerce products (name, price, description, rating)
+- `contact`: Extract contact information (email, phone, address, social)
+- `listing`: Extract list items and search results
+
+### ScrapingResult
+Result object containing:
+- `url`: Source URL
+- `title`: Page title
+- `content`: Extracted content
+- `metadata`: Scraping metadata (status, timestamp, etc.)
+- `extracted_data`: Structured data (if using extraction strategy)
+- `timestamp`: When the scraping occurred
+
+## Usage Examples
+
+### Basic Scraping
+```python
+from superskills.scraper.src import WebScraper
+import asyncio
+
+async def main():
+    scraper = WebScraper(output_dir="data", extraction_mode="markdown")
+    result = await scraper.scrape("https://example.com/article")
+    print(result.title)
+    print(result.content[:500])
+
+asyncio.run(main())
+```
+
+### Synchronous Helper
+```python
+from superskills.scraper.src import scrape_url
+
+result = scrape_url("https://example.com", extraction_mode="markdown")
+print(result.content)
+```
+
+### Multiple URLs
+```python
+from superskills.scraper.src import scrape_urls
+
+urls = [
+    "https://example.com/page1",
+    "https://example.com/page2",
+    "https://example.com/page3"
+]
+
+results = scrape_urls(urls, max_concurrent=3, verbose=True)
+for result in results:
+    print(f"{result.title}: {len(result.content)} chars")
+```
+
+### Article Extraction
+```python
+scraper = WebScraper(extraction_mode="markdown")
+result = await scraper.scrape(
+    "https://blog.example.com/post",
+    extraction_strategy="article",
+    wait_for_selector=".article-content"
+)
+```
+
+### Save Results
+```python
+# Single result
+result = await scraper.scrape("https://example.com")
+scraper._save_result(result, "example.json", format="json")
+
+# Multiple results
+results = await scraper.scrape_multiple(urls)
+scraper.save_batch(results, "batch_results.json")
+```
+
+## Configuration
+
+Edit `config/scraper_config.yaml` to customize:
+- Extraction strategies
+- Browser settings
+- Rate limiting
+- Output formats
+- Content filters
+
+## Environment Variables
+None required. Crawl4AI is self-contained.
+
+## Dependencies
+- `crawl4ai`: Web crawling and extraction library
+- `asyncio`: Async operations (Python standard library)
+
+## Output Structure
+
+### JSON Output
+```json
+{
+  "url": "https://example.com",
+  "title": "Example Page",
+  "content": "Page content in markdown...",
+  "metadata": {
+    "status_code": 200,
+    "success": true,
+    "extraction_mode": "markdown",
+    "timestamp": "2025-12-05T10:30:00"
+  },
+  "extracted_data": null,
+  "timestamp": "2025-12-05T10:30:00"
+}
+```
+
+## Best Practices
+
+1. **Respect robots.txt**: Always check site's scraping policy
+2. **Rate Limiting**: Use `max_concurrent` to avoid overwhelming servers
+3. **Wait for Content**: Use `wait_for_selector` for dynamic content
+4. **Error Handling**: Check `metadata.success` before processing results
+5. **Batch Processing**: Use `scrape_multiple` for efficient bulk scraping
+
+## Integration with Other SuperSkills
+
+- **Researcher**: Gather information from multiple sources
+- **Author**: Extract content for summarization and analysis
+- **Context-Engineer**: Build knowledge bases from web content
+- **Publisher**: Monitor competitor content and trends
+
+## Version
+1.0.0
+
+## License
+MIT

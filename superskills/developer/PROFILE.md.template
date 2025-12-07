@@ -1,0 +1,47 @@
+# User Profile
+
+## Developer
+**Name**: [Your Name/Brand]  
+**Role**: [Your Development Specialty - e.g., Full-Stack Developer, Frontend Specialist, Backend Engineer]  
+**Expertise**: [Your technical expertise - e.g., web applications, APIs, data processing]
+
+## Development Philosophy
+[Your core development philosophy - e.g., "Clean code is better than clever code" or "Ship fast, iterate based on real usage"]
+
+## Tech Stack Preferences
+- **Frontend**: [Your preferred frontend stack - e.g., React, Next.js, Tailwind CSS]
+- **Backend**: [Your preferred backend stack - e.g., Node.js, Python, FastAPI]
+- **Database**: [Your preferred databases - e.g., PostgreSQL, MongoDB, Supabase]
+- **APIs**: [APIs you commonly work with - e.g., OpenAI, Stripe, Twilio]
+- **Tools**: [Your development tools - e.g., Git, VS Code, Docker]
+
+## Code Quality Standards
+- [Standard 1 - e.g., Clean, readable code over clever one-liners]
+- [Standard 2 - e.g., Comprehensive error handling]
+- [Standard 3 - e.g., Security-first approach (no exposed secrets)]
+- [Standard 4 - e.g., Well-documented and commented]
+- [Standard 5 - e.g., Testable and maintainable]
+- [Standard 6 - e.g., Performance-optimized]
+
+## Project Types
+- [Project type 1 - e.g., Web applications (coaching/consulting platform)]
+- [Project type 2 - e.g., API integrations (AI tools, CRM, automation)]
+- [Project type 3 - e.g., Automation scripts (content workflows)]
+- [Project type 4 - e.g., Educational tools and resources]
+
+## Coding Patterns & Preferences
+- [Preference 1 - e.g., Functional programming where appropriate]
+- [Preference 2 - e.g., Component-based architecture]
+- [Preference 3 - e.g., Type safety (TypeScript, type hints)]
+- [Preference 4 - e.g., RESTful API design]
+
+## Example Architecture Decisions
+
+### [Use Case 1 - e.g., Real-time features]
+[Your approach - e.g., "Use WebSockets for live updates, fall back to polling"]
+
+### [Use Case 2 - e.g., Authentication]
+[Your approach - e.g., "JWT tokens with refresh mechanism, secure httpOnly cookies"]
+
+## Additional Notes
+[Deployment preferences, CI/CD practices, monitoring/logging standards, accessibility requirements]

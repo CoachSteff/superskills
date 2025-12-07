@@ -1,0 +1,260 @@
+# User Profile
+
+## Author
+**Name**: CoachSteff  
+**Business**: AI Adoption Coach & Consultant  
+**Role**: Google Workspace Power User with Gemini Integration
+
+## Workspace Usage
+
+### Primary Apps
+- **Gmail**: Email management, client communication
+- **Google Docs**: Content drafting, proposals, documentation
+- **Google Sheets**: Data tracking, analytics, project management
+- **Google Slides**: Presentations, training decks, client deliverables
+- **Google Meet**: Client calls, workshops, webinars
+- **Google Drive**: File organization and sharing
+
+### Usage Context
+- **Business type**: Solo consultant + small team (virtual assistants)
+- **Primary device**: MacBook Pro + iPhone
+- **Work style**: Async-first, distributed team
+- **Volume**: 100+ emails/day, 10+ docs/week, 5+ presentations/month
+
+## Gemini Use Cases
+
+### 1. Email Management (Gmail)
+**Daily Tasks:**
+- Summarize long email threads before responding
+- Draft responses to client inquiries
+- Polish and formalize casual drafts
+- Create follow-up email sequences
+- Extract action items from conversations
+
+**Sample Prompts:**
+- "Summarize this email thread and draft a response addressing all questions"
+- "Write a professional follow-up email for the AI adoption workshop inquiry"
+- "Extract all action items from this conversation and format as checklist"
+
+**Time Saved**: 5-7 hours/week
+
+### 2. Content Creation (Docs)
+**Weekly Tasks:**
+- Draft blog posts and LinkedIn articles
+- Create training materials and guides
+- Write proposals and case studies
+- Document workflows and processes
+- Generate email newsletter content
+
+**Sample Prompts:**
+- "Create blog post outline about [topic] with 5 main points"
+- "Draft case study showing how [client] saved [X hours] with AI adoption"
+- "Write step-by-step guide for [workflow] in beginner-friendly language"
+
+**Time Saved**: 8-10 hours/week
+
+### 3. Data Analysis (Sheets)
+**Regular Tasks:**
+- Track client engagement metrics
+- Analyze course completion data
+- Monitor content performance
+- Calculate ROI for client implementations
+- Budget and financial tracking
+
+**Sample Prompts:**
+- "Create formula to calculate engagement rate from this data"
+- "Analyze this course completion data and create pivot table by module"
+- "Generate chart showing monthly revenue trend with forecast"
+
+**Time Saved**: 3-4 hours/week
+
+### 4. Presentation Design (Slides)
+**Monthly Tasks:**
+- Client workshop decks
+- Training presentations
+- Sales presentations
+- Webinar slides
+- Case study visuals
+
+**Sample Prompts:**
+- "Create 10-slide presentation about AI adoption ROI for corporate audience"
+- "Generate custom images for each slide about [topic]"
+- "Transform this Google Doc outline into presentation with speaker notes"
+
+**Time Saved**: 4-5 hours/week
+
+### 5. Meeting Productivity (Meet)
+**Weekly Tasks:**
+- Client discovery calls
+- Training sessions
+- Consulting workshops
+- Team check-ins
+
+**Gemini Usage:**
+- Auto-generate meeting summaries
+- Extract action items and decisions
+- Create follow-up task lists
+- Transcription for reference
+
+**Time Saved**: 2-3 hours/week
+
+## Prompt Libraries
+
+### Email Templates
+
+**Client Inquiry Response:**
+```
+"Draft professional email response to this inquiry about AI adoption 
+training. Include: confirmation of interest, 3 program options with 
+brief descriptions, next steps for scheduling discovery call. 
+Tone: warm and professional. Length: 200-250 words."
+```
+
+**Weekly Newsletter:**
+```
+"Create engaging email newsletter about [this week's AI trend]. 
+Include: catchy subject line, opening hook, 3 key insights with 
+examples, call-to-action to book consultation. Tone: educational 
+and approachable. Length: 300-400 words."
+```
+
+### Document Templates
+
+**Blog Post Draft:**
+```
+"Write 1200-word blog post titled '[title]' for audience of 
+[professionals exploring AI]. Include: compelling intro with 
+statistic, 5 practical tips with examples, conclusion with CTA. 
+Tone: conversational yet authoritative. Include subheadings."
+```
+
+**Case Study:**
+```
+"Create case study documenting [client name]'s AI adoption success. 
+Include: challenge they faced, solution we implemented, specific 
+results (time saved, ROI), client testimonial quote, lessons learned. 
+Format: professional with clear sections. Length: 800-1000 words."
+```
+
+### Analysis Templates
+
+**Performance Report:**
+```
+"Analyze this data and create monthly performance report. Include: 
+summary of key metrics, month-over-month comparison, trend analysis 
+with chart, top 3 insights, recommended actions. Format as executive 
+summary with supporting data."
+```
+
+## Workflow Optimizations
+
+### Morning Routine (30 min → 15 min)
+**Before Gemini:**
+1. Read 50+ emails manually
+2. Respond to each individually
+3. Create task list from emails
+4. File and organize
+
+**With Gemini:**
+1. Gemini summarizes overnight emails (5 min)
+2. Draft responses to routine inquiries (5 min)
+3. Auto-extract action items (2 min)
+4. Quick review and send (3 min)
+
+### Content Creation (4 hours → 2 hours)
+**Before Gemini:**
+1. Research topic (45 min)
+2. Create outline (30 min)
+3. Write first draft (2 hours)
+4. Edit and refine (45 min)
+
+**With Gemini:**
+1. Research (30 min, Gemini-assisted)
+2. Gemini generates outline (5 min)
+3. Gemini drafts sections (30 min)
+4. Human editing and refinement (55 min)
+
+### Client Deliverable (3 hours → 1.5 hours)
+**Before Gemini:**
+1. Gather data and notes (30 min)
+2. Create presentation structure (45 min)
+3. Write content for slides (1 hour)
+4. Design and format (45 min)
+
+**With Gemini:**
+1. Organize inputs (20 min)
+2. Gemini creates structure (5 min)
+3. Gemini drafts content (20 min)
+4. Human refinement + images (45 min)
+
+## Productivity Metrics
+
+### Current Results (After 6 months with Gemini)
+- **Email time**: Reduced from 2 hours/day to 45 min/day
+- **Content output**: Increased from 2 posts/week to 4 posts/week
+- **Client deliverables**: 40% faster turnaround
+- **Meeting follow-up**: Same day (vs. 2-3 days before)
+- **Overall time saved**: 20-25 hours/week
+
+### Quality Improvements
+- **Fewer email typos**: 90% reduction in errors
+- **Better structure**: More consistent formatting
+- **Faster iterations**: 3x faster revision cycles
+- **Client satisfaction**: 95%+ (up from 88%)
+
+## Comparison with Copilot
+
+### Why Gemini for CoachSteff
+✓ Already deep in Google Workspace ecosystem  
+✓ Real-time collaboration with clients/team critical  
+✓ Lower cost for solo business  
+✓ Better mobile experience (work on iPhone often)  
+✓ Image generation in Slides (superior to Copilot)
+
+### When CoachSteff Recommends Copilot
+- Client already on Microsoft 365
+- Enterprise with advanced compliance needs
+- Heavy Excel users (Copilot stronger)
+- Windows-centric environment
+- Want deeper cross-app intelligence
+
+### Hybrid Approach
+CoachSteff uses BOTH:
+- **Gemini**: Primary for personal productivity
+- **Copilot**: When working with M365 clients, teaching Copilot training
+- **ChatGPT/Claude**: For specialized tasks outside Workspace
+
+## Training & Content
+
+### Content Topics CoachSteff Creates
+- "Gemini vs. Copilot: Which AI Productivity Tool is Right for You?"
+- "10 Gemini Prompts That Save Me 20 Hours/Week"
+- "How I Use Gemini to Write 4 Blog Posts per Week"
+- "From 2 Hours to 45 Minutes: My Email Workflow with Gemini"
+
+### Workshop Content
+- **"Gemini Productivity Bootcamp"** (Half-day)
+  - Email mastery with Gemini
+  - Content creation acceleration
+  - Data analysis shortcuts
+  - Presentation design
+
+- **"Gemini for Solopreneurs"** (2 hours)
+  - Essential use cases
+  - Prompt templates library
+  - Workflow integration
+  - ROI tracking
+
+## Future Exploration
+
+### Advanced Features to Test
+- Gemini Apps Script integration
+- Custom workflows with automation
+- Team prompt libraries
+- Cross-app intelligence improvements
+
+### Success Metrics to Track
+- Continue monitoring time saved
+- Track output quality (peer review)
+- Measure client satisfaction
+- Calculate precise ROI quarterly

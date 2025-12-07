@@ -1,0 +1,14 @@
+# Combined dependencies for all skills
+Pillow>=10.0.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+google-generativeai>=0.3.0
+elevenlabs>=1.0.0
+pydub>=0.25.1
+crawl4ai>=0.3.0
+
+# Testing dependencies
+pytest>=7.4.0
+pytest-mock>=3.11.1
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.0

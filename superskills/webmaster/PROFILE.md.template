@@ -1,0 +1,73 @@
+# User Profile
+
+## Webmaster/Web Manager
+**Name**: [Your Name/Brand]  
+**Role**: [Your Web Specialty - e.g., Webmaster, Web Developer, Site Manager]  
+**Expertise**: [Your web expertise - e.g., website maintenance, performance optimization, SEO, security]
+
+## Website Management Philosophy
+[Your core philosophy - e.g., "Fast, accessible, secure - in that order" or "Websites are never done, only continuously improved"]
+
+## Technical Stack
+- **CMS**: [Platform - e.g., WordPress, Webflow, custom]
+- **Hosting**: [Provider - e.g., Vercel, Netlify, AWS]
+- **Languages**: [Tech - e.g., HTML, CSS, JavaScript, PHP]
+- **Frameworks**: [Tools - e.g., React, Next.js, Tailwind]
+- **Analytics**: [Tools - e.g., Google Analytics, Plausible, Fathom]
+
+## Performance Standards
+- **Page Load**: [Target - e.g., Under 3 seconds on 3G]
+- **Core Web Vitals**: [Targets - e.g., LCP < 2.5s, FID < 100ms, CLS < 0.1]
+- **Mobile Optimization**: [Approach - e.g., Mobile-first responsive design]
+- **Accessibility**: [Standard - e.g., WCAG 2.1 AA compliance]
+
+## SEO Practices
+- **On-Page**: [Practices - e.g., Proper heading structure, meta tags, alt text, keyword optimization]
+- **Technical**: [Practices - e.g., XML sitemap, robots.txt, schema markup, canonical tags]
+- **Content**: [Approach - e.g., Regular updates, internal linking, quality over quantity]
+- **Tools**: [Tools - e.g., Google Search Console, Screaming Frog, Ahrefs]
+
+## Security Measures
+- [Measure 1 - e.g., SSL/HTTPS encryption]
+- [Measure 2 - e.g., Regular backups (daily automated)]
+- [Measure 3 - e.g., Security plugins and monitoring]
+- [Measure 4 - e.g., Software updates within 48h of release]
+- [Measure 5 - e.g., Strong password policies and 2FA]
+
+## Maintenance Routine
+- **Daily**: [Tasks - e.g., Uptime monitoring, broken link checks]
+- **Weekly**: [Tasks - e.g., Content updates, comment moderation, backup verification]
+- **Monthly**: [Tasks - e.g., Plugin/theme updates, performance audit, SEO review]
+- **Quarterly**: [Tasks - e.g., Full site audit, design refresh assessment, analytics review]
+
+## Content Publishing Workflow
+1. [Step 1 - e.g., Content received from creator]
+2. [Step 2 - e.g., Format for web (headings, images, links)]
+3. [Step 3 - e.g., SEO optimization (meta, keywords, alt text)]
+4. [Step 4 - e.g., Preview and QA (links, formatting, mobile)]
+5. [Step 5 - e.g., Schedule or publish]
+6. [Step 6 - e.g., Share on social, notify email list]
+
+## Common Tasks
+
+### [Task Type 1 - e.g., New Page Creation]
+[Your process - e.g., "Use template, optimize images, set SEO, test responsive, publish, add to sitemap"]
+
+### [Task Type 2 - e.g., Bug Fix]
+[Your process - e.g., "Reproduce, identify cause, implement fix, test across browsers/devices, deploy, verify"]
+
+## Performance Monitoring
+- [Metric 1 - e.g., Uptime (target 99.9%)]
+- [Metric 2 - e.g., Page speed scores (Google PageSpeed, GTmetrix)]
+- [Metric 3 - e.g., Traffic and engagement (GA4)]
+- [Metric 4 - e.g., SEO rankings for target keywords]
+
+## Troubleshooting Approach
+1. [Step 1 - e.g., Identify symptom and reproduce issue]
+2. [Step 2 - e.g., Check recent changes (deployments, updates)]
+3. [Step 3 - e.g., Review error logs]
+4. [Step 4 - e.g., Test in isolation (disable plugins, switch themes)]
+5. [Step 5 - e.g., Implement fix and verify]
+
+## Additional Notes
+[Backup strategy, disaster recovery plan, collaboration with developers/designers, documentation practices]

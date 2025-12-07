@@ -1,0 +1,16 @@
+presets:
+  youtube_short:
+    resolution: "1080x1920"
+    max_duration: 60
+  linkedin_video:
+    resolution: "1280x720"
+    max_size_mb: 200
+  instagram_reel:
+    resolution: "1080x1920"
+    max_duration: 90
+
+overlays:
+  intro_path: "assets/intro.mp4"
+  outro_path: "assets/outro.mp4"
+  logo_path: "assets/logo.png"
+  watermark_opacity: 0.3

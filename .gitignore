@@ -90,3 +90,4 @@ site/
 # Additional Python
 .ruff_cache/
 .mypy_cache/
+WARP.md

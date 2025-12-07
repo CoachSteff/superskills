@@ -1,0 +1,406 @@
+# SuperSkills Project Rules for AI Assistants
+
+## 1. Directory Structure & Organization
+
+### Canonical Locations
+- **`/superskills/`** - The ONLY canonical directory for all skills (43 total)
+- **NEVER create or reference `/new-skills/`** - This directory was deprecated and removed
+- All active development happens in `/superskills/`
+
+### Skill Directory Pattern
+```
+superskills/{skill-name}/
+├── {skill-name}.skill      # Optional shortcut (prompt-only skills)
+├── SKILL.md                # Skill definition (required)
+├── PROFILE.md              # User's personal profile (gitignored)
+├── PROFILE.md.template     # Template for users (committed)
+├── src/                    # Python implementation (if needed)
+│   ├── __init__.py
+│   └── {MainClass}.py
+├── tests/                  # Tests (if Python skill)
+├── requirements.txt        # Dependencies (if Python skill)
+└── .env.template           # Credential placeholders (if API skill)
+```
+
+---
+
+## 2. Genericization & Personalization Principles
+
+### CRITICAL: Never Hardcode Personal Information
+
+**❌ WRONG:**
+```python
+# Hardcoded personal info in code
+class VoiceGenerator:
+    DEFAULT_VOICE = "CoachSteff"
+    BRAND_STYLE = "Modern, approachable, science-backed aesthetic"
+```
+
+**✅ CORRECT:**
+```python
+# Generic defaults, user-configurable
+class VoiceGenerator:
+    def __init__(self, voice_name: str = "Default", brand_style: Optional[str] = None):
+        self.voice_name = voice_name
+        self.brand_style = brand_style or "Clean, professional design"
+```
+
+### Where Personal Content Belongs
+- ✅ **PROFILE.md files** (gitignored) - Names, brands, voice characteristics
+- ✅ **Configuration files** (JSON/YAML) - Voice settings, style preferences
+- ❌ **Source code** - Never hardcode personal info
+- ❌ **Docstrings** - Use generic descriptions
+
+---
+
+## 3. PROFILE.md Pattern
+
+### Two-File System
+1. **PROFILE.md.template** (committed to git)
+   - Generic template with placeholders
+   - Shows users what to customize
+   - Example: `[Your Name/Brand]`, `[Your Voice Tone]`
+
+2. **PROFILE.md** (gitignored, user-created)
+   - User's personal information
+   - Created by copying template
+   - Never committed to repository
+
+### Template Structure
+```markdown
+# User Profile
+
+## [Skill Role]
+**Name**: [Your Name/Brand]
+**Role**: [Your Professional Role]
+**Expertise**: [Your expertise areas]
+
+## Characteristics
+- **[Trait 1]**: [Your preference]
+- **[Trait 2]**: [Your preference]
+
+## Configuration
+[How to use this profile with the skill]
+```
+
+### Code Integration
+```python
+# Read from PROFILE.md or config file
+def load_profile():
+    profile_path = Path(__file__).parent.parent / "PROFILE.md"
+    if profile_path.exists():
+        # Parse and use user's profile
+        return parse_profile(profile_path)
+    # Fall back to generic defaults
+    return {"name": "Default", "style": "Professional"}
+```
+
+---
+
+## 4. Configuration Files for Customization
+
+### Use JSON/YAML for User Settings
+
+**Example: voice_profiles.json**
+```json
+{
+  "narration": {
+    "voice_id": "user_voice_id_here",
+    "voice_name": "User Voice Name",
+    "speed": 0.85,
+    "stability": 0.40
+  }
+}
+```
+
+**Code Pattern:**
+```python
+import json
+from pathlib import Path
+
+class ConfigLoader:
+    def __init__(self):
+        config_path = Path(__file__).parent.parent / "config.json"
+        if config_path.exists():
+            with open(config_path) as f:
+                self.config = json.load(f)
+        else:
+            self.config = self._get_defaults()
+    
+    def _get_defaults(self):
+        return {
+            "voice_name": "Default",
+            "speed": 1.0
+        }
+```
+
+### Benefits
+- User-friendly (no code editing needed)
+- Validates on load
+- Easy to version control template
+- Clear separation of code and content
+
+---
+
+## 5. Version Management with CHANGELOG.md
+
+### Update CHANGELOG.md for All Notable Changes
+
+**Format:**
+```markdown
+## [Unreleased]
+
+### Added
+- New feature description
+
+### Changed
+- Modified behavior description
+
+### Removed
+- Deprecated feature description
+
+### Fixed
+- Bug fix description
+```
+
+### When to Update
+- ✅ New skills added
+- ✅ API changes
+- ✅ Configuration format changes
+- ✅ Bug fixes
+- ✅ Security patches
+- ❌ Typo fixes in docs (optional)
+- ❌ Internal refactoring (unless user-facing)
+
+### Commit Together
+```bash
+git add src/feature.py CHANGELOG.md
+git commit -m "feat: add new feature"
+```
+
+---
+
+## 6. Credential Management & Security
+
+### Environment Variables (.env)
+
+**Rules:**
+- ✅ Provide `.env.template` with placeholders
+- ✅ Add `.env` to `.gitignore` (already done)
+- ✅ Use `os.getenv()` with fallback/error handling
+- ❌ NEVER commit `.env` files
+- ❌ NEVER log API keys
+
+**Example .env.template:**
+```bash
+# ElevenLabs Configuration
+ELEVENLABS_API_KEY=your_api_key_here
+ELEVENLABS_VOICE_ID=your_voice_id_here
+
+# Google Gemini Configuration
+GEMINI_API_KEY=your_api_key_here
+```
+
+**Code Pattern:**
+```python
+import os
+
+class APIClient:
+    def __init__(self, api_key: Optional[str] = None):
+        self.api_key = api_key or os.getenv("SERVICE_API_KEY")
+        if not self.api_key:
+            raise ValueError(
+                "API key not found. Set SERVICE_API_KEY environment variable "
+                "or pass api_key parameter."
+            )
+```
+
+---
+
+## 7. Code Organization & Imports
+
+### Relative Imports Within Skills
+```python
+# In superskills/narrator/src/Voiceover.py
+from .VoiceConfig import VoiceConfig  # ✅ Relative import
+from elevenlabs.client import ElevenLabs  # ✅ External package
+
+# ❌ Avoid absolute imports within skill
+from superskills.narrator.src.VoiceConfig import VoiceConfig
+```
+
+### Module Structure
+```python
+# superskills/narrator/src/__init__.py
+from .Voiceover import VoiceoverGenerator
+from .Podcast import PodcastGenerator, PodcastSegment
+from .VoiceConfig import VoiceConfig
+
+__all__ = [
+    "VoiceoverGenerator",
+    "PodcastGenerator", 
+    "PodcastSegment",
+    "VoiceConfig"
+]
+
+__version__ = "1.1.0"
+```
+
+### Docstrings - Keep Generic
+```python
+class ImageGenerator:
+    """Generate images using AI providers (Gemini, Midjourney).
+    
+    Supports multiple platforms and customizable brand styles.
+    Brand style can be configured via PROFILE.md or passed as parameter.
+    """
+    
+    # ❌ Don't mention specific users
+    # """Generate images for CoachSteff's brand using Gemini."""
+```
+
+---
+
+## 8. Documentation Updates
+
+### When to Update Each File
+
+**README.md** - Update when:
+- Skill count changes
+- Installation steps change
+- New major features added
+
+**ARCHITECTURE.md** - Update when:
+- Directory structure changes
+- New patterns introduced
+- Component relationships change
+
+**CONTRIBUTING.md** - Update when:
+- Development workflow changes
+- Testing requirements change
+- New tools/scripts added
+
+**Skill-specific README.md** - Always include:
+- Installation instructions
+- Configuration options
+- Usage examples
+- API reference (if Python skill)
+
+---
+
+## 9. Testing Requirements
+
+### Mock All External APIs
+
+**Pattern:**
+```python
+import pytest
+from unittest.mock import patch, Mock
+
+def test_voice_generation(mocker):
+    # Mock ElevenLabs API
+    mock_client = mocker.patch('elevenlabs.client.ElevenLabs')
+    mock_response = Mock()
+    mock_response.json.return_value = {"audio": "base64_data"}
+    mock_client.return_value.text_to_speech.convert.return_value = [b"audio_data"]
+    
+    # Test the function
+    generator = VoiceoverGenerator()
+    result = generator.generate("Test script")
+    
+    assert result["output_file"].endswith(".mp3")
+```
+
+### Test Missing Configuration
+```python
+def test_missing_env_var():
+    """Ensure graceful error when API key missing."""
+    with pytest.raises(ValueError, match="API key not found"):
+        APIClient()
+
+def test_missing_profile():
+    """Ensure defaults work when PROFILE.md missing."""
+    generator = VoiceoverGenerator()
+    assert generator.voice_name == "Default"
+```
+
+### Run Before Committing
+```bash
+pytest tests/ -v
+```
+
+---
+
+## 10. Security & Privacy Rules
+
+### Gitignore Requirements
+The following are already gitignored - verify they stay that way:
+- `**/PROFILE.md` - Personal profiles
+- `.env` - API credentials
+- `*.log` - May contain sensitive data
+- `output/` - Generated content may be personal
+- `WARP.md` - Development notes
+
+### Never Log Sensitive Data
+```python
+# ✅ Safe logging
+logger.info(f"Generated voiceover: {output_path}")
+
+# ❌ Unsafe logging
+logger.info(f"Using API key: {api_key}")  # NEVER!
+logger.debug(f"User profile: {profile_data}")  # NEVER!
+```
+
+### Input Validation
+```python
+def generate_image(prompt: str, api_key: str):
+    # Validate before API call
+    if not prompt or len(prompt) > 1000:
+        raise ValueError("Invalid prompt length")
+    
+    if not api_key or not api_key.startswith("sk-"):
+        raise ValueError("Invalid API key format")
+```
+
+---
+
+## Quick Reference Checklist
+
+When creating or modifying skills:
+
+- [ ] Code is in `/superskills/{skill-name}/`
+- [ ] No hardcoded personal info (names, brands, voices)
+- [ ] Configuration via JSON/YAML or PROFILE.md
+- [ ] PROFILE.md.template created (generic placeholders)
+- [ ] .env.template created (if uses APIs)
+- [ ] Tests written (APIs mocked)
+- [ ] CHANGELOG.md updated
+- [ ] Documentation updated (README.md if needed)
+- [ ] No credentials in code or logs
+- [ ] Relative imports used within skill
+
+---
+
+## Examples of Common Scenarios
+
+### Scenario 1: Adding a New Voice Setting
+❌ **Wrong:** Hardcode in class constant
+✅ **Right:** Add to `voice_profiles.json`, document in `PROFILE.md.template`
+
+### Scenario 2: User Wants Custom Brand Style
+❌ **Wrong:** Edit source code to change BRAND_STYLE constant
+✅ **Right:** Pass `brand_style` parameter or define in PROFILE.md
+
+### Scenario 3: New Skill Needs API Key
+❌ **Wrong:** Put in config.py or constants.py
+✅ **Right:** Create `.env.template`, use `os.getenv()`, document in README.md
+
+### Scenario 4: Refactoring Skill Implementation
+❌ **Wrong:** Skip updating CHANGELOG.md
+✅ **Right:** Add note in CHANGELOG.md [Unreleased] → Changed section
+
+---
+
+**Last Updated:** December 7, 2024  
+**Project:** SuperSkills v1.0.0  
+**Maintainer:** See CONTRIBUTING.md

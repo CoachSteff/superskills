@@ -7,7 +7,7 @@ Dual-architecture approach combining Claude Skills (prompt-based) with Python-po
 ## Directory Structure
 
 ### `/superskills/` - All Skill Definitions
-43 skill directories with varying levels of implementation
+43 skill directories with varying levels of implementation. This is the **single canonical location** for all skills.
 
 **Prompt-Only Skills (20 .skill files):**
 - Pure prompt/instruction-based
@@ -27,17 +27,14 @@ superskills/{skill-name}/
 ├── PROFILE.md           # Personal profile (gitignored)
 ├── PROFILE.md.template  # Profile template (committed)
 └── src/                 # Python implementation (Python skills only)
+    ├── *.py             # Implementation modules
+    └── tests/           # Unit tests
 ```
 
-### `/new-skills/` - Alternative Python Skill Implementations
-Additional variants of designer, marketer, narrator with full documentation
-
-**Pattern:**
-```
-new-skills/{skill-name}/
-├── README.md, SKILL.md, PROFILE.md.template
-├── src/, tests/, requirements.txt, .env.template
-```
+**Example Python Skills:**
+- `superskills/narrator/` - ElevenLabs voice generation with voice_profiles.json
+- `superskills/designer/` - AI image generation with brand_style configuration
+- `superskills/craft/` - Craft Docs API integration
 
 ### `/docs/` - Documentation
 - CREDENTIAL_SETUP.md, QUICKSTART.md, SKILL_DEVELOPMENT.md
@@ -115,14 +112,15 @@ pytest tests/ --cov=superskills --cov-report=html
 
 ## Design Decisions
 
-**Why Dual Architecture?**
-- Claude Skills: Fast iteration, no dependencies
-- Python Skills: API integrations, testable
+**Why Single Directory Structure?**
+- Clear canonical location (superskills/ only)
+- No confusion between duplicate implementations
+- Easier navigation and maintenance
 
-**Why new-skills/ Separate?**
-- Clear production-ready pattern
-- Reference implementations
-- Doesn't break existing structure
+**Why Configuration Files?**
+- User customization without code changes
+- Examples: voice_profiles.json, brand_style parameter
+- Validates settings and provides defaults
 
 **Why Hybrid Credentials?**
 - Flexibility for different user types

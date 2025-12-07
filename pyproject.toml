@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "superskills"
-version = "1.0.0"
+version = "1.1.0"
 description = "AI-powered automation skills for freelance coaching & training businesses"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -60,7 +60,7 @@ Issues = "https://github.com/CoachSteff/superskills/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["superskills*", "new-skills*"]
+include = ["superskills*"]
 exclude = ["tests*", "docs*", "archive*"]
 
 [tool.pytest.ini_options]
@@ -94,7 +94,7 @@ select = ["E", "F", "I", "N", "W"]
 ignore = ["E501"]
 
 [tool.coverage.run]
-source = ["superskills", "new-skills"]
+source = ["superskills"]
 omit = ["*/tests/*", "*/archive/*"]
 
 [tool.coverage.report]

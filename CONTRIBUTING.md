@@ -15,8 +15,7 @@ cp .env.template .env  # Add your API keys
 
 ## Project Structure
 
-- `/superskills/` - Claude skill definitions (.skill files + PROFILE.md.template)
-- `/new-skills/` - Python-powered skills (production pattern)
+- `/superskills/` - All skill definitions (43 skills: 20 .skill files + 23 Python implementations)
 - `/docs/` - Documentation
 - `/tests/` - Test suite
 - `/template/` - Skill creation template
@@ -32,9 +31,25 @@ cp template/PROFILE.md.template superskills/my-skill/PROFILE.md.template
 ```
 
 ### Python-Powered Skill
-Use `/new-skills/designer/` as reference. Required files:
+Use `superskills/narrator/` or `superskills/designer/` as reference. Required files:
 - README.md, SKILL.md, PROFILE.md.template
 - src/, tests/, requirements.txt, .env.template
+
+**Example structure:**
+```
+superskills/narrator/
+├── SKILL.md
+├── PROFILE.md.template
+├── README.md
+├── src/
+│   ├── VoiceConfig.py
+│   ├── Voiceover.py
+│   └── Podcast.py
+├── voice_profiles.json
+├── tests/
+├── requirements.txt
+└── .env.template
+```
 
 ## Personal Profile Files
 

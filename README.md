@@ -143,6 +143,27 @@ business-consultant, community-manager, compliance-manager, coursepackager, deve
 - **[Skill Development](docs/SKILL_DEVELOPMENT.md)** - Create custom skills
 - **[Contributing](CONTRIBUTING.md)** - Contribution guidelines
 
+## Development Guidelines
+
+**For IDE AI Assistants:**
+
+This project follows strict conventions to ensure consistency and security. When working on SuperSkills:
+
+1. **Read `.cursorrules`** - Comprehensive development workflow rules
+2. **Use `superskills/` directory only** - Single canonical location for all skills
+3. **Genericize everything** - No hardcoded personal information in committed code
+4. **Follow PROFILE.md pattern** - Personal content → PROFILE.md (gitignored), templates → PROFILE.md.template (committed)
+5. **Configuration over constants** - Use JSON/YAML config files for user customization
+
+**Key Principles:**
+- **Genericization**: Personal content belongs in PROFILE.md files, not code
+- **Configuration**: User-facing settings in voice_profiles.json, brand_style parameters, etc.
+- **Security**: Never commit .env or PROFILE.md files
+- **Testing**: Mock all external APIs, maintain 80%+ coverage
+- **Documentation**: Update CHANGELOG.md for all notable changes
+
+See [.cursorrules](.cursorrules) for complete guidelines and code examples.
+
 ## Personal Profile System
 
 Each skill uses a `PROFILE.md` file to match your brand voice and expertise. Never committed to git.
@@ -165,12 +186,10 @@ superskills/
 ├── superskills/          # 43 skill directories (20 .skill files + 23 Python skills)
 │   ├── author/           # .skill + SKILL.md + PROFILE.md.template
 │   ├── craft/            # Python skill with API integration
+│   ├── narrator/         # Python skill: ElevenLabs voice generation
+│   ├── designer/         # Python skill: AI image generation
 │   ├── developer/        # .skill + SKILL.md + PROFILE.md.template
 │   └── ...
-├── new-skills/           # Additional Python skill variants
-│   ├── designer/         # README, SKILL.md, src/, tests/, requirements.txt
-│   ├── marketer/         # README, SKILL.md, src/, tests/, requirements.txt
-│   └── narrator/         # README, SKILL.md, src/, tests/, requirements.txt
 ├── docs/                 # Documentation
 ├── tests/                # 90+ unit tests
 ├── scripts/              # Utility scripts

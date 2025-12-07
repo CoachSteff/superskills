@@ -4,11 +4,11 @@ Custom skill library for Claude Desktop that automates coaching, training, and c
 
 ## Overview
 
-SuperSkills is a collection of 39+ AI-powered skills that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
+SuperSkills is a comprehensive AI automation toolkit with **43 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
 
 **What You Get:**
-- 20 Claude Skills (.skill files) - Prompt-based AI specialists
-- 3 Python-Powered Skills - Full API integrations (image generation, social media, voice)
+- 20 Claude Skills (.skill files) - Prompt-based AI specialists, no Python required
+- 23 Python-Powered Skills - Full API integrations with advanced automation
 - Comprehensive test suite (90+ unit tests)
 - Credential management system (hybrid env vars + .env files)
 - Production-ready patterns and templates
@@ -64,6 +64,8 @@ SuperSkills is a collection of 39+ AI-powered skills that transform repetitive b
 ### 1. Claude Skills (Prompt-Based)
 **20 .skill files** in `/superskills/` - No Python dependencies required
 
+These are pure prompt-based skills that work immediately with Claude Desktop:
+
 | Skill | Description |
 |-------|-------------|
 | **author** | Ghostwriting in your brand voice |
@@ -82,27 +84,29 @@ SuperSkills is a collection of 39+ AI-powered skills that transform repetitive b
 | **quality-control** | Review and validation |
 | **researcher** | Research and analysis |
 | **sales** | Sales messaging and outreach |
+| **scraper** | Web content extraction |
 | **strategist** | Strategic planning |
 | **translator** | Translation and localization |
 | **webmaster** | Website management |
 
 ### 2. Python-Powered Skills (API Integrations)
-**3 production-ready skills** in `/new-skills/` with full infrastructure
+**23 production-ready skills** with Python implementations in `/superskills/` and `/new-skills/`
+
+#### Featured API-Integrated Skills
 
 | Skill | APIs | Capabilities |
 |-------|------|--------------|
+| **craft** | Craft Docs API | Document management and export |
 | **designer** | Gemini Imagen, Midjourney | AI image generation, brand consistency |
 | **marketer** | Postiz API | Social media scheduling, multi-platform posting |
 | **narrator** | ElevenLabs | Text-to-speech, podcast generation |
+| **transcriber** | Whisper, AssemblyAI | Audio/video transcription |
 
-**Pattern:** Each includes README.md, SKILL.md, src/, tests/, requirements.txt, .env.template
+#### Additional Python Skills
 
-### 3. Specialized Skills
-Additional skills with unique capabilities:
+business-consultant, community-manager, compliance-manager, coursepackager, developer-tester, emailcampaigner, google-workspace-gemini, influencer, knowledgebase, legal, microsoft-365-copilot, n8n-workflow, presenter, process-engineer, product, risk-manager, trendwatcher, videoeditor
 
-- **craft** - Craft Docs API integration (document management)
-- **scraper** - Async web scraping (Crawl4AI)
-- **transcriber** - Audio/video transcription (Whisper, AssemblyAI)
+**Pattern:** Each includes SKILL.md definition, optional src/ implementation, and configuration templates
 
 ## Featured Workflows
 
@@ -158,11 +162,12 @@ cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
 
 ```
 superskills/
-├── superskills/          # 20 Claude skill definitions (.skill files)
-│   ├── author/           # SKILL.md + PROFILE.md.template
-│   ├── developer/        # SKILL.md + PROFILE.md.template
+├── superskills/          # 43 skill directories (20 .skill files + 23 Python skills)
+│   ├── author/           # .skill + SKILL.md + PROFILE.md.template
+│   ├── craft/            # Python skill with API integration
+│   ├── developer/        # .skill + SKILL.md + PROFILE.md.template
 │   └── ...
-├── new-skills/           # 3 Python-powered skills (production pattern)
+├── new-skills/           # Additional Python skill variants
 │   ├── designer/         # README, SKILL.md, src/, tests/, requirements.txt
 │   ├── marketer/         # README, SKILL.md, src/, tests/, requirements.txt
 │   └── narrator/         # README, SKILL.md, src/, tests/, requirements.txt

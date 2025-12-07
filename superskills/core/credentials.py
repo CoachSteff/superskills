@@ -6,6 +6,7 @@ Loads credentials from:
 2. Global .env file (root of repo)
 3. Per-skill .env files (skill-specific overrides)
 """
+import logging
 import os
 from pathlib import Path
 from typing import Optional
@@ -15,6 +16,8 @@ try:
     DOTENV_AVAILABLE = True
 except ImportError:
     DOTENV_AVAILABLE = False
+
+logger = logging.getLogger(__name__)
 
 
 def load_credentials(skill_name: Optional[str] = None, verbose: bool = False):
@@ -31,8 +34,8 @@ def load_credentials(skill_name: Optional[str] = None, verbose: bool = False):
     """
     if not DOTENV_AVAILABLE:
         if verbose:
-            print("Warning: python-dotenv not installed. Using environment variables only.")
-            print("Install with: pip install python-dotenv")
+            logger.warning("python-dotenv not installed. Using environment variables only.")
+            logger.info("Install with: pip install python-dotenv")
         return
     
     # Find repo root (where .env should be)
@@ -44,9 +47,9 @@ def load_credentials(skill_name: Optional[str] = None, verbose: bool = False):
     if global_env.exists():
         load_dotenv(global_env, override=False)  # Don't override env vars
         if verbose:
-            print(f"✓ Loaded global credentials from {global_env}")
+            logger.info(f"Loaded global credentials from {global_env}")
     elif verbose:
-        print(f"ℹ No global .env found at {global_env}")
+        logger.info(f"No global .env found at {global_env}")
     
     # Load per-skill .env if skill_name provided
     if skill_name:
@@ -54,9 +57,9 @@ def load_credentials(skill_name: Optional[str] = None, verbose: bool = False):
         if skill_env.exists():
             load_dotenv(skill_env, override=True)  # Override global with skill-specific
             if verbose:
-                print(f"✓ Loaded {skill_name} credentials from {skill_env}")
+                logger.info(f"Loaded {skill_name} credentials from {skill_env}")
         elif verbose:
-            print(f"ℹ No skill-specific .env found at {skill_env}")
+            logger.info(f"No skill-specific .env found at {skill_env}")
 
 
 def get_credential(

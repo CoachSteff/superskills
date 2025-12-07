@@ -2,23 +2,35 @@
 
 ## Overview
 
-Dual-architecture approach combining Claude Skills (prompt-based) with Python-powered skills (API integrations).
+Dual-architecture approach combining Claude Skills (prompt-based) with Python-powered skills (API integrations). The repository contains **43 total skills**: 20 pure prompt-based `.skill` files and 23 Python-powered skills with optional implementations.
 
 ## Directory Structure
 
-### `/superskills/` - Claude Skill Definitions
-20 .skill files with YAML frontmatter + Markdown instructions
+### `/superskills/` - All Skill Definitions
+43 skill directories with varying levels of implementation
+
+**Prompt-Only Skills (20 .skill files):**
+- Pure prompt/instruction-based
+- No Python code required
+- Instant activation in Claude Desktop
+
+**Python-Powered Skills (23 implementations):**
+- API integrations (Craft, ElevenLabs, Postiz, etc.)
+- Advanced automation logic
+- Full src/ directory with tested code
 
 **Pattern:**
 ```
 superskills/{skill-name}/
-├── SKILL.md              # Skill definition (committed)
-├── PROFILE.md            # Personal profile (gitignored)
-└── PROFILE.md.template   # Profile template (committed)
+├── {skill-name}.skill   # Shortcut file (prompt-only skills)
+├── SKILL.md             # Skill definition (all skills)
+├── PROFILE.md           # Personal profile (gitignored)
+├── PROFILE.md.template  # Profile template (committed)
+└── src/                 # Python implementation (Python skills only)
 ```
 
-### `/new-skills/` - Python-Powered Skills
-3 production-ready skills with full infrastructure
+### `/new-skills/` - Alternative Python Skill Implementations
+Additional variants of designer, marketer, narrator with full documentation
 
 **Pattern:**
 ```
@@ -26,8 +38,6 @@ new-skills/{skill-name}/
 ├── README.md, SKILL.md, PROFILE.md.template
 ├── src/, tests/, requirements.txt, .env.template
 ```
-
-**Skills:** designer (Gemini), marketer (Postiz), narrator (ElevenLabs)
 
 ### `/docs/` - Documentation
 - CREDENTIAL_SETUP.md, QUICKSTART.md, SKILL_DEVELOPMENT.md

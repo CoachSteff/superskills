@@ -1,13 +1,16 @@
 """
 CraftClient.py - Craft Docs API integration for document management.
 """
+import json
+import logging
 import os
 import requests
-from typing import Dict, List, Optional, Literal
-from pathlib import Path
-from datetime import datetime
-import json
 from dataclasses import dataclass, field
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional, Literal
+
+logger = logging.getLogger(__name__)
 
 
 ContentFormat = Literal["markdown", "html", "json"]
@@ -131,7 +134,7 @@ class CraftClient:
             CraftOperationResult with creation status
         """
         if self.verbose:
-            print(f"Creating document: {title}")
+            logger.info(f"Creating document: {title}")
         
         payload = {
             "title": title,
@@ -149,7 +152,7 @@ class CraftClient:
             document_id = response.get("id") or response.get("documentId")
             
             if self.verbose:
-                print(f"✓ Document created: {document_id}")
+                logger.info(f"Document created: {document_id}")
             
             return CraftOperationResult(
                 success=True,

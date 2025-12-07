@@ -2,18 +2,20 @@
 """
 Example helper script for editor
 
-This is a placeholder script that can be executed directly.
-Replace with actual implementation or delete if not needed.
+This is a template script showing how to create helper utilities for skills.
+Users should replace this with their own implementation.
 
-Example real scripts from other skills:
-- pdf/scripts/fill_fillable_fields.py - Fills PDF form fields
-- pdf/scripts/convert_pdf_to_images.py - Converts PDF pages to images
+Example use cases:
+- Batch text processing
+- File format conversion
+- Data validation
+- API integrations
 """
 
 def main():
-    print("This is an example script for editor")
-    # TODO: Add actual script logic here
-    # This could be data processing, file conversion, API calls, etc.
+    print("This is an example script template for the editor skill")
+    print("Replace this with your own implementation")
+    print("See docs/SKILL_DEVELOPMENT.md for guidance")
 
 if __name__ == "__main__":
     main()

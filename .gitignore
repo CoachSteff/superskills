@@ -78,6 +78,10 @@ logs/
 **/PROFILE.md
 !**/PROFILE.md.template
 
+# Personal voice profiles (narrator skill)
+**/voice_profiles.json
+!**/voice_profiles.json.template
+
 # Distribution
 dist/
 build/

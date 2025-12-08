@@ -7,18 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Planned
+- SuperSkills CLI for command-line access to all skills
+- Workflow engine for multi-step skill orchestration
+- IDE AI integration framework
+
+## [1.1.1] - 2025-12-08
+
+### Added
+- `voice_profiles.json.template` for narrator skill with placeholder values
+
 ### Changed
 - **BREAKING**: Removed `.skill` file extension (invalid format per Claude Skills specification)
 - Claude Skills now properly structured as folders containing `SKILL.md` files
-- Updated all documentation with correct Claude Skills import instructions (ZIP files)
-- Updated README.md with step-by-step ZIP creation and import guide
+- Updated all documentation with correct ZIP import instructions
+- Updated README.md with step-by-step ZIP creation guide
 - Updated ARCHITECTURE.md with proper skill structure patterns
 - Updated QUICKSTART.md with detailed import workflow
 - Updated SKILL_DEVELOPMENT.md with correct reference paths
 - Updated CONTRIBUTING.md to reflect folder-based structure
+- Enhanced .gitignore with voice_profiles.json exclusion pattern
 
 ### Removed
 - 20 `.skill` files (author, builder, coach, context-engineer, copywriter, designer, developer, editor, manager, marketer, narrator, producer, publisher, quality-control, researcher, sales, scraper, strategist, translator, webmaster)
+- Personal `voice_profiles.json` removed from git tracking (now gitignored)
+
+### Security
+- Personal voice profiles (voice_profiles.json) now excluded from version control
+- Voice IDs and profile names no longer committed to repository
 
 ### Migration Guide
 To use Claude Skills after this update:
@@ -45,7 +61,7 @@ To use Claude Skills after this update:
 - Designer BRAND_STYLE constant replaced with configurable parameter
 - Updated PROFILE.md.template for designer with brand style documentation
 - Consolidated all documentation to reference single canonical location (`superskills/` only)
-- Updated ARCHITECTURE.md, CONTRIBUTING.md, and README.md to remove `new-skills/` references
+- Updated ARCHITECTURE.md, CONTRIBUTING.md, and README.md to remove `new-skills/` references (dev docs moved to `dev/`)
 - Updated project structure examples to showcase narrator, designer, and craft Python skills
 
 ### Removed

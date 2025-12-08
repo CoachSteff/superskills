@@ -15,7 +15,7 @@ cp .env.template .env  # Add your API keys
 
 ## Project Structure
 
-- `/superskills/` - All skill definitions (43 skills: 20 .skill files + 23 Python implementations)
+- `/superskills/` - All skill definitions (43 skills: 20 Claude Skills + 23 Python implementations)
 - `/docs/` - Documentation
 - `/tests/` - Test suite
 - `/template/` - Skill creation template

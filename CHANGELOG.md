@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **BREAKING**: Removed `.skill` file extension (invalid format per Claude Skills specification)
+- Claude Skills now properly structured as folders containing `SKILL.md` files
+- Updated all documentation with correct Claude Skills import instructions (ZIP files)
+- Updated README.md with step-by-step ZIP creation and import guide
+- Updated ARCHITECTURE.md with proper skill structure patterns
+- Updated QUICKSTART.md with detailed import workflow
+- Updated SKILL_DEVELOPMENT.md with correct reference paths
+- Updated CONTRIBUTING.md to reflect folder-based structure
+
+### Removed
+- 20 `.skill` files (author, builder, coach, context-engineer, copywriter, designer, developer, editor, manager, marketer, narrator, producer, publisher, quality-control, researcher, sales, scraper, strategist, translator, webmaster)
+
+### Migration Guide
+To use Claude Skills after this update:
+1. Create ZIP files: `cd superskills && zip -r {skill-name}.zip {skill-name}/`
+2. Import in Claude Desktop: Settings → Skills → Upload Custom Skill
+3. Select the ZIP files you created
+4. Claude will read each skill's `SKILL.md` file
+
 ## [1.1.0] - 2025-01-07
 
 ### Added
@@ -38,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial public release
 - 43 skills total:
-  - 20 Claude .skill files (prompt-based AI specialists)
+  - 20 Claude Skills (prompt-based AI specialists, folder-based with SKILL.md)
   - 23 Python-powered skills with API integrations
 - Comprehensive credential management system
   - Hybrid env vars + .env file support

@@ -51,6 +51,9 @@ course_packages/
 invoices/
 output/
 
+# Workflows folder (personal workflows)
+workflows/
+
 # Media files
 *.mp3
 *.mp4

@@ -54,7 +54,43 @@ cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
 # Edit with your brand voice and expertise
 ```
 
-### 5. Verify Installation
+### 5. Import Claude Skills into Claude Desktop
+
+Claude Skills must be imported as ZIP files:
+
+```bash
+cd superskills
+
+# Create ZIP files for each Claude Skill
+zip -r author.zip author/
+zip -r builder.zip builder/
+zip -r coach.zip coach/
+zip -r context-engineer.zip context-engineer/
+zip -r copywriter.zip copywriter/
+zip -r designer.zip designer/
+zip -r developer.zip developer/
+zip -r editor.zip editor/
+zip -r manager.zip manager/
+zip -r marketer.zip marketer/
+zip -r narrator.zip narrator/
+zip -r producer.zip producer/
+zip -r publisher.zip publisher/
+zip -r quality-control.zip quality-control/
+zip -r researcher.zip researcher/
+zip -r sales.zip sales/
+zip -r scraper.zip scraper/
+zip -r strategist.zip strategist/
+zip -r translator.zip translator/
+zip -r webmaster.zip webmaster/
+```
+
+Then in Claude Desktop:
+1. Open Settings → Skills
+2. Click "Upload Custom Skill"
+3. Select the ZIP files you created
+4. Claude will read each skill's `SKILL.md` file
+
+### 6. Verify Installation
 ```bash
 python scripts/validate_credentials.py
 pytest tests/ -v
@@ -76,7 +112,7 @@ In Claude Desktop, ask:
 
 ## Next Steps
 
-- **Explore Skills**: Browse `/superskills/` and `/new-skills/`
+- **Explore Skills**: Browse `/superskills/` directory
 - **Configure More**: Add API keys in `.env` (see [CREDENTIAL_SETUP.md](CREDENTIAL_SETUP.md))
 - **Customize**: Create PROFILE.md files for personalization
 - **Create Custom Skills**: Read [SKILL_DEVELOPMENT.md](SKILL_DEVELOPMENT.md)

@@ -2,17 +2,18 @@
 
 ## Overview
 
-Dual-architecture approach combining Claude Skills (prompt-based) with Python-powered skills (API integrations). The repository contains **43 total skills**: 20 pure prompt-based `.skill` files and 23 Python-powered skills with optional implementations.
+Dual-architecture approach combining Claude Skills (prompt-based) with Python-powered skills (API integrations). The repository contains **43 total skills**: 20 pure prompt-based Claude Skills and 23 Python-powered skills with optional implementations.
 
 ## Directory Structure
 
 ### `/superskills/` - All Skill Definitions
 43 skill directories with varying levels of implementation. This is the **single canonical location** for all skills.
 
-**Prompt-Only Skills (20 .skill files):**
+**Prompt-Only Skills (20 Claude Skills):**
 - Pure prompt/instruction-based
 - No Python code required
 - Instant activation in Claude Desktop
+- Packaged as ZIP files containing SKILL.md
 
 **Python-Powered Skills (23 implementations):**
 - API integrations (Craft, ElevenLabs, Postiz, etc.)
@@ -22,7 +23,6 @@ Dual-architecture approach combining Claude Skills (prompt-based) with Python-po
 **Pattern:**
 ```
 superskills/{skill-name}/
-├── {skill-name}.skill   # Shortcut file (prompt-only skills)
 ├── SKILL.md             # Skill definition (all skills)
 ├── PROFILE.md           # Personal profile (gitignored)
 ├── PROFILE.md.template  # Profile template (committed)
@@ -30,6 +30,11 @@ superskills/{skill-name}/
     ├── *.py             # Implementation modules
     └── tests/           # Unit tests
 ```
+
+**Claude Skills are imported as ZIP files:**
+- Folder structure: `{skill-name}/SKILL.md`
+- ZIP the folder: `zip -r {skill-name}.zip {skill-name}/`
+- Import in Claude Desktop Settings → Skills
 
 **Example Python Skills:**
 - `superskills/narrator/` - ElevenLabs voice generation with voice_profiles.json

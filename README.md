@@ -7,7 +7,7 @@ Custom skill library for Claude Desktop that automates coaching, training, and c
 SuperSkills is a comprehensive AI automation toolkit with **43 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
 
 **What You Get:**
-- 20 Claude Skills (.skill files) - Prompt-based AI specialists, no Python required
+- 20 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
 - 23 Python-Powered Skills - Full API integrations with advanced automation
 - Comprehensive test suite (90+ unit tests)
 - Credential management system (hybrid env vars + .env files)
@@ -46,7 +46,42 @@ SuperSkills is a comprehensive AI automation toolkit with **43 skills** that tra
    # Edit PROFILE.md with your brand voice, expertise, and style
    ```
 
-5. **Verify setup:**
+5. **Import Claude Skills into Claude Desktop:**
+   
+   Each Claude Skill needs to be imported as a ZIP file:
+   
+   ```bash
+   # Create ZIP files for Claude Skills
+   cd superskills
+   zip -r author.zip author/
+   zip -r builder.zip builder/
+   zip -r coach.zip coach/
+   zip -r context-engineer.zip context-engineer/
+   zip -r copywriter.zip copywriter/
+   zip -r designer.zip designer/
+   zip -r developer.zip developer/
+   zip -r editor.zip editor/
+   zip -r manager.zip manager/
+   zip -r marketer.zip marketer/
+   zip -r narrator.zip narrator/
+   zip -r producer.zip producer/
+   zip -r publisher.zip publisher/
+   zip -r quality-control.zip quality-control/
+   zip -r researcher.zip researcher/
+   zip -r sales.zip sales/
+   zip -r scraper.zip scraper/
+   zip -r strategist.zip strategist/
+   zip -r translator.zip translator/
+   zip -r webmaster.zip webmaster/
+   ```
+   
+   Then import in Claude Desktop:
+   - Open Claude Desktop Settings → Skills
+   - Click "Upload Custom Skill"
+   - Select the ZIP files you created
+   - Each skill's `SKILL.md` will be read by Claude
+
+6. **Verify setup:**
    ```bash
    python scripts/validate_credentials.py
    ```
@@ -62,9 +97,9 @@ SuperSkills is a comprehensive AI automation toolkit with **43 skills** that tra
 ## Skill Categories
 
 ### 1. Claude Skills (Prompt-Based)
-**20 .skill files** in `/superskills/` - No Python dependencies required
+**20 skill folders** in `/superskills/` - No Python dependencies required
 
-These are pure prompt-based skills that work immediately with Claude Desktop:
+These are pure prompt-based skills that work immediately with Claude Desktop. Each folder contains a `SKILL.md` file with the skill definition:
 
 | Skill | Description |
 |-------|-------------|
@@ -90,7 +125,7 @@ These are pure prompt-based skills that work immediately with Claude Desktop:
 | **webmaster** | Website management |
 
 ### 2. Python-Powered Skills (API Integrations)
-**23 production-ready skills** with Python implementations in `/superskills/` and `/new-skills/`
+**23 production-ready skills** with Python implementations in `/superskills/`
 
 #### Featured API-Integrated Skills
 
@@ -183,12 +218,12 @@ cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
 
 ```
 superskills/
-├── superskills/          # 43 skill directories (20 .skill files + 23 Python skills)
-│   ├── author/           # .skill + SKILL.md + PROFILE.md.template
+├── superskills/          # 43 skill directories (20 Claude Skills + 23 Python skills)
+│   ├── author/           # Claude Skill: SKILL.md + PROFILE.md.template
 │   ├── craft/            # Python skill with API integration
 │   ├── narrator/         # Python skill: ElevenLabs voice generation
 │   ├── designer/         # Python skill: AI image generation
-│   ├── developer/        # .skill + SKILL.md + PROFILE.md.template
+│   ├── developer/        # Claude Skill: SKILL.md + PROFILE.md.template
 │   └── ...
 ├── docs/                 # Documentation
 ├── tests/                # 90+ unit tests

@@ -49,7 +49,7 @@ This skill helps you [objective].
 ## Creating a Python-Powered Skill
 
 ### Reference Example
-Use `/new-skills/designer/` as template
+Use `/superskills/designer/` or `/superskills/narrator/` as template
 
 ### Required Files
 - README.md - User documentation
@@ -148,5 +148,5 @@ if not api_key:
 ## Resources
 
 - Template: `/template/SKILL.md`
-- Examples: `/new-skills/designer/`, `/new-skills/marketer/`
+- Examples: `/superskills/designer/`, `/superskills/narrator/`, `/superskills/marketer/`
 - Architecture: `/ARCHITECTURE.md`

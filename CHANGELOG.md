@@ -52,6 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Entry point remains `superskills` command
   - Skills directory correctly resolved to `/superskills/`
   - Path resolution uses project root detection (pyproject.toml, .git)
+
+- **Installation**: pipx is now the recommended installation method for non-technical users
+  - `setup.sh` defaults to pipx (option 1) for global access
+  - Virtual environment moved to option 2 (for developers)
+  - Documentation updated to assume global installation
+  - Added post-install verification in setup script
+  - `superskills` command works from any directory after pipx install
   
 - **Fixed Critical Bugs** (5 major issues resolved):
   1. SkillLoader directory resolution - now detects all 40 skills

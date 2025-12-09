@@ -2,6 +2,8 @@
 
 Custom skill library for Claude Desktop that automates coaching, training, and content creation workflows. Built on Anthropic's Agent Skills framework.
 
+**Quick Start:** See [QUICKSTART.md](QUICKSTART.md) for common commands and examples.
+
 ## Overview
 
 SuperSkills is a comprehensive AI automation toolkit with **40 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
@@ -29,23 +31,25 @@ bash setup.sh
 ```
 
 The setup script will guide you through:
-- Choosing installation method (venv, pipx, or user install)
+- Choosing installation method (pipx recommended, or venv/user install)
 - Installing dependencies
 - Initializing the CLI
 - Configuring API keys
+
+**Recommended:** Use pipx for global access - the `superskills` command works from any directory.
 
 **Manual Installation:**
 ```bash
 git clone https://github.com/CoachSteff/superskills.git
 cd superskills
 
-# Option 1: Virtual environment (recommended)
+# Option 1: Global install with pipx (recommended)
+pipx install -e .
+
+# Option 2: Virtual environment (for development)
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-
-# Option 2: Global install with pipx
-pipx install -e .
 
 # Option 3: User install
 pip install --user -e .
@@ -85,6 +89,55 @@ pip install --user -e .
    cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
    # Edit PROFILE.md with your brand voice, expertise, and style
    ```
+
+### Verify Installation
+
+After installation, verify the CLI works from anywhere:
+
+```bash
+# Test from any directory
+cd ~
+superskills --version
+superskills --help
+```
+
+**If command not found:**
+
+```bash
+# For pipx: ensure pipx path is in your shell
+pipx ensurepath
+# Then restart your terminal
+
+# For venv: activate it first
+cd /path/to/superskills
+source .venv/bin/activate
+superskills --help
+
+# For user install: add to PATH
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+### Quick Example: Generate Podcast
+
+```bash
+# 1. Place your script in the workflow input folder
+cp your-script.md workflows/podcast-generation/input/
+
+# 2. Run the workflow (choose one):
+
+# Watch mode - auto-processes new files
+superskills run podcast-generation --watch
+
+# Batch mode - processes all existing files
+superskills run podcast-generation --batch
+
+# Single file mode
+superskills run podcast-generation --input your-script.md
+
+# 3. Output appears in: workflows/podcast-generation/output/
+```
+
+See [QUICKSTART.md](QUICKSTART.md) for more examples.
 
 ### Using with Claude Desktop
 
@@ -218,6 +271,7 @@ superskills run my-workflow --topic "Your topic"
 
 ## Documentation
 
+- **[Roadmap](ROADMAP.md)** - Product vision and development roadmap
 - **[CLI Setup](dev/CLI_SETUP.md)** - SuperSkills CLI installation and usage
 - **[Quick Start](docs/QUICKSTART.md)** - Get started in 5 minutes
 - **[IDE Integration](docs/IDE_INTEGRATION.md)** - Integrate with Cursor, Antigravity, Verdent

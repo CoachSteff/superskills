@@ -4,11 +4,11 @@ Custom skill library for Claude Desktop that automates coaching, training, and c
 
 ## Overview
 
-SuperSkills is a comprehensive AI automation toolkit with **43 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
+SuperSkills is a comprehensive AI automation toolkit with **40 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
 
 **What You Get:**
-- 20 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
-- 23 Python-Powered Skills - Full API integrations with advanced automation
+- 29 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
+- 11 Python-Powered Skills - Full API integrations with advanced automation
 - Comprehensive test suite (90+ unit tests)
 - Credential management system (hybrid env vars + .env files)
 - Production-ready patterns and templates
@@ -17,82 +17,84 @@ SuperSkills is a comprehensive AI automation toolkit with **43 skills** that tra
 
 ### Prerequisites
 - Python 3.9+
-- Claude Desktop App
 - Git
 
 ### Installation
 
-1. **Clone repository:**
+**Automated Setup (Recommended):**
+```bash
+git clone https://github.com/CoachSteff/superskills.git
+cd superskills
+bash setup.sh
+```
+
+The setup script will guide you through:
+- Choosing installation method (venv, pipx, or user install)
+- Installing dependencies
+- Initializing the CLI
+- Configuring API keys
+
+**Manual Installation:**
+```bash
+git clone https://github.com/CoachSteff/superskills.git
+cd superskills
+
+# Option 1: Virtual environment (recommended)
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+
+# Option 2: Global install with pipx
+pipx install -e .
+
+# Option 3: User install
+pip install --user -e .
+```
+
+### First Steps
+
+1. **Initialize the CLI:**
    ```bash
-   git clone https://github.com/CoachSteff/superskills.git
-   cd superskills
+   superskills init
    ```
 
-2. **Install dependencies:**
+2. **Set up API keys:**
    ```bash
-   pip install -e .
+   export ANTHROPIC_API_KEY=your_key_here
+   export ELEVENLABS_API_KEY=your_key_here
+   # Or add to .env file in project root
    ```
 
-3. **Configure credentials:**
+3. **List available skills:**
    ```bash
-   cp .env.template .env
-   # Edit .env and add your API keys
+   superskills list
    ```
 
-4. **Set up personal profiles:**
+4. **Try a skill:**
    ```bash
-   # For each skill you plan to use, copy the profile template:
+   superskills call researcher "AI automation trends in 2024"
+   ```
+
+5. **Run a workflow:**
+   ```bash
+   superskills run content-creation --topic "Future of AI coaching"
+   ```
+
+6. **Set up personalized profiles (optional but recommended):**
+   ```bash
    cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
    # Edit PROFILE.md with your brand voice, expertise, and style
    ```
 
-5. **Import Claude Skills into Claude Desktop:**
-   
-   Each Claude Skill needs to be imported as a ZIP file:
-   
-   ```bash
-   # Create ZIP files for Claude Skills
-   cd superskills
-   zip -r author.zip author/
-   zip -r builder.zip builder/
-   zip -r coach.zip coach/
-   zip -r context-engineer.zip context-engineer/
-   zip -r copywriter.zip copywriter/
-   zip -r designer.zip designer/
-   zip -r developer.zip developer/
-   zip -r editor.zip editor/
-   zip -r manager.zip manager/
-   zip -r marketer.zip marketer/
-   zip -r narrator.zip narrator/
-   zip -r producer.zip producer/
-   zip -r publisher.zip publisher/
-   zip -r quality-control.zip quality-control/
-   zip -r researcher.zip researcher/
-   zip -r sales.zip sales/
-   zip -r scraper.zip scraper/
-   zip -r strategist.zip strategist/
-   zip -r translator.zip translator/
-   zip -r webmaster.zip webmaster/
-   ```
-   
-   Then import in Claude Desktop:
-   - Open Claude Desktop Settings → Skills
-   - Click "Upload Custom Skill"
-   - Select the ZIP files you created
-   - Each skill's `SKILL.md` will be read by Claude
+### Using with Claude Desktop
 
-6. **Verify setup:**
-   ```bash
-   python scripts/validate_credentials.py
-   ```
+For Claude Desktop integration, import individual skill folders as ZIP files:
+- Open Claude Desktop Settings → Skills
+- Click "Upload Custom Skill"
+- Select skill folders (they'll be auto-zipped)
+- Each skill's `SKILL.md` will be read by Claude
 
-### First Skill Usage
-
-**Example: Using the Transcriber skill**
-```bash
-# Activate the transcriber skill in Claude Desktop
-# Then ask: "Transcribe audio.mp3 using Whisper"
-```
+See [CLI_SETUP.md](dev/CLI_SETUP.md) for detailed CLI installation and usage.
 
 ## Skill Categories
 
@@ -145,38 +147,176 @@ business-consultant, community-manager, compliance-manager, coursepackager, deve
 
 ## Featured Workflows
 
-### Content Creation Pipeline
-```
-1. researcher → Research topic
-2. author → Write draft
-3. editor → Edit and refine
-4. designer → Create visuals
-5. marketer → Schedule posts
+SuperSkills includes a powerful CLI for orchestrating multi-skill workflows.
+
+### CLI Workflow Execution
+
+```bash
+# Content creation workflow
+superskills run content-creation --topic "AI in coaching"
+
+# Podcast generation workflow
+superskills run podcast-generation --input script.txt
+
+# Training material workflow
+superskills run training-material --input recording.mp3
+
+# Client engagement workflow
+superskills run client-engagement --input "https://client-website.com"
 ```
 
-### Training Material Development
+### Pre-Built Workflows
+
+**Content Creation Pipeline:**
 ```
-1. craft → Pull existing docs
-2. transcriber → Transcribe workshop recordings
-3. author → Write training content
-4. publisher → Format and publish
+researcher → strategist → author → editor
+```
+End-to-end content production from research to polished article.
+
+**Podcast Generation:**
+```
+copywriter → narrator
+```
+Script enhancement and MP3 generation with your tone-of-voice.
+
+**Training Material Development:**
+```
+transcriber → author → editor
+```
+Transform recordings into structured training content.
+
+**Client Engagement:**
+```
+scraper → researcher → copywriter → sales
+```
+Automated research and personalized outreach.
+
+### Custom Workflows
+
+Create your own workflow definitions in YAML:
+
+```yaml
+name: my-workflow
+description: Custom workflow description
+
+steps:
+  - name: research
+    skill: researcher
+    input: ${topic}
+    output: research
+    
+  - name: write
+    skill: author
+    input: ${research}
+    output: draft
 ```
 
-### Client Engagement
-```
-1. scraper → Monitor client websites
-2. researcher → Analyze trends
-3. copywriter → Draft outreach
-4. sales → Personalize messaging
+Save to `workflows/custom/my-workflow.yaml` and run:
+```bash
+superskills run my-workflow --topic "Your topic"
 ```
 
 ## Documentation
 
+- **[CLI Setup](dev/CLI_SETUP.md)** - SuperSkills CLI installation and usage
 - **[Quick Start](docs/QUICKSTART.md)** - Get started in 5 minutes
-- **[Architecture](ARCHITECTURE.md)** - System design and patterns
+- **[IDE Integration](docs/IDE_INTEGRATION.md)** - Integrate with Cursor, Antigravity, Verdent
+- **[Architecture](dev/ARCHITECTURE.md)** - System design and patterns
 - **[Credential Setup](docs/CREDENTIAL_SETUP.md)** - API key configuration guide
 - **[Skill Development](docs/SKILL_DEVELOPMENT.md)** - Create custom skills
-- **[Contributing](CONTRIBUTING.md)** - Contribution guidelines
+- **[Contributing](dev/CONTRIBUTING.md)** - Contribution guidelines
+
+## IDE Integration
+
+SuperSkills integrates with AI-powered IDEs (Cursor, Antigravity, Verdent) for intelligent task delegation.
+
+### Quick Start
+
+```bash
+# Export skill metadata for IDE AI
+superskills export --output .cursorrules-skills.json
+
+# Discover skills by capability
+superskills discover --query "voice generation"
+
+# Use JSON output for structured responses
+superskills call author "Write about AI" --json
+```
+
+### Key Features
+
+- **Intelligent Delegation**: IDE AI automatically routes tasks to specialized skills
+- **JSON Output Mode**: Structured responses for easy parsing (`--json` flag)
+- **Stdin Support**: Pipe workflows and chain skills
+- **Skill Discovery**: Find skills by capability or task description
+- **Metadata Export**: Generate skill reference for IDE AI consumption
+
+### Example: Hybrid Workflow
+
+```
+User: "Research AI trends and write an article"
+  ↓
+IDE AI:
+  1. superskills call researcher "AI automation trends" --json
+  2. Parse JSON output
+  3. superskills call author --input research.md --json
+  4. Refine and deliver
+```
+
+**See [IDE_INTEGRATION.md](docs/IDE_INTEGRATION.md) for complete guide.**
+
+## SuperSkills CLI
+
+The SuperSkills CLI provides command-line access to all skills and workflows.
+
+### Key Commands
+
+```bash
+# List all skills
+superskills list
+
+# Call individual skill
+superskills call <skill-name> <input>
+superskills call researcher "AI automation trends"
+superskills call author --input research.md --output article.md
+
+# JSON output mode (for IDE integration)
+superskills call author "Write about AI" --json
+
+# Execute workflow
+superskills run <workflow-name>
+superskills run content-creation --topic "Your topic"
+superskills run podcast-generation --input script.txt
+
+# Discover skills by capability
+superskills discover --query "voice generation"
+superskills discover --task "research and write article"
+
+# Export skill metadata
+superskills export --markdown
+superskills export --output metadata.json
+
+# Manage workflows
+superskills workflow list
+
+# Check status
+superskills status
+```
+
+### Features
+
+- **40 Skills Available**: All prompt-based and Python-powered skills
+- **Pre-Built Workflows**: Content creation, podcasts, training materials, client engagement
+- **Custom Workflows**: Create your own multi-skill pipelines in YAML
+- **Flexible Execution**: Run skills individually or chain them together
+- **JSON Output Mode**: Structured responses for IDE integration
+- **Skill Discovery**: Find skills by capability or task description
+- **Metadata Export**: Generate skill reference documentation
+- **Stdin Support**: Pipe workflows and chain commands
+- **Configuration Management**: Stored in `~/.superskills/`
+- **Works Anywhere**: Run from any directory once installed
+
+See [CLI_SETUP.md](dev/CLI_SETUP.md) for installation and detailed usage.
 
 ## Development Guidelines
 
@@ -218,7 +358,7 @@ cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
 
 ```
 superskills/
-├── superskills/          # 43 skill directories (20 Claude Skills + 23 Python skills)
+├── superskills/          # 40 skill directories (29 Claude Skills + 11 Python skills)
 │   ├── author/           # Claude Skill: SKILL.md + PROFILE.md.template
 │   ├── craft/            # Python skill with API integration
 │   ├── narrator/         # Python skill: ElevenLabs voice generation
@@ -304,7 +444,7 @@ Built on [Anthropic's Agent Skills framework](https://anthropic.com/engineering/
 
 ## Contributing
 
-Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions welcome! See [CONTRIBUTING.md](dev/CONTRIBUTING.md) for guidelines.
 
 ## Support
 

@@ -142,5 +142,5 @@ pytest tests/test_designer.py -v
 
 - [Full Documentation](../README.md)
 - [Credential Setup](CREDENTIAL_SETUP.md)
-- [Architecture](../ARCHITECTURE.md)
-- [Contributing](../CONTRIBUTING.md)
+- [Architecture](../dev/ARCHITECTURE.md)
+- [Contributing](../dev/CONTRIBUTING.md)

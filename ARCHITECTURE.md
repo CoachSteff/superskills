@@ -2,20 +2,20 @@
 
 ## Overview
 
-Dual-architecture approach combining Claude Skills (prompt-based) with Python-powered skills (API integrations). The repository contains **43 total skills**: 20 pure prompt-based Claude Skills and 23 Python-powered skills with optional implementations.
+Dual-architecture approach combining Claude Skills (prompt-based) with Python-powered skills (API integrations). The repository contains **40 total skills**: 29 pure prompt-based Claude Skills and 11 Python-powered skills with full implementations.
 
 ## Directory Structure
 
 ### `/superskills/` - All Skill Definitions
-43 skill directories with varying levels of implementation. This is the **single canonical location** for all skills.
+40 skill directories with varying levels of implementation. This is the **single canonical location** for all skills.
 
-**Prompt-Only Skills (20 Claude Skills):**
+**Prompt-Only Skills (29 Claude Skills):**
 - Pure prompt/instruction-based
 - No Python code required
 - Instant activation in Claude Desktop
 - Packaged as ZIP files containing SKILL.md
 
-**Python-Powered Skills (23 implementations):**
+**Python-Powered Skills (11 implementations):**
 - API integrations (Craft, ElevenLabs, Postiz, etc.)
 - Advanced automation logic
 - Full src/ directory with tested code

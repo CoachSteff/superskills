@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SuperSkills Workflow",
+  "description": "Schema for SuperSkills workflow definitions",
+  "type": "object",
+  "required": ["name", "steps"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Workflow name",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "description": "Workflow description"
+    },
+    "variables": {
+      "type": "object",
+      "description": "Workflow-level variables",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "description": "Workflow steps",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "required": ["name", "skill", "input"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Step name",
+            "minLength": 1
+          },
+          "skill": {
+            "type": "string",
+            "description": "Skill to execute",
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          },
+          "input": {
+            "type": "string",
+            "description": "Input for the skill"
+          },
+          "output": {
+            "type": "string",
+            "description": "Variable name to store output",
+            "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+          },
+          "config": {
+            "type": "object",
+            "description": "Additional configuration for the skill",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

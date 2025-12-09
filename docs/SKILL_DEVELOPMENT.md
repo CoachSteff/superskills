@@ -149,4 +149,4 @@ if not api_key:
 
 - Template: `/template/SKILL.md`
 - Examples: `/superskills/designer/`, `/superskills/narrator/`, `/superskills/marketer/`
-- Architecture: `/ARCHITECTURE.md`
+- Architecture: `/dev/ARCHITECTURE.md`

@@ -24,6 +24,218 @@ superskills/{skill-name}/
 
 ---
 
+## 1A. IDE AI Delegation Framework
+
+### When to Use SuperSkills CLI
+
+**Delegate to CLI when:**
+- Task requires specialized domain expertise (writing, voice generation, research)
+- API integrations needed (ElevenLabs, Gemini, Craft Docs, etc.)
+- PROFILE.md personalization required (brand voice, tone-of-voice)
+- Multi-step workflows (research → write → edit)
+- Batch operations (generate 10 social posts)
+
+**Handle directly when:**
+- Code changes, refactoring, debugging
+- File manipulation, git operations
+- Quick queries, file searches, explanations
+- Context-dependent tasks requiring conversation state
+- IDE-native operations (linting, testing, formatting)
+
+### Delegation Decision Tree
+
+```
+Task Request
+  ↓
+  ├─ Requires API integration? → YES → Use SuperSkills CLI
+  ├─ Needs PROFILE.md personalization? → YES → Use SuperSkills CLI
+  ├─ Multi-step workflow? → YES → Use `superskills run <workflow>`
+  ├─ Code/file manipulation? → YES → Handle directly
+  └─ Quick question/query? → YES → Handle directly
+```
+
+### Command Templates
+
+**Single Skill Execution:**
+```bash
+# Basic call
+superskills call <skill-name> "<input>"
+
+# With file input/output
+superskills call <skill-name> --input file.txt --output result.md
+
+# With JSON output (for parsing)
+superskills call <skill-name> "<input>" --json
+
+# From stdin (for piping)
+echo "content" | superskills call <skill-name> --json
+```
+
+**Workflow Execution:**
+```bash
+# Pre-built workflows
+superskills run content-creation --topic "AI automation"
+superskills run podcast-generation --input script.txt
+superskills run training-material --input recording.mp3
+superskills run client-engagement --input "https://website.com"
+
+# With JSON output
+superskills run content-creation --topic "topic" --json
+
+# Dry-run (preview without execution)
+superskills run content-creation --topic "topic" --dry-run
+```
+
+**Skill Discovery:**
+```bash
+# Find skills by capability
+superskills discover --query "voice generation"
+
+# Find workflow for task
+superskills discover --task "research and write article"
+
+# JSON output for parsing
+superskills discover --query "image generation" --json
+```
+
+**Metadata Export:**
+```bash
+# Export all skill metadata
+superskills export
+
+# Export as markdown
+superskills export --markdown
+
+# Filter by type
+superskills export --type prompt
+superskills export --has-api
+
+# Save to file
+superskills export --output .cursorrules-skills.json
+```
+
+### Context Handoff Protocol
+
+**From IDE AI to Skill:**
+- Pass minimal necessary context via stdin, temp files, or `--input`
+- Don't expose sensitive conversation history
+- Use JSON output mode for structured responses
+- Parse metadata for execution details
+
+**From Skill to IDE AI:**
+- Capture stdout/stderr
+- Parse JSON responses when `--json` flag used
+- Apply skill output to codebase using IDE AI's file editing tools
+- Validate and refine results before delivery to user
+
+### Hybrid Workflow Pattern
+
+**Example: Content Creation**
+```
+User: "Write LinkedIn post about AI automation"
+  ↓
+IDE AI orchestration:
+  1. Research context (direct file reading if needed)
+  2. Delegate: `superskills call researcher "AI automation trends" --json`
+  3. Parse JSON output, extract research
+  4. Delegate: `superskills call author --input research.md --json`
+  5. Review output, make refinements (direct)
+  6. Deliver to user
+```
+
+**Example: Podcast Workflow**
+```
+User: "Create podcast episode about productivity"
+  ↓
+IDE AI orchestration:
+  1. Propose: "I'll use content-creation + narrator skills"
+  2. Execute: `superskills run content-creation --topic "productivity" --json`
+  3. Review script, adjust if needed
+  4. Execute: `superskills call narrator --input script.md --content-type podcast --json`
+  5. Deliver: MP3 file + transcript
+```
+
+### Error Handling Rules
+
+**When skill fails:**
+- Parse error from JSON response if `--json` used
+- Fall back to direct handling with explanation
+- Suggest alternatives or troubleshooting steps
+- Never silently fail; always inform user
+
+**Common errors:**
+- **Skill not found**: Run `superskills list`, suggest similar skills
+- **API key missing**: Point to credential setup docs
+- **Timeout**: Show partial results, offer retry
+- **Invalid input**: Validate input before delegation
+
+### Skill Capability Quick Reference
+
+**Content Skills:**
+- `author` - Ghostwriting in brand voice
+- `copywriter` - Marketing copy optimization
+- `editor` - Content editing and refinement
+- `translator` - Translation and localization
+
+**Media Skills:**
+- `narrator` - Voice generation (ElevenLabs)
+- `designer` - AI image generation (Gemini)
+- `transcriber` - Audio/video transcription
+- `videoeditor` - Video editing workflows
+- `presenter` - Presentation creation
+
+**Business Skills:**
+- `coach` - Coaching session design
+- `strategist` - Strategic planning
+- `marketer` - Social media scheduling
+- `sales` - Sales messaging
+- `publisher` - Content distribution
+
+**Technical Skills:**
+- `developer` - Code generation
+- `scraper` - Web content extraction
+- `craft` - Craft Docs integration
+- `webmaster` - Website management
+
+**For complete list:** `superskills export --markdown`
+
+### Workflow Orchestration Examples
+
+**Pattern 1: Research → Write → Edit**
+```bash
+# Trigger: "Research [topic] and write article"
+superskills run content-creation --topic "[topic]" --json
+```
+
+**Pattern 2: Script → Narrate → Publish**
+```bash
+# Trigger: "Create podcast from script"
+echo "$script" | superskills call narrator --content-type podcast --json
+```
+
+**Pattern 3: Scrape → Analyze → Outreach**
+```bash
+# Trigger: "Research company and create outreach"
+superskills run client-engagement --input "https://company.com" --json
+```
+
+**Pattern 4: Transcribe → Structure → Edit**
+```bash
+# Trigger: "Convert recording to training material"
+superskills run training-material --input recording.mp3 --json
+```
+
+### Integration Best Practices
+
+1. **Observable Execution**: Always log/show skill calls to user
+2. **Stateless Skills**: Don't rely on skills maintaining state
+3. **Graceful Degradation**: If CLI unavailable, handle with reduced quality
+4. **Result Validation**: Review skill output before final delivery
+5. **Context Optimization**: Pass only necessary data to skills
+6. **JSON Preference**: Use `--json` for structured, parseable responses
+
+---
+
 ## 2. Genericization & Personalization Principles
 
 ### CRITICAL: Never Hardcode Personal Information
@@ -401,6 +613,120 @@ When creating or modifying skills:
 
 ---
 
-**Last Updated:** December 7, 2024  
-**Project:** SuperSkills v1.0.0  
+## 11. Pre-Execution Guardrails for AI Assistants
+
+### CRITICAL: Check Before Any Skill Execution
+
+Before executing ANY task involving SuperSkills, **ALWAYS verify**:
+
+**1. CLI Capability Check**
+```bash
+# Does the CLI already have this capability?
+superskills list              # List all skills
+superskills call <skill> -h   # Check skill capabilities
+```
+
+**2. Workflow Existence Check**
+```bash
+# Does a workflow already exist for this task?
+ls workflows/                 # Check available workflows
+cat workflows/<name>/README.md   # Read workflow documentation
+cat workflows/<name>/config.yaml # Check output directories
+```
+
+**3. Output Directory Validation**
+- ❌ **NEVER** create output directories in skill folders (`superskills/<skill>/output/`)
+- ✅ **ALWAYS** use workflow output directories (`workflows/<workflow>/output/`)
+- ✅ **OR** use CLI with explicit `--output` flag pointing to workflow output
+- ✅ **READ** config.yaml to verify correct output path before generation
+
+**4. Script Creation Policy**
+- ❌ **NEVER** create new Python scripts for one-off executions
+- ❌ **NEVER** create standalone generation scripts that bypass CLI/workflows
+- ✅ **USE** `superskills call <skill>` for API-based tasks
+- ✅ **USE** `superskills run <workflow>` for multi-step tasks
+- ✅ **ONLY** create scripts when building reusable workflows (in `workflows/` directory)
+
+### Decision Tree: Task Execution
+
+```
+Task Request
+  ↓
+  ├─ Is it API integration? → YES → superskills call <skill>
+  ├─ Is it multi-step? → YES → Check workflows/ → superskills run <workflow>
+  ├─ Does workflow exist? → YES → USE IT (don't recreate)
+  ├─ Need custom workflow? → YES → Create in workflows/, not superskills/<skill>/
+  └─ Simple code task? → YES → Handle directly with IDE tools
+```
+
+### Output Location Rules
+
+**Workflows:**
+- Output dir: `workflows/<workflow-name>/output/` (per config.yaml)
+- Input dir: `workflows/<workflow-name>/inbox/` (per config.yaml)
+- All generated content goes to workflow's output directory
+
+**Skills:**
+- Skill folders: Implementation code only (src/, tests/, SKILL.md)
+- NO output directories in `superskills/<skill>/`
+- Skills output to locations specified via CLI `--output` flag
+
+**Example: Podcast Generation**
+```bash
+# ❌ WRONG: Create new script in superskills/narrator/
+python superskills/narrator/my_new_script.py
+
+# ✅ RIGHT: Use workflow with watch mode
+cp script.md workflows/podcast-generation/input/
+superskills run podcast-generation --watch
+
+# ✅ RIGHT: Use workflow with batch mode
+cp script1.md script2.md workflows/podcast-generation/input/
+superskills run podcast-generation --batch
+
+# ✅ RIGHT: Use CLI with single file
+superskills run podcast-generation --input script.md
+```
+
+### Common Mistakes to Avoid
+
+**Mistake 1: Creating One-Off Scripts**
+- ❌ `superskills/narrator/generate_my_podcast.py`
+- ✅ Use existing tools: `superskills run <workflow>`
+
+**Mistake 2: Wrong Output Directory**
+- ❌ Output to `superskills/<skill>/output/`
+- ✅ Output to `workflows/<workflow>/output/` per workflow.yaml
+
+**Mistake 3: Ignoring Existing Workflows**
+- ❌ Building custom script when workflow exists
+- ✅ Check `workflows/` first, read README.md and workflow.yaml
+
+**Mistake 4: Hardcoding Paths**
+- ❌ `output_dir = "superskills/narrator/output"`
+- ✅ Read from config.yaml or use CLI `--output` flag
+
+### Verification Checklist
+
+Before committing/completing any task:
+
+- [ ] No new scripts in `superskills/<skill>/` (except workflow infrastructure)
+- [ ] No output directories in `superskills/<skill>/`
+- [ ] Generated files in correct workflow output directory
+- [ ] Used CLI or existing workflow (not custom one-off script)
+- [ ] Read config.yaml to verify output paths
+- [ ] Followed .cursorrules delegation decision tree (§1A)
+
+### When to Escalate
+
+Stop and ask user if:
+- Workflow doesn't exist and task seems complex
+- Output location unclear from config.yaml
+- CLI doesn't support required parameters
+- Multiple valid approaches exist
+
+---
+
+**Last Updated:** December 8, 2024  
+**Project:** SuperSkills v1.1.1  
 **Maintainer:** See CONTRIBUTING.md

@@ -97,4 +97,6 @@ site/
 # Additional Python
 .ruff_cache/
 .mypy_cache/
-WARP.md
+
+# Development documentation and notes
+dev/

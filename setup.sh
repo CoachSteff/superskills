@@ -45,6 +45,8 @@ echo "  2) Virtual environment (for developers)"
 echo "  3) User install (pip install --user)"
 echo ""
 read -p "Enter choice [1-3]: " INSTALL_METHOD
+# Trim whitespace
+INSTALL_METHOD=$(echo "$INSTALL_METHOD" | tr -d '[:space:]')
 
 case $INSTALL_METHOD in
     1)

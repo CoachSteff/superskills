@@ -35,6 +35,18 @@ class CLIConfig:
         with open(self.config_file, 'r') as f:
             self._config = yaml.safe_load(f) or {}
         
+        # Auto-regenerate if version mismatch or invalid model
+        needs_regen = False
+        if self._config.get('version') != '2.0.1':
+            needs_regen = True
+        if 'claude-sonnet-4' in str(self._config.get('api', {}).get('anthropic', {}).get('model', '')):
+            needs_regen = True
+        
+        if needs_regen:
+            print("⚠ Outdated config detected. Regenerating with claude-4.5-sonnet...")
+            self._config = self._get_default_config()
+            self.save()
+        
         return self._config
     
     def save(self):
@@ -48,9 +60,10 @@ class CLIConfig:
     
     def _get_default_config(self) -> Dict[str, Any]:
         return {
+            'version': '2.0.1',
             'api': {
                 'anthropic': {
-                    'model': 'claude-sonnet-4',
+                    'model': 'claude-4.5-sonnet',
                     'max_tokens': 4000,
                     'temperature': 0.7
                 }

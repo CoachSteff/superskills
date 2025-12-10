@@ -40,7 +40,7 @@ class SkillExecutor:
         if self.api_client is None:
             self.logger.debug("Initializing API client")
             api_key = self.config.get_api_key('anthropic')
-            model = self.config.get('api.anthropic.model', 'claude-sonnet-4')
+            model = self.config.get('api.anthropic.model', 'claude-4.5-sonnet')
             max_tokens = self.config.get('api.anthropic.max_tokens', 4000)
             temperature = self.config.get('api.anthropic.temperature', 0.7)
             
@@ -90,6 +90,17 @@ class SkillExecutor:
         if not skill_info.python_module:
             self.logger.error(f"Python module not configured for skill: {skill_info.name}")
             raise ValueError(f"Python module not configured for skill: {skill_info.name}")
+        
+        # Load skill-specific credentials before executing
+        # This ensures skill-specific .env files override global settings
+        try:
+            from superskills.core.credentials import load_credentials
+            load_credentials(skill_name=skill_info.name, verbose=False)
+            self.logger.debug(f"Loaded credentials for skill: {skill_info.name}")
+        except ImportError:
+            self.logger.warning("Could not import superskills.core.credentials")
+        except Exception as e:
+            self.logger.debug(f"Credential loading info: {e}")
         
         module_path, class_name = skill_info.python_module.split(':')
         

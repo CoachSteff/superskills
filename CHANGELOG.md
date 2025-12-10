@@ -10,6 +10,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 - IDE AI integration framework
 
+## [2.0.1] - 2025-12-10
+
+### Summary
+**Critical Patch Release**: Fixes blocking installation and runtime issues from v2.0.0. All users should upgrade immediately.
+
+### Fixed
+- **CRITICAL: Invalid model name** - Changed from `claude-sonnet-4` (doesn't exist) to `claude-4.5-sonnet` (latest Sonnet)
+  - Updated in `cli/utils/api_client.py` default parameter
+  - Updated in `cli/utils/config.py` default configuration  
+  - Updated in `cli/core/skill_executor.py` fallback model
+  - Updated in `docs/IDE_INTEGRATION.md` documentation
+  - Fixes 404 errors: "model: claude-sonnet-4 does not exist"
+  
+- **CRITICAL: .env files not loading** - Environment variables now properly loaded from `.env` files with correct precedence
+  - Added `load_dotenv()` to `cli/main.py` entry point
+  - Added skill-specific credential loading to `cli/core/skill_executor.py`
+  - **Correct precedence order** (highest to lowest):
+    1. System environment variables (always respected)
+    2. Skill-specific `.env` files (`superskills/{skill}/.env`)
+    3. User config `.env` (`~/.superskills/.env`)
+    4. Project root `.env`
+  - Skill-specific `.env` files override global settings for that skill only
+  - Fixes "ANTHROPIC_API_KEY not found" errors when .env exists
+  
+- **CRITICAL: Cached config with invalid model** - Auto-regeneration of outdated configurations
+  - Detects version mismatch (< 2.0.0)
+  - Detects invalid model name (`claude-sonnet-4`)
+  - Automatically regenerates config with correct defaults
+  - Shows warning: "⚠ Outdated config detected. Regenerating with claude-4.5-sonnet..."
+  - Users no longer need to manually delete `~/.superskills/config.yaml`
+  
+- **MINOR: setup.sh input handling** - Trimmed whitespace from user input
+  - Option "1" now correctly recognized (was failing with trailing spaces)
+  - Improved installation reliability
+
+### Changed
+- Default model everywhere: `claude-4.5-sonnet` (was `claude-sonnet-4`)
+- Config version tracking: Added `version: 2.0.1` field for migration detection
+- .env loading precedence: Skill-specific `.env` files now correctly override global settings
+
+### Documentation
+- Added troubleshooting sections to `QUICKSTART.md`:
+  - Model 404 error solutions
+  - .env loading explanation
+  - Config regeneration instructions
+  - API key setup verification
+
+### Migration from v2.0.0
+
+**No action required** - Config auto-regenerates on first run.
+
+If you experience issues:
+```bash
+# 1. Reinstall CLI
+pipx uninstall superskills
+pipx install -e .
+
+# 2. Verify config
+cat ~/.superskills/config.yaml | grep model
+# Should show: model: claude-4.5-sonnet
+
+# 3. Test with real API key
+superskills call researcher "AI trends"
+```
+
 ## [2.0.0] - 2025-12-09
 
 ### Summary

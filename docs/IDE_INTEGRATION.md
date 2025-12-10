@@ -163,7 +163,7 @@ All commands support `--json` flag for structured, parseable responses.
   "metadata": {
     "skill": "author",
     "type": "prompt",
-    "model": "claude-sonnet-4"
+    "model": "claude-4.5-sonnet"
   },
   "output_file": "/path/to/output.md"
 }

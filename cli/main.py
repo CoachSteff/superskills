@@ -4,6 +4,7 @@ SuperSkills CLI - Main entry point
 import sys
 import argparse
 from pathlib import Path
+from dotenv import load_dotenv
 from .commands.init import init_command
 from .commands.list_skills import list_command
 from .commands.show import show_command
@@ -22,6 +23,31 @@ from .utils.logger import get_logger
 from .utils.paths import get_project_root
 
 
+def load_environment():
+    """Load environment variables from .env files.
+    
+    This provides base .env loading for CLI operations.
+    Individual skills use superskills/core/credentials.py which:
+    - Loads global .env (override=False - respects system env)
+    - Loads skill-specific .env (override=True - takes precedence over global)
+    
+    Precedence (highest to lowest):
+    1. System environment variables
+    2. Skill-specific .env (superskills/{skill}/.env)
+    3. User config .env (~/.superskills/.env)
+    4. Project root .env
+    """
+    # Try user config directory .env first (lower priority)
+    user_env = Path.home() / '.superskills' / '.env'
+    if user_env.exists():
+        load_dotenv(user_env, override=False)
+    
+    # Try project root .env (will be overridden by skill-specific)
+    project_env = get_project_root() / '.env'
+    if project_env.exists():
+        load_dotenv(project_env, override=False)
+
+
 def get_version():
     """Read version from pyproject.toml"""
     pyproject_path = get_project_root() / "pyproject.toml"
@@ -37,6 +63,9 @@ def get_version():
 
 
 def main():
+    # Load environment variables from .env files
+    load_environment()
+    
     parser = argparse.ArgumentParser(
         prog='superskills',
         description='SuperSkills CLI - AI-powered automation skills'

@@ -40,7 +40,7 @@ class SkillExecutor:
         if self.api_client is None:
             self.logger.debug("Initializing API client")
             api_key = self.config.get_api_key('anthropic')
-            model = self.config.get('api.anthropic.model', 'claude-4.5-sonnet')
+            model = self.config.get('api.anthropic.model', 'claude-3-sonnet-latest')
             max_tokens = self.config.get('api.anthropic.max_tokens', 4000)
             temperature = self.config.get('api.anthropic.temperature', 0.7)
             

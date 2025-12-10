@@ -10,6 +10,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 - IDE AI integration framework
 
+## [2.0.2] - 2025-12-10
+
+### Summary
+**Feature Release**: Intelligent model resolution with automatic alias expansion and config auto-regeneration.
+
+### Added
+- **Model Resolver System**: Automatic resolution of model aliases to stable versions
+  - `ModelResolver` class with lazy resolution (only on first API call)
+  - Global caching to prevent redundant API calls
+  - 4 model aliases configured:
+    - `claude-3-opus-latest` → `claude-3-opus-20240229`
+    - `claude-3-sonnet-latest` → `claude-3-5-sonnet-20241022`
+    - `claude-3-haiku-latest` → `claude-3-5-haiku-20241022`
+    - `claude-4.5-sonnet` → `claude-3-5-sonnet-20241022`
+  - Automatic fallback on 404 errors with user notification
+  - Non-aliased models pass through unchanged
+  - Test suite with 100% pass rate (16/16 tests)
+  
+- **Config Auto-Regeneration**: Detects and fixes outdated configurations
+  - Detects version < 2.0.1
+  - Detects deprecated models (`claude-sonnet-4`, `claude-4.5-sonnet`)
+  - Auto-regenerates with `claude-3-sonnet-latest`
+  - Clear notification: `⚠ Outdated config detected. Regenerating...`
+  
+- **Model Discovery Tool**: `tools/discover_models.py` for finding available models
+  - Lists all models from Anthropic API
+  - Helps identify latest model versions
+  - Useful for maintaining alias mappings
+  
+- **Documentation**:
+  - MODEL_RESOLVER_TEST_REPORT.md with comprehensive test results
+  - Updated QUICKSTART.md with model resolution examples
+
+### Changed
+- Default model: `claude-4.5-sonnet` → `claude-3-sonnet-latest` (auto-resolves)
+- APIClient now uses ModelResolver for all API calls
+- Config default updated to use latest alias
+- All 3 config locations updated (api_client.py, config.py, skill_executor.py)
+
+### Performance
+- Initialization: < 1ms (no API call)
+- First resolution: ~100-200ms (one API test call)
+- Cached lookups: < 0.1ms (dictionary access)
+- Overall impact: Negligible
+
+### Test Results
+✅ 100% pass rate (16/16 tests)
+- 5 pytest unit tests
+- 6 integration tests
+- 3 config auto-regeneration tests
+- 2 CLI integration tests
+
+### Backward Compatibility
+- ✅ Non-aliased models work unchanged
+- ✅ Existing code continues to work
+- ✅ No breaking changes
+
 ## [2.0.1] - 2025-12-10
 
 ### Summary

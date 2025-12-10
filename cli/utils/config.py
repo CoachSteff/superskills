@@ -39,11 +39,12 @@ class CLIConfig:
         needs_regen = False
         if self._config.get('version') != '2.0.1':
             needs_regen = True
-        if 'claude-sonnet-4' in str(self._config.get('api', {}).get('anthropic', {}).get('model', '')):
+        model = str(self._config.get('api', {}).get('anthropic', {}).get('model', ''))
+        if 'claude-sonnet-4' in model or model == 'claude-4.5-sonnet':
             needs_regen = True
         
         if needs_regen:
-            print("⚠ Outdated config detected. Regenerating with claude-4.5-sonnet...")
+            print("⚠ Outdated config detected. Regenerating with claude-3-sonnet-latest...")
             self._config = self._get_default_config()
             self.save()
         
@@ -63,7 +64,7 @@ class CLIConfig:
             'version': '2.0.1',
             'api': {
                 'anthropic': {
-                    'model': 'claude-4.5-sonnet',
+                    'model': 'claude-3-sonnet-latest',
                     'max_tokens': 4000,
                     'temperature': 0.7
                 }

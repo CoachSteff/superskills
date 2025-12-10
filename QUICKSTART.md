@@ -101,19 +101,37 @@ superskills --version
 
 ### Model Errors
 
-**If you see "model: claude-sonnet-4" error:**
+**If you see model-related errors:**
+
+The CLI uses model aliases that automatically fall back to stable versions:
+- `claude-3-sonnet-latest` → fallback to `claude-3-5-sonnet-20241022`
+- `claude-3-opus-latest` → fallback to `claude-3-opus-20240229`
+- `claude-3-haiku-latest` → fallback to `claude-3-5-haiku-20241022`
+
+**If you see "model: claude-sonnet-4" or "claude-4.5-sonnet" error:**
 
 This means you have an outdated config file. The CLI should auto-regenerate it, but if not:
 
 ```bash
-# Option 1: Delete config (CLI will regenerate with claude-4.5-sonnet)
+# Option 1: Delete config (CLI will regenerate with claude-3-sonnet-latest)
 rm ~/.superskills/config.yaml
 superskills init
 
 # Option 2: Edit manually
 nano ~/.superskills/config.yaml
-# Change: model: 'claude-sonnet-4'
-# To:     model: 'claude-4.5-sonnet'
+# Change: model: 'claude-4.5-sonnet'
+# To:     model: 'claude-3-sonnet-latest'
+```
+
+**Customize model in config:**
+
+Edit `~/.superskills/config.yaml`:
+```yaml
+api:
+  anthropic:
+    model: 'claude-3-sonnet-latest'  # or opus-latest, haiku-latest
+    max_tokens: 4000
+    temperature: 0.7
 ```
 
 ### Environment Variables Not Loading

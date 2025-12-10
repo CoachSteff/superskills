@@ -5,10 +5,11 @@ import os
 import time
 from typing import Optional
 from anthropic import Anthropic, APIError, APIConnectionError, RateLimitError, AuthenticationError
+from cli.utils.model_resolver import ModelResolver
 
 
 class APIClient:
-    def __init__(self, api_key: Optional[str] = None, model: str = "claude-4.5-sonnet", 
+    def __init__(self, api_key: Optional[str] = None, model: str = "claude-3-sonnet-latest", 
                  max_tokens: int = 4000, temperature: float = 0.7):
         self.api_key = api_key or os.getenv("ANTHROPIC_API_KEY")
         if not self.api_key:
@@ -27,6 +28,7 @@ class APIClient:
         self.model = model
         self.max_tokens = max_tokens
         self.temperature = temperature
+        self._resolved_model: Optional[str] = None
     
     def call(self, system_prompt: str, user_prompt: str, **kwargs) -> str:
         model = kwargs.get('model', self.model)
@@ -34,10 +36,15 @@ class APIClient:
         temperature = kwargs.get('temperature', self.temperature)
         max_retries = kwargs.get('max_retries', 3)
         
+        if self._resolved_model is None:
+            self._resolved_model = ModelResolver.resolve(model, self.api_key)
+        
+        resolved_model = self._resolved_model
+        
         for attempt in range(max_retries):
             try:
                 response = self.client.messages.create(
-                    model=model,
+                    model=resolved_model,
                     max_tokens=max_tokens,
                     temperature=temperature,
                     system=system_prompt,

@@ -2,6 +2,32 @@
 
 ## 1. Directory Structure & Organization
 
+### Root Directory Maintenance
+
+**CRITICAL: Keep root directory clean and organized**
+
+The project root should ONLY contain these files:
+- **WARP.md** - Development notes and current work-in-progress
+- **ROADMAP.md** - Project roadmap and future plans
+- **CHANGELOG.md** - Version history and release notes
+- **README.md** - Main project documentation
+- **CONTRIBUTING.md** - Contribution guidelines
+
+**All other documentation and temporary files belong elsewhere:**
+- Implementation docs → `dev/` directory
+- Test files → `dev/` or `tests/` directory
+- Release notes → `dev/` directory
+- User guides → `docs/` directory
+
+**When adding new files:**
+- ❌ NEVER add temporary test files to root (e.g., `test-podcast-script.md`)
+- ❌ NEVER add implementation notes to root (e.g., `IMPLEMENTATION_SUMMARY.md`)
+- ❌ NEVER add verification reports to root (e.g., `VERIFICATION.md`)
+- ✅ Use `dev/` for development/internal documentation
+- ✅ Use `docs/` for user-facing guides
+- ✅ Ensure all functionality is tested before committing
+- ✅ Document all changes in appropriate files (CHANGELOG.md for releases, dev/ for technical notes)
+
 ### Canonical Locations
 - **`/superskills/`** - The ONLY canonical directory for all skills (43 total)
 - **NEVER create or reference `/new-skills/`** - This directory was deprecated and removed
@@ -356,39 +382,192 @@ class ConfigLoader:
 
 ## 5. Version Management with CHANGELOG.md
 
-### Update CHANGELOG.md for All Notable Changes
+### CRITICAL: CHANGELOG.md Must Be Updated Before Any Commit
 
-**Format:**
+**MANDATORY WORKFLOW:**
+1. **Before making any code changes**: Read CHANGELOG.md to understand recent changes
+2. **During development**: Document changes in `## [Unreleased]` section
+3. **Before committing**: Review and update CHANGELOG.md with all changes made
+4. **Never commit code without updating CHANGELOG.md** (unless it's a trivial typo fix in docs)
+
+### CHANGELOG.md Update Requirements
+
+**ALWAYS update CHANGELOG.md when:**
+- ✅ Adding new skills or features
+- ✅ Modifying existing functionality
+- ✅ Fixing bugs or issues
+- ✅ Changing API interfaces
+- ✅ Updating configuration formats
+- ✅ Adding/removing dependencies
+- ✅ Security patches or improvements
+- ✅ Performance improvements
+- ✅ Breaking changes
+- ✅ Deprecating features
+- ✅ Updating CLI commands or flags
+
+**Optional (use judgment):**
+- ⚠️ Documentation improvements (significant ones should be noted)
+- ⚠️ Internal refactoring (note if it affects behavior or performance)
+- ❌ Typo fixes in comments/docs (skip for trivial changes)
+
+### Standard Format (Keep a Changelog)
+
 ```markdown
 ## [Unreleased]
 
 ### Added
-- New feature description
+- New feature or capability description
+- Another new feature with context
 
 ### Changed
-- Modified behavior description
+- Modified behavior with explanation
+- Updated component with details
+
+### Deprecated
+- Feature scheduled for removal (with timeline if known)
 
 ### Removed
-- Deprecated feature description
+- Deleted feature or deprecated code
 
 ### Fixed
-- Bug fix description
+- Bug fix with issue description
+- Another fix with context
+
+### Security
+- Security-related changes or patches
+
+### Performance
+- Performance improvements with measurable impact
 ```
 
-### When to Update
-- ✅ New skills added
-- ✅ API changes
-- ✅ Configuration format changes
-- ✅ Bug fixes
-- ✅ Security patches
-- ❌ Typo fixes in docs (optional)
-- ❌ Internal refactoring (unless user-facing)
+### CHANGELOG.md Best Practices
 
-### Commit Together
+**1. Write User-Facing Descriptions**
+```markdown
+# ❌ BAD - Too technical, no context
+### Changed
+- Updated skill_executor.py line 45
+
+# ✅ GOOD - Clear impact and context
+### Changed
+- Skill executor now properly loads skill-specific .env files, fixing credential loading issues
+```
+
+**2. Group Related Changes**
+```markdown
+# ✅ GOOD - Grouped by feature
+### Added
+- **Model Resolver System**: Automatic resolution of model aliases
+  - `claude-3-sonnet-latest` resolves to stable version
+  - Automatic fallback on 404 errors
+  - Global caching for performance
+```
+
+**3. Link to Issues/PRs When Relevant**
+```markdown
+### Fixed
+- Narrator skill voice profile loading (#42)
+- API timeout handling in transcriber (#38)
+```
+
+**4. Be Specific About Breaking Changes**
+```markdown
+### Changed
+- **BREAKING**: Config format updated from JSON to YAML
+  - Old configs will be auto-migrated on first run
+  - Manual migration: run `superskills migrate-config`
+```
+
+### Pre-Commit CHANGELOG.md Checklist
+
+Before every commit, verify:
+- [ ] All code changes are documented in CHANGELOG.md
+- [ ] Entries are in `## [Unreleased]` section
+- [ ] Entries use correct category (Added/Changed/Fixed/etc.)
+- [ ] Descriptions are clear and user-facing
+- [ ] Breaking changes are marked as **BREAKING**
+- [ ] Related changes are grouped together
+- [ ] CHANGELOG.md is committed with code changes
+
+### Pre-Release CHANGELOG.md Review
+
+Before creating a release, AI agents MUST:
+1. **Review entire `## [Unreleased]` section**
+2. **Verify completeness**: Check if all merged changes are documented
+3. **Check for consistency**: Ensure descriptions match actual changes
+4. **Validate categorization**: Confirm entries are in correct sections
+5. **Add summary**: Write a brief summary at the top of the version section
+6. **Version the release**: Move `[Unreleased]` → `[X.Y.Z] - YYYY-MM-DD`
+7. **Create new Unreleased section**: Add empty `## [Unreleased]` at top
+
+### Example: Moving from Unreleased to Release
+
+**Before release:**
+```markdown
+## [Unreleased]
+
+### Added
+- New obsidian skill for note management
+- Export command with markdown support
+
+### Fixed
+- Narrator skill audio quality settings
+```
+
+**After release (v2.1.0):**
+```markdown
+## [Unreleased]
+
+## [2.1.0] - 2025-12-17
+
+### Summary
+Feature release: Obsidian integration and export improvements
+
+### Added
+- **Obsidian Skill**: Complete note management integration
+  - Bidirectional sync with Obsidian vaults
+  - Tag-based organization
+  - Backlink support
+- **Export Enhancements**: 
+  - Markdown output format (`--markdown` flag)
+  - Improved formatting and readability
+
+### Fixed
+- Narrator skill audio quality settings now properly applied
+- Voice profile stability parameter respected
+```
+
+### Commit Message Integration
+
+Always commit CHANGELOG.md with related code:
 ```bash
-git add src/feature.py CHANGELOG.md
-git commit -m "feat: add new feature"
+# ✅ GOOD - Atomic commit with changelog
+git add superskills/obsidian/ CHANGELOG.md
+git commit -m "feat: add obsidian skill for note management"
+
+# ❌ BAD - Code without changelog
+git add superskills/obsidian/
+git commit -m "feat: add obsidian skill"
+# Then later: git add CHANGELOG.md && git commit -m "update changelog"
 ```
+
+### CHANGELOG.md Anti-Patterns
+
+**❌ AVOID:**
+- Committing code without updating CHANGELOG.md
+- Generic entries: "Fixed bugs", "Updated code", "Improvements"
+- Technical jargon without context: "Refactored BaseExecutor.execute()"
+- Forgetting to document breaking changes
+- Waiting until release to write CHANGELOG.md entries
+- Copying git commit messages verbatim
+
+**✅ DO:**
+- Update CHANGELOG.md as you code
+- Write clear, user-focused descriptions
+- Group related changes under one feature
+- Mark breaking changes explicitly
+- Review CHANGELOG.md before every commit
+- Use CHANGELOG.md to plan releases
 
 ---
 
@@ -586,10 +765,45 @@ When creating or modifying skills:
 - [ ] PROFILE.md.template created (generic placeholders)
 - [ ] .env.template created (if uses APIs)
 - [ ] Tests written (APIs mocked)
-- [ ] CHANGELOG.md updated
+- [ ] **CHANGELOG.md updated in `## [Unreleased]` section**
+- [ ] **CHANGELOG.md entry is user-facing and descriptive**
+- [ ] **CHANGELOG.md committed with code changes**
 - [ ] Documentation updated (README.md if needed)
 - [ ] No credentials in code or logs
 - [ ] Relative imports used within skill
+
+---
+
+## Pre-Commit Checklist
+
+Before every commit, verify:
+
+- [ ] **Read CHANGELOG.md** to understand recent changes
+- [ ] **Updated CHANGELOG.md** with all code changes made
+- [ ] CHANGELOG.md entries are in correct category (Added/Changed/Fixed/etc.)
+- [ ] Descriptions are clear and user-focused (not technical jargon)
+- [ ] Breaking changes marked with **BREAKING**
+- [ ] Tests pass (`pytest tests/ -v`)
+- [ ] Code follows project conventions
+- [ ] No personal information in committed files
+- [ ] CHANGELOG.md and code committed together
+
+---
+
+## Pre-Release Checklist
+
+Before creating any release, AI agents MUST:
+
+- [ ] **Review entire `## [Unreleased]` section** in CHANGELOG.md
+- [ ] Verify all merged changes are documented
+- [ ] Ensure descriptions match actual changes
+- [ ] Validate correct categorization of changes
+- [ ] Add release summary at top of version section
+- [ ] Move `[Unreleased]` → `[X.Y.Z] - YYYY-MM-DD`
+- [ ] Create new empty `## [Unreleased]` section at top
+- [ ] Update version numbers in code (if applicable)
+- [ ] Run full test suite
+- [ ] Verify documentation is up-to-date
 
 ---
 

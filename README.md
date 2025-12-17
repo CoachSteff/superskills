@@ -2,15 +2,16 @@
 
 Custom skill library for Claude Desktop that automates coaching, training, and content creation workflows. Built on Anthropic's Agent Skills framework.
 
-**Quick Start:** See [QUICKSTART.md](QUICKSTART.md) for common commands and examples.
+**Quick Start:** See [QUICKSTART.md](docs/QUICKSTART.md) for common commands and examples.
 
 ## Overview
 
-SuperSkills is a comprehensive AI automation toolkit with **40 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
+SuperSkills is a comprehensive AI automation toolkit with **45 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
 
 **What You Get:**
-- 29 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
-- 11 Python-Powered Skills - Full API integrations with advanced automation
+- 30 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
+- 15 Python-Powered Skills - Full API integrations with advanced automation (including 5 specialized narrator skills)
+- Hierarchical skill families (e.g., narrator-podcast, narrator-meditation, narrator-educational)
 - Comprehensive test suite (90+ unit tests)
 - Credential management system (hybrid env vars + .env files)
 - Production-ready patterns and templates
@@ -137,7 +138,7 @@ superskills run podcast-generation --input your-script.md
 # 3. Output appears in: workflows/podcast-generation/output/
 ```
 
-See [QUICKSTART.md](QUICKSTART.md) for more examples.
+See [QUICKSTART.md](docs/QUICKSTART.md) for more examples.
 
 ### Using with Claude Desktop
 
@@ -152,7 +153,7 @@ See [CLI_SETUP.md](dev/CLI_SETUP.md) for detailed CLI installation and usage.
 ## Skill Categories
 
 ### 1. Claude Skills (Prompt-Based)
-**20 skill folders** in `/superskills/` - No Python dependencies required
+**30 skill folders** in `/superskills/` - No Python dependencies required
 
 These are pure prompt-based skills that work immediately with Claude Desktop. Each folder contains a `SKILL.md` file with the skill definition:
 
@@ -163,24 +164,17 @@ These are pure prompt-based skills that work immediately with Claude Desktop. Ea
 | **coach** | Coaching session design and delivery |
 | **context-engineer** | Optimize AI context for better results |
 | **copywriter** | Marketing copy and messaging |
-| **designer** | Visual design direction |
 | **developer** | Code generation and debugging |
 | **editor** | Content editing and quality control |
 | **manager** | Project and team coordination |
-| **marketer** | Marketing strategy and campaigns |
-| **narrator** | Voice and tone guidance |
-| **producer** | Media production workflows |
-| **publisher** | Content publishing and distribution |
-| **quality-control** | Review and validation |
 | **researcher** | Research and analysis |
 | **sales** | Sales messaging and outreach |
-| **scraper** | Web content extraction |
 | **strategist** | Strategic planning |
 | **translator** | Translation and localization |
-| **webmaster** | Website management |
+| ...and 18 more |
 
 ### 2. Python-Powered Skills (API Integrations)
-**23 production-ready skills** with Python implementations in `/superskills/`
+**15 production-ready skills** with Python implementations in `/superskills/`
 
 #### Featured API-Integrated Skills
 
@@ -189,12 +183,33 @@ These are pure prompt-based skills that work immediately with Claude Desktop. Ea
 | **craft** | Craft Docs API | Document management and export |
 | **designer** | Gemini Imagen, Midjourney | AI image generation, brand consistency |
 | **marketer** | Postiz API | Social media scheduling, multi-platform posting |
-| **narrator** | ElevenLabs | Text-to-speech, podcast generation |
+| **narrator-podcast** | ElevenLabs | Conversational podcast voiceovers (140-160 WPM) |
+| **narrator-meditation** | ElevenLabs | Calm meditation guides with slow pacing |
+| **narrator-educational** | ElevenLabs | Clear educational content (130-150 WPM) |
+| **narrator-marketing** | ElevenLabs | Energetic marketing content (150-170 WPM) |
+| **narrator-social** | ElevenLabs | Fast-paced social media (160-180 WPM) |
 | **transcriber** | Whisper, AssemblyAI | Audio/video transcription |
+
+#### Narrator Skill Family
+
+The **narrator** skill has been refactored into a hierarchical family with 5 specialized subskills:
+
+```bash
+superskills list | grep narrator
+# Output:
+- narrator (parent skill)
+  ├─ narrator-educational - Clear educational content
+  ├─ narrator-marketing - Energetic marketing content
+  ├─ narrator-meditation - Calm meditation guides
+  ├─ narrator-podcast - Conversational podcast voiceovers
+  └─ narrator-social - Fast-paced social media
+```
+
+Each narrator variant is optimized for its specific use case with pre-configured voice settings, pacing, and tone.
 
 #### Additional Python Skills
 
-business-consultant, community-manager, compliance-manager, coursepackager, developer-tester, emailcampaigner, google-workspace-gemini, influencer, knowledgebase, legal, microsoft-365-copilot, n8n-workflow, presenter, process-engineer, product, risk-manager, trendwatcher, videoeditor
+coursepackager, emailcampaigner, presenter, scraper, videoeditor
 
 **Pattern:** Each includes SKILL.md definition, optional src/ implementation, and configuration templates
 
@@ -413,10 +428,16 @@ cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
 
 ```
 superskills/
-├── superskills/          # 40 skill directories (29 Claude Skills + 11 Python skills)
+├── superskills/          # 45 skill directories (30 Claude Skills + 15 Python skills)
 │   ├── author/           # Claude Skill: SKILL.md + PROFILE.md.template
 │   ├── craft/            # Python skill with API integration
-│   ├── narrator/         # Python skill: ElevenLabs voice generation
+│   ├── narrator/         # Python skill family: ElevenLabs voice generation
+│   │   ├── podcast/      # Subskill: narrator-podcast
+│   │   ├── meditation/   # Subskill: narrator-meditation
+│   │   ├── educational/  # Subskill: narrator-educational
+│   │   ├── marketing/    # Subskill: narrator-marketing
+│   │   ├── social/       # Subskill: narrator-social
+│   │   └── src/          # Shared Python implementation
 │   ├── designer/         # Python skill: AI image generation
 │   ├── developer/        # Claude Skill: SKILL.md + PROFILE.md.template
 │   └── ...

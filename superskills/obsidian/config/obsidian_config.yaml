@@ -1,0 +1,35 @@
+vault:
+  default_folder: null
+  file_extension: ".md"
+  
+search:
+  default_limit: 50
+  case_sensitive: false
+  
+tags:
+  # Support hierarchical tags with / separator
+  hierarchical: true
+  separator: "/"
+  # Minimum tagging standards (from taxonomy)
+  required_categories: ["topic", "type", "status"]
+  
+links:
+  auto_update_on_move: true
+  link_format: "title"  # or "path"
+  
+frontmatter:
+  # Minimal default fields
+  auto_add_fields:
+    - created
+    - modified
+  # Date format for timestamps
+  date_format: "%Y-%m-%d"
+  datetime_format: "%Y-%m-%d %H:%M:%S"
+  
+safety:
+  validate_paths: true
+  read_only: false
+  
+output:
+  include_metadata: true
+  format: "markdown"

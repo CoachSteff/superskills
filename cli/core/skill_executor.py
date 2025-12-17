@@ -2,6 +2,7 @@
 Skill execution engine.
 """
 import importlib
+import json
 from pathlib import Path
 from typing import Dict, Any, Optional
 from cli.core.skill_loader import SkillLoader, SkillInfo
@@ -158,6 +159,25 @@ class SkillExecutor:
                 result = skill_instance.transcribe(input_text)
                 
                 self.logger.info("Transcription completed")
+                
+                return {
+                    'output': result,
+                    'metadata': {
+                        'skill': skill_info.name,
+                        'type': 'python'
+                    }
+                }
+            
+            elif skill_info.name == 'obsidian':
+                # Parse JSON input
+                try:
+                    params = json.loads(input_text)
+                except json.JSONDecodeError:
+                    raise ValueError(f"Obsidian skill requires JSON input. Got: {input_text[:100]}")
+                
+                # Import the execute function directly
+                obsidian_module = importlib.import_module('superskills.obsidian.src')
+                result = obsidian_module.execute(**params)
                 
                 return {
                     'output': result,

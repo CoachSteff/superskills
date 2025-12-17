@@ -7,6 +7,182 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Summary
+**New Skill**: Obsidian filesystem vault manager added, enabling programmatic management of personal knowledge bases with hierarchical tag taxonomy support and wiki link auto-update.
+
+### Added
+- **Obsidian Skill** (`superskills/obsidian/`) - Filesystem-based Obsidian vault manager
+  - Full CRUD operations on Markdown notes (create, read, update)
+  - Advanced search: text search, hierarchical tag filtering, folder navigation
+  - Hierarchical tag taxonomy support (topic/ai, status/draft, type/blog)
+  - Wiki link management: auto-update links on move/rename, backlink discovery
+  - Hub note creation: generate index notes grouped by tag categories
+  - Frontmatter YAML parsing and manipulation with auto-timestamps
+  - Read-only mode for safe vault exploration
+  - Path validation preventing vault escape (security)
+  - Change planning (dry-run mode)
+  - 46 comprehensive unit tests with 74% code coverage
+  - Complete documentation: SKILL.md, README.md, .env.template
+  - CLI integration via JSON-based command interface
+  - Python API: `from superskills.obsidian.src import ObsidianClient`
+
+- **CLI Test Coverage**: 8 successful CLI tests covering all major operations
+  - List notes, search by tag, text search, get note
+  - Create note, add tags, find backlinks, create hub
+
+### Changed
+- **Skill Executor Enhancement**: Added JSON input parsing for Obsidian skill
+  - New handler in `cli/core/skill_executor.py` for Obsidian skill
+  - Parses JSON input and delegates to `superskills.obsidian.src.execute()`
+  - Example: `echo '{"action": "list"}' | superskills call obsidian`
+
+- **README.md**: Updated Python-Powered Skills table
+  - Added Obsidian to Featured API-Integrated Skills section
+  - Description: "Filesystem | Obsidian vault manager - read/write notes, hierarchical tags, wiki links"
+
+- **Skill Loader**: Registered Obsidian skill in PYTHON_SKILLS registry
+  - Entry: `'obsidian': 'superskills.obsidian.src.ObsidianClient:ObsidianClient'`
+
+### Fixed
+- **Narrator Skill Family**: Hierarchical skill architecture with 5 specialized narrator subskills
+  - `narrator-podcast` - Conversational podcast voiceovers (140-160 WPM, Steff Pro voice)
+  - `narrator-meditation` - Calm meditation guides (slower pacing, Steff Pro voice)
+  - `narrator-educational` - Clear educational content (130-150 WPM, Steff Basic Dutch voice)
+  - `narrator-marketing` - Energetic marketing content (150-170 WPM, Steff Basic voice)
+  - `narrator-social` - Fast-paced social media (160-180 WPM, Steff Basic voice)
+  - Each subskill has dedicated SKILL.md and PROFILE.md.template files
+  - Nested folder structure: `superskills/narrator/{podcast,meditation,educational,marketing,social}/`
+
+- **Hierarchical Skill Display**: Enhanced `superskills list` command
+  - Tree-style indentation for parent-child skill relationships
+  - Visual hierarchy using `├─` and `└─` characters
+  - Shows 45 total skills (40 base + 5 narrator subskills)
+  - Example display:
+    ```
+    - narrator
+      ├─ narrator-educational
+      ├─ narrator-marketing
+      ├─ narrator-meditation
+      ├─ narrator-podcast
+      └─ narrator-social
+    ```
+
+- **AI Assistant Integration Guide**: New `docs/AI_ASSISTANT_GUIDE.md`
+  - Discovery-first patterns for IDE AI assistants
+  - Skill families explanation with narrator example
+  - Common mistakes section (don't invent CLI parameters)
+  - Examples by use case (podcast, meditation, marketing, etc.)
+  - Integration tips and troubleshooting guide
+  - Linked from README.md and IDE_INTEGRATION.md
+
+### Changed
+- **BREAKING**: Removed `--content-type` and `--profile-type` CLI parameters
+  - Old syntax: `superskills call narrator --content-type podcast` ❌
+  - New syntax: `superskills call narrator-podcast` ✅
+  - Simplifies CLI interface - no business logic in CLI layer
+  - Each narrator variant is now a discoverable skill
+
+- **Skill Loader Enhancement**: Recursive subskill discovery
+  - `SkillLoader.discover_skills()` now scans subdirectories for nested skills
+  - Skips `src/` and hidden directories
+  - Added `parent_skill` field to `SkillInfo` dataclass for hierarchy tracking
+  - PYTHON_SKILLS registry expanded with 5 narrator subskills
+
+- **Skill Executor Refactor**: Hardcoded configuration mapping
+  - Narrator family uses skill name to determine voice profile and content type
+  - Configuration lives in `skill_executor.py`, not CLI arguments
+  - Each subskill has predictable, documented defaults
+  - Example: `narrator-meditation` → `content_type='meditation', profile_type='meditation'`
+
+- **Workflow Updates**: Using specialized narrator skills
+  - `podcast-generation/workflow.yaml` now uses `narrator-podcast` instead of `narrator` + config
+  - Removed `config:` sections from workflow steps
+  - Cleaner, more maintainable workflow definitions
+
+- **Documentation Updates**: Aligned with new architecture
+  - `QUICKSTART.md` shows specialized skills, removed fake CLI parameters
+  - `docs/IDE_INTEGRATION.md` corrected examples, added AI guide link
+  - `superskills/narrator/SKILL.md` references specialized subskills
+  - `README.md` includes AI Assistant Guide in documentation section
+
+- **Project Organization**: Cleaned up root directory to maintain only essential files
+  - Moved implementation docs to `dev/` directory (IMPLEMENTATION_*.md, VERIFICATION.md, etc.)
+  - Moved test files to `dev/` directory (test-podcast-*.md, meditation_script.md)
+  - Moved QUICKSTART.md to `docs/` directory
+  - Updated README.md references to point to correct locations
+  - Root now contains only: WARP.md, ROADMAP.md, CHANGELOG.md, README.md, CONTRIBUTING.md
+
+- **.cursorrules Enhancement**: Added comprehensive CHANGELOG.md maintenance guidelines
+  - Mandatory CHANGELOG.md update workflow before commits
+  - Detailed format and best practices with examples
+  - Pre-commit checklist for CHANGELOG.md verification
+  - Pre-release checklist for proper version management
+  - Clear categorization rules (Added/Changed/Fixed/Security/Performance)
+  - Anti-patterns to avoid and user-facing description guidelines
+
+### Fixed
+- **Credential Loading**: Removed invalid `superskills/narrator/.env` with corrupted API key
+  - File had extra 's' prefix in ELEVENLABS_API_KEY
+  - Now correctly loads from root `.env` file
+  - Skill-specific .env files take precedence when valid
+
+### Migration Guide
+
+**For Users:**
+If you were using the old narrator CLI syntax, update to specialized skills:
+
+```bash
+# Old (no longer works)
+superskills call narrator --content-type podcast --profile-type podcast
+
+# New (recommended)
+superskills call narrator-podcast --input script.md
+
+# For different content types
+superskills call narrator-meditation --input meditation.md
+superskills call narrator-educational --input lesson.md
+superskills call narrator-marketing --input promo.md
+superskills call narrator-social --input reel.md
+```
+
+**For Workflows:**
+Update workflow YAML files to use specialized skills:
+
+```yaml
+# Old
+steps:
+  - name: generate-audio
+    skill: narrator
+    input: ${script}
+    config:
+      content_type: podcast
+      profile_type: podcast
+
+# New
+steps:
+  - name: generate-audio
+    skill: narrator-podcast
+    input: ${script}
+```
+
+### Technical Details
+
+**Architecture Benefits:**
+- CLI remains simple UI layer (no business logic)
+- Capabilities live in discoverable skill folders
+- Nested structure improves maintainability
+- Clear parent-child relationships visible to users and AI assistants
+- Backward compatible: original `narrator` skill still works (defaults to podcast)
+
+**Verification Tests Passed:**
+- ✅ Discovery: `superskills list` shows 45 skills with hierarchical display
+- ✅ Execution: `narrator-podcast` generates 6m17s audio from 807-word script
+- ✅ Show command: `superskills show narrator-podcast` displays subskill docs
+- ✅ Discovery search: `superskills discover --query "meditation"` finds `narrator-meditation`
+- ✅ Workflows: `podcast-generation` workflow uses `narrator-podcast` correctly
+- ✅ Translation + Voice: Generated 7m30s Flemish podcast using Dutch voice profile
+- ✅ Documentation: No references to removed CLI parameters
+
 ### Planned
 - IDE AI integration framework
 

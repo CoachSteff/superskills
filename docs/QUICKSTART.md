@@ -1,146 +1,233 @@
-# SuperSkills Quick Start
+# SuperSkills CLI Quick Start
 
-Get started with SuperSkills in 5 minutes.
-
-## Prerequisites
-
-- Python 3.9+
-- Claude Desktop App
-- Git
-
-## Installation
-
-### 1. Clone Repository
-```bash
-git clone https://github.com/CoachSteff/superskills.git
-cd superskills
-```
-
-### 2. Install Dependencies
-```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -e .
-```
-
-### 3. Configure Credentials
-```bash
-cp .env.template .env
-# Edit .env and add your API keys
-```
-
-**Minimum required:**
-```bash
-OPENAI_API_KEY=your_openai_api_key_here
-```
-
-**Optional: Per-skill .env files**
-
-Some skills can use their own local `.env` files:
-```bash
-# Example: Transcriber skill only
-echo "OPENAI_API_KEY=your-key" > superskills/transcriber/.env
-
-# Or use distribution script to sync from root .env
-python scripts/distribute_credentials.py --skill transcriber
-```
-
-See `docs/CREDENTIAL_SETUP.md` for full credential distribution workflow.
-
-### 4. Set Up Personal Profiles (Optional)
-```bash
-# For each skill you plan to use:
-cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
-# Edit with your brand voice and expertise
-```
-
-### 5. Import Claude Skills into Claude Desktop
-
-Claude Skills must be imported as ZIP files:
+## Installation Check
 
 ```bash
-cd superskills
-
-# Create ZIP files for each Claude Skill
-zip -r author.zip author/
-zip -r builder.zip builder/
-zip -r coach.zip coach/
-zip -r context-engineer.zip context-engineer/
-zip -r copywriter.zip copywriter/
-zip -r designer.zip designer/
-zip -r developer.zip developer/
-zip -r editor.zip editor/
-zip -r manager.zip manager/
-zip -r marketer.zip marketer/
-zip -r narrator.zip narrator/
-zip -r producer.zip producer/
-zip -r publisher.zip publisher/
-zip -r quality-control.zip quality-control/
-zip -r researcher.zip researcher/
-zip -r sales.zip sales/
-zip -r scraper.zip scraper/
-zip -r strategist.zip strategist/
-zip -r translator.zip translator/
-zip -r webmaster.zip webmaster/
+superskills --version
 ```
 
-Then in Claude Desktop:
-1. Open Settings → Skills
-2. Click "Upload Custom Skill"
-3. Select the ZIP files you created
-4. Claude will read each skill's `SKILL.md` file
+**If command not found,** run setup first:
 
-### 6. Verify Installation
 ```bash
-python scripts/validate_credentials.py
-pytest tests/ -v
+cd /path/to/superskills
+bash setup.sh  # Choose option 1 (pipx) for global access
 ```
 
-## Using Your First Skill
+See [Troubleshooting](#troubleshooting).
 
-### Example 1: Author Skill
-In Claude Desktop, ask:
-> "Using the author skill, write a 500-word blog post about AI adoption"
+## Common Tasks
 
-### Example 2: Transcriber Skill
-In Claude Desktop, ask:
-> "Transcribe audio.mp3 using Whisper and create a summary"
+### Generate Podcast from Markdown
 
-### Example 3: Designer Skill
-In Claude Desktop, ask:
-> "Generate a professional image of a sunset using the designer skill"
-
-## Next Steps
-
-- **Explore Skills**: Browse `/superskills/` directory
-- **Configure More**: Add API keys in `.env` (see [CREDENTIAL_SETUP.md](CREDENTIAL_SETUP.md))
-- **Customize**: Create PROFILE.md files for personalization
-- **Create Custom Skills**: Read [SKILL_DEVELOPMENT.md](SKILL_DEVELOPMENT.md)
-
-## Common Issues
-
-### "Module not found"
+**Setup (one-time):**
 ```bash
-pip install -e .
+# Set API keys
+export ANTHROPIC_API_KEY=sk-ant-...
+export ELEVENLABS_API_KEY=...
+
+# Or add to .env file in project root
+echo "ANTHROPIC_API_KEY=sk-ant-..." >> .env
+echo "ELEVENLABS_API_KEY=..." >> .env
 ```
 
-### "API Key not found"
+**Generate:**
 ```bash
-# Check .env exists
-cat .env
-# Verify key is set
-python -c "import os; from dotenv import load_dotenv; load_dotenv(); print('OK' if os.getenv('OPENAI_API_KEY') else 'NOT SET')"
+# Place script in input folder
+cp /path/to/your-script.md workflows/podcast-generation/input/
+
+# Option 1: Watch mode (auto-process new files)
+superskills run podcast-generation --watch
+
+# Option 2: Batch process all files
+superskills run podcast-generation --batch
+
+# Option 3: Single file
+superskills run podcast-generation \
+  --input /path/to/script.md
 ```
 
-### Tests Failing
+**Output:** Enhanced script + MP3 in `workflows/podcast-generation/output/`
+
+### List Available Skills
+
 ```bash
-pip install -e ".[dev]"
-pytest tests/test_designer.py -v
+superskills list
+superskills show narrator
 ```
 
-## Resources
+### Run Individual Skill
 
-- [Full Documentation](../README.md)
-- [Credential Setup](CREDENTIAL_SETUP.md)
-- [Architecture](../dev/ARCHITECTURE.md)
-- [Contributing](../dev/CONTRIBUTING.md)
+```bash
+# Recommended: Use workflow
+superskills run podcast-generation --input script.md
+
+# Alternative: Direct skill call
+superskills call narrator-podcast --input script.md
+
+# Other content types
+superskills call narrator-meditation --input meditation-script.md
+superskills call narrator-educational --input lesson.md
+```
+
+## Troubleshooting
+
+### Command Not Found
+
+**If you haven't installed yet:**
+```bash
+cd /path/to/superskills
+bash setup.sh
+# Choose option 1 (pipx) for global access
+```
+
+**If pipx installed but command not found:**
+```bash
+pipx ensurepath
+# Restart your terminal
+```
+
+**If using virtual environment (developers):**
+```bash
+cd /path/to/superskills
+source .venv/bin/activate
+superskills --version
+```
+
+**Alternative - use full path:**
+```bash
+# For pipx installation
+~/.local/pipx/venvs/superskills/bin/superskills --help
+
+# For venv installation
+/path/to/superskills/.venv/bin/superskills --help
+```
+
+**Note:** `python3 -m cli` requires dependencies installed in system Python. Use virtual environment for best results.
+
+### Model Errors
+
+**If you see model-related errors:**
+
+The CLI uses model aliases that automatically fall back to stable versions:
+- `claude-3-sonnet-latest` → fallback to `claude-3-5-sonnet-20241022`
+- `claude-3-opus-latest` → fallback to `claude-3-opus-20240229`
+- `claude-3-haiku-latest` → fallback to `claude-3-5-haiku-20241022`
+
+**If you see "model: claude-sonnet-4" or "claude-4.5-sonnet" error:**
+
+This means you have an outdated config file. The CLI should auto-regenerate it, but if not:
+
+```bash
+# Option 1: Delete config (CLI will regenerate with claude-3-sonnet-latest)
+rm ~/.superskills/config.yaml
+superskills init
+
+# Option 2: Edit manually
+nano ~/.superskills/config.yaml
+# Change: model: 'claude-4.5-sonnet'
+# To:     model: 'claude-3-sonnet-latest'
+```
+
+**Customize model in config:**
+
+Edit `~/.superskills/config.yaml`:
+```yaml
+api:
+  anthropic:
+    model: 'claude-3-sonnet-latest'  # or opus-latest, haiku-latest
+    max_tokens: 4000
+    temperature: 0.7
+```
+
+### Environment Variables Not Loading
+
+**If API keys in .env are ignored:**
+
+1. Ensure .env file is in project root:
+   ```bash
+   ls -la /path/to/superskills/.env
+   ```
+
+2. Verify format (no spaces around =):
+   ```
+   ANTHROPIC_API_KEY=sk-ant-...
+   ELEVENLABS_API_KEY=...
+   ```
+
+3. The CLI auto-loads .env from (in order of precedence):
+   - **Skill-specific** (highest): `superskills/{skill-name}/.env`
+   - User config: `~/.superskills/.env`
+   - Project root: `/path/to/superskills/.env`
+   - **System env vars** (always respected)
+   
+   Note: Skill-specific .env files override global settings for that skill only.
+
+4. Alternatively, export manually:
+   ```bash
+   export ANTHROPIC_API_KEY=sk-ant-...
+   ```
+
+### Configure Voice (Narrator Skill)
+
+For custom voice (e.g., "CoachSteff" voice profile):
+
+1. **Copy template:**
+   ```bash
+   cp superskills/narrator/voice_profiles.json.template \
+      superskills/narrator/voice_profiles.json
+   ```
+
+2. **Get your ElevenLabs voice ID:**
+   - Go to: https://elevenlabs.io/app/voice-library
+   - Create or select your voice
+   - Copy the voice ID
+
+3. **Edit `voice_profiles.json`:**
+   ```json
+   {
+     "podcast": {
+       "voice_id": "YOUR_VOICE_ID_HERE",
+       "name": "CoachSteff",
+       "model": "eleven_turbo_v2_5",
+       "stability": 0.5,
+       "similarity_boost": 0.75,
+       "style": 0.0,
+       "use_speaker_boost": true
+     }
+   }
+   ```
+
+## File Locations
+
+- **Input:** `workflows/podcast-generation/input/`
+- **Output:** `workflows/podcast-generation/output/`
+- **Logs:** Run with `superskills --verbose run ...`
+- **Config:** `workflows/podcast-generation/workflow.yaml`
+
+## Example: Complete Podcast Generation
+
+```bash
+# 1. Ensure API keys are set
+export ANTHROPIC_API_KEY=sk-ant-...
+export ELEVENLABS_API_KEY=...
+
+# 2. Copy your markdown script
+cp ~/Documents/my-podcast-script.md workflows/podcast-generation/input/
+
+# 3. Generate podcast (watch mode)
+superskills run podcast-generation --watch
+
+# 4. Wait for processing to complete, then check output
+ls -lh workflows/podcast-generation/output/
+```
+
+Expected output files:
+- `my-podcast-script_enhanced_20241209_123456.md` - Enhanced narration script
+- `my-podcast-script_podcast_20241209_123456.mp3` - Podcast audio (30 min)
+
+## See Also
+
+- [README.md](README.md) - Complete documentation
+- [CLI Setup Guide](dev/CLI_SETUP.md) - Detailed installation
+- [Podcast Workflow](workflows/podcast-generation/README.md) - Workflow specifics
+- [CHANGELOG.md](CHANGELOG.md) - Recent changes and migration guide

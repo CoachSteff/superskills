@@ -93,6 +93,12 @@ def main():
     call_parser.add_argument('--output', help='Output file path')
     call_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                             default='markdown', help='Output format (default: markdown)')
+    call_parser.add_argument('--content-type', 
+                            choices=['podcast', 'educational', 'marketing', 'social', 'meditation'],
+                            help='Content type for narrator skill (podcast/educational/marketing/social/meditation)')
+    call_parser.add_argument('--profile-type',
+                            choices=['podcast', 'narration', 'meditation'],
+                            help='Voice profile for narrator skill (podcast/narration/meditation)')
     
     run_parser = subparsers.add_parser('run', help='Execute a workflow')
     run_parser.add_argument('workflow', help='Workflow name')
@@ -197,6 +203,10 @@ def main():
                 kwargs['output_file'] = args.output
             if hasattr(args, 'format') and args.format:
                 kwargs['format'] = args.format
+            if hasattr(args, 'content_type') and args.content_type:
+                kwargs['content_type'] = args.content_type
+            if hasattr(args, 'profile_type') and args.profile_type:
+                kwargs['profile_type'] = args.profile_type
             
             return call_command(args.skill, args.input, **kwargs)
         

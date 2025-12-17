@@ -275,6 +275,7 @@ superskills run my-workflow --topic "Your topic"
 - **[CLI Setup](dev/CLI_SETUP.md)** - SuperSkills CLI installation and usage
 - **[Quick Start](docs/QUICKSTART.md)** - Get started in 5 minutes
 - **[IDE Integration](docs/IDE_INTEGRATION.md)** - Integrate with Cursor, Antigravity, Verdent
+- **[AI Assistant Guide](docs/AI_ASSISTANT_GUIDE.md)** - Integration patterns for IDE AI assistants
 - **[Architecture](dev/ARCHITECTURE.md)** - System design and patterns
 - **[Credential Setup](docs/CREDENTIAL_SETUP.md)** - API key configuration guide
 - **[Skill Development](docs/SKILL_DEVELOPMENT.md)** - Create custom skills

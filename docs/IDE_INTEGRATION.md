@@ -2,6 +2,8 @@
 
 Integrate SuperSkills with AI-powered IDEs (Cursor, Antigravity, Verdent) for intelligent task delegation and workflow orchestration.
 
+> **For AI Assistants:** See [AI_ASSISTANT_GUIDE.md](AI_ASSISTANT_GUIDE.md) for detailed integration patterns, discovery workflows, and best practices.
+
 ## Overview
 
 SuperSkills enables IDE AI assistants to delegate specialized tasks through a CLI interface, combining the IDE AI's code manipulation strengths with SuperSkills' domain expertise in content creation, voice generation, research, and more.
@@ -247,7 +249,7 @@ script=$(superskills run content-creation --topic "productivity" --json | jq -r 
 # ... IDE AI can refine script directly ...
 
 # 3. Generate voiceover
-superskills call narrator --input <(echo "$script") --content-type podcast --json
+superskills call narrator-podcast --input <(echo "$script") --format json
 
 # 4. Deliver MP3 file
 ```

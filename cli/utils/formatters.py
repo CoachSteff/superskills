@@ -170,7 +170,8 @@ class SkillListFormatter:
                 'name': skill.name,
                 'description': skill.description,
                 'type': skill.skill_type,
-                'has_profile': skill.has_profile
+                'has_profile': skill.has_profile,
+                'parent_skill': getattr(skill, 'parent_skill', None)
             })
         
         if format_type == 'json':
@@ -179,7 +180,7 @@ class SkillListFormatter:
             return yaml.dump(skill_dicts, default_flow_style=False)
         elif format_type == 'plain':
             return '\n'.join(s['name'] for s in skill_dicts)
-        else:  # markdown
+        else:  # markdown with hierarchical display
             lines = [f"# Available Skills ({len(skills)} total)\n"]
             
             prompt_skills = [s for s in skill_dicts if s['type'] == 'prompt']
@@ -187,16 +188,53 @@ class SkillListFormatter:
             
             if prompt_skills:
                 lines.append(f"## Prompt-Based Skills ({len(prompt_skills)})\n")
-                for s in prompt_skills:
-                    profile = " ✓" if s['has_profile'] else ""
-                    lines.append(f"- **{s['name']}**: {s['description']}{profile}")
+                lines.extend(SkillListFormatter._format_hierarchical(prompt_skills))
                 lines.append("")
             
             if python_skills:
                 lines.append(f"## Python-Powered Skills ({len(python_skills)})\n")
-                for s in python_skills:
-                    profile = " ✓" if s['has_profile'] else ""
-                    lines.append(f"- **{s['name']}**: {s['description']}{profile}")
+                lines.extend(SkillListFormatter._format_hierarchical(python_skills))
                 lines.append("")
             
             return '\n'.join(lines)
+    
+    @staticmethod
+    def _format_hierarchical(skill_dicts: list) -> list:
+        """Format skills with hierarchical indentation for parent-child relationships."""
+        lines = []
+        
+        # Separate parent and child skills
+        parents = {}
+        children = {}
+        
+        for s in skill_dicts:
+            if s['parent_skill']:
+                parent = s['parent_skill']
+                if parent not in children:
+                    children[parent] = []
+                children[parent].append(s)
+            else:
+                parents[s['name']] = s
+        
+        # Format output with hierarchy
+        for skill_name in sorted(parents.keys()):
+            s = parents[skill_name]
+            profile = " ✓" if s['has_profile'] else ""
+            
+            # Parent skill
+            if skill_name in children:
+                # Has children - show as parent
+                lines.append(f"- **{s['name']}**: {s['description']}{profile}")
+                
+                # Show children with tree characters
+                child_list = sorted(children[skill_name], key=lambda x: x['name'])
+                for i, child in enumerate(child_list):
+                    is_last = i == len(child_list) - 1
+                    tree_char = "└─" if is_last else "├─"
+                    child_profile = " ✓" if child['has_profile'] else ""
+                    lines.append(f"  {tree_char} **{child['name']}**: {child['description']}{child_profile}")
+            else:
+                # No children - regular display
+                lines.append(f"- **{s['name']}**: {s['description']}{profile}")
+        
+        return lines

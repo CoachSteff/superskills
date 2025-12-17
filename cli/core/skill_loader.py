@@ -17,11 +17,17 @@ class SkillInfo:
     path: Path
     has_profile: bool
     python_module: Optional[str] = None
+    parent_skill: Optional[str] = None  # For hierarchical display
 
 
 class SkillLoader:
     PYTHON_SKILLS = {
         'narrator': 'superskills.narrator.src.Voiceover:VoiceoverGenerator',
+        'narrator-podcast': 'superskills.narrator.src.Voiceover:VoiceoverGenerator',
+        'narrator-meditation': 'superskills.narrator.src.Voiceover:VoiceoverGenerator',
+        'narrator-educational': 'superskills.narrator.src.Voiceover:VoiceoverGenerator',
+        'narrator-marketing': 'superskills.narrator.src.Voiceover:VoiceoverGenerator',
+        'narrator-social': 'superskills.narrator.src.Voiceover:VoiceoverGenerator',
         'transcriber': 'superskills.transcriber.src.Transcriber:Transcriber',
         'designer': 'superskills.designer.src.ImageGenerator:ImageGenerator',
         'scraper': 'superskills.scraper.src.WebScraper:WebScraper',
@@ -55,10 +61,24 @@ class SkillLoader:
             if skill_info:
                 skills.append(skill_info)
                 self._skill_cache[skill_info.name] = skill_info
+                
+                # Discover subskills (nested skills within parent skill directory)
+                for subdir in item.iterdir():
+                    if not subdir.is_dir():
+                        continue
+                    if subdir.name.startswith('.') or subdir.name == 'src':
+                        continue
+                    
+                    subskill_md = subdir / "SKILL.md"
+                    if subskill_md.exists():
+                        subskill_info = self._load_skill_info(subdir, parent_skill=skill_info.name)
+                        if subskill_info:
+                            skills.append(subskill_info)
+                            self._skill_cache[subskill_info.name] = subskill_info
         
         return sorted(skills, key=lambda s: s.name)
     
-    def _load_skill_info(self, skill_path: Path) -> Optional[SkillInfo]:
+    def _load_skill_info(self, skill_path: Path, parent_skill: Optional[str] = None) -> Optional[SkillInfo]:
         skill_md = skill_path / "SKILL.md"
         
         try:
@@ -76,7 +96,8 @@ class SkillLoader:
             python_module = self.PYTHON_SKILLS.get(name) if skill_type == 'python' else None
             
             profile_md = skill_path / "PROFILE.md"
-            has_profile = profile_md.exists()
+            profile_template = skill_path / "PROFILE.md.template"
+            has_profile = profile_md.exists() or profile_template.exists()
             
             return SkillInfo(
                 name=name,
@@ -84,7 +105,8 @@ class SkillLoader:
                 skill_type=skill_type,
                 path=skill_path,
                 has_profile=has_profile,
-                python_module=python_module
+                python_module=python_module,
+                parent_skill=parent_skill
             )
         
         except Exception as e:

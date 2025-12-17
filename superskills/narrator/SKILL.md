@@ -9,6 +9,26 @@ description: Generate professional voiceovers in the user's voice using ElevenLa
 
 Generate professional voiceovers in the user's authentic voice using ElevenLabs AI voice cloning, optimizing scripts for natural delivery.
 
+## Specialized Subskills
+
+For optimized results, use content-specific narrator subskills:
+
+- **narrator-podcast** - Conversational podcast delivery (140-160 WPM)
+- **narrator-meditation** - Calm, soothing meditation guides
+- **narrator-educational** - Clear, patient educational content (130-150 WPM)
+- **narrator-marketing** - Energetic, persuasive marketing (150-170 WPM)
+- **narrator-social** - Fast-paced social media content (160-180 WPM)
+
+**Discovery:**
+```bash
+superskills list | grep narrator
+superskills show narrator-podcast
+```
+
+**Usage:** See individual subskill documentation for detailed guidelines.
+
+---
+
 ## Tools
 
 **Voiceover.py** (in src/):

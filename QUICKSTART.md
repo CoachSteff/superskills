@@ -58,10 +58,15 @@ superskills show narrator
 ### Run Individual Skill
 
 ```bash
-superskills call narrator \
-  --input script.md \
-  --content-type podcast \
-  --profile-type podcast
+# Recommended: Use workflow
+superskills run podcast-generation --input script.md
+
+# Alternative: Direct skill call
+superskills call narrator-podcast --input script.md
+
+# Other content types
+superskills call narrator-meditation --input meditation-script.md
+superskills call narrator-educational --input lesson.md
 ```
 
 ## Troubleshooting

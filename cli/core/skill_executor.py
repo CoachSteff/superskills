@@ -111,13 +111,29 @@ class SkillExecutor:
             
             output_dir = kwargs.get('output_dir', self.config.cache_dir)
             
-            if skill_info.name == 'narrator':
-                profile_type = kwargs.get('profile_type', 'podcast')
-                self.logger.debug(f"Initializing narrator with profile: {profile_type}")
-                skill_instance = skill_class(output_dir=str(output_dir), profile_type=profile_type)
+            if skill_info.name == 'narrator' or skill_info.name.startswith('narrator-'):
+                # Map narrator subskill names to content and profile types
+                narrator_config = {
+                    'narrator': ('podcast', 'podcast'),  # Default for backward compatibility
+                    'narrator-podcast': ('podcast', 'podcast'),
+                    'narrator-meditation': ('meditation', 'meditation'),
+                    'narrator-educational': ('educational', 'narration'),
+                    'narrator-marketing': ('marketing', 'narration'),
+                    'narrator-social': ('social', 'narration'),
+                }
                 
-                content_type = kwargs.get('content_type', 'podcast')
-                self.logger.info(f"Generating narration for content type: {content_type}")
+                content_type, profile_type = narrator_config.get(
+                    skill_info.name, 
+                    ('podcast', 'podcast')
+                )
+                
+                self.logger.debug(f"Initializing {skill_info.name} with profile: {profile_type}")
+                skill_instance = skill_class(
+                    output_dir=str(output_dir), 
+                    profile_type=profile_type
+                )
+                
+                self.logger.info(f"Generating {content_type} narration")
                 result = skill_instance.generate(
                     script=input_text,
                     content_type=content_type,

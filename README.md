@@ -91,6 +91,15 @@ pip install --user -e .
    # Edit PROFILE.md with your brand voice, expertise, and style
    ```
 
+7. **Try natural language mode (v2.1+):**
+   ```bash
+   # Just quote your request!
+   superskills "find the Superworker executive summary"
+   superskills "list all available skills"
+   superskills "run copywriter on summary.txt"
+   ```
+   See [NATURAL_LANGUAGE.md](docs/NATURAL_LANGUAGE.md) for details.
+
 ### Verify Installation
 
 After installation, verify the CLI works from anywhere:

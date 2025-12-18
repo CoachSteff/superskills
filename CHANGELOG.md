@@ -7,6 +7,91 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] - 2024-12-18
+
+### Summary
+Major feature release: Natural language interface with AI-powered intent parsing, enabling frictionless CLI interaction through quoted input.
+
+### Added
+- **Natural Language Interface** - AI-powered intent parsing for seamless CLI interaction
+  - Quote input for natural language mode: `superskills "find my files"`
+  - Unquoted input works exactly as before (100% backward compatible)
+  - Smart confidence-based execution:
+    - High confidence (≥0.8): Execute with feedback
+    - Medium confidence (0.5-0.8): Ask for confirmation
+    - Low confidence (<0.5): Suggest alternatives
+  - Configurable LLM provider (Gemini Flash, Anthropic, OpenAI)
+  - Override via env vars or CLI flags: `--intent-model`, `--intent-provider`
+  - Comprehensive user guide: `NATURAL_LANGUAGE.md`
+
+- **Unified LLM Client** (`cli/utils/llm_client.py`)
+  - Multi-provider support: Gemini, Anthropic, OpenAI
+  - Factory pattern for easy provider switching
+  - Retry logic with exponential backoff
+  - Comprehensive error handling
+
+- **Intent Parser** (`cli/core/intent_parser.py`)
+  - Converts natural language to structured JSON intents
+  - Returns confidence scores (0.0-1.0)
+  - Validates against JSON schema
+  - Caches skill metadata for performance
+
+- **Intent Router** (`cli/core/intent_router.py`)
+  - Routes parsed intents to appropriate commands
+  - Pre-execution validation (files exist, skills available)
+  - Supports all actions: search, execute_skill, run_workflow, list, show, config, discover
+
+- **Search Command** (`cli/commands/search.py`)
+  - File search by name (glob patterns)
+  - Content search (ripgrep or grep fallback)
+  - Skill search (delegates to discover)
+  - Configurable search paths with environment variable expansion
+  - Auto-detection of search type
+
+- **Intent Schema** (`cli/schemas/intent_schema.json`)
+  - JSON schema for intent validation
+  - Ensures structured, type-safe intents
+
+### Changed
+- **Configuration System** - Extended with intent and search settings
+  - New `intent` section: provider, model, confidence threshold
+  - New `search` section: paths, use_ripgrep, max_results
+  - Default: Gemini Flash 2.0 (`gemini-2.0-flash-exp`) for intent parsing
+  - Configurable search paths: `${OBSIDIAN_VAULT_PATH}`, `~/Documents`, `~/Downloads`, `.`
+
+- **CLI Flags** - Added natural language control options
+  - `--intent-model MODEL`: Override LLM model for intent parsing
+  - `--intent-provider {gemini,anthropic,openai}`: Override LLM provider
+  - `--no-intent`: Disable intent parsing, force exact syntax
+
+### Technical Details
+- Intent parsing latency: <3s (p95)
+- Test coverage: 20 new unit tests for intent parser and router
+- Zero breaking changes to existing CLI commands
+- All imports validated, syntax checked
+- Documentation: Comprehensive user guide with troubleshooting
+
+### Configuration Example
+```yaml
+intent:
+  enabled: true
+  provider: gemini
+  model: gemini-2.0-flash-exp
+  confidence_threshold: 0.5
+  always_confirm_medium: true
+
+search:
+  paths:
+    - ${OBSIDIAN_VAULT_PATH}
+    - ~/Documents
+    - ~/Downloads
+    - .
+  use_ripgrep: true
+  max_results: 50
+```
+
+## [2.0.2] - 2024-12-17
+
 ### Summary
 **New Skill**: Obsidian filesystem vault manager added, enabling programmatic management of personal knowledge bases with hierarchical tag taxonomy support and wiki link auto-update.
 

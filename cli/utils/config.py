@@ -69,6 +69,23 @@ class CLIConfig:
                     'temperature': 0.7
                 }
             },
+            'intent': {
+                'enabled': True,
+                'provider': 'gemini',
+                'model': 'gemini-2.0-flash-exp',
+                'confidence_threshold': 0.5,
+                'always_confirm_medium': True
+            },
+            'search': {
+                'paths': [
+                    '${OBSIDIAN_VAULT_PATH}',
+                    '~/Documents',
+                    '~/Downloads',
+                    '.'
+                ],
+                'use_ripgrep': True,
+                'max_results': 50
+            },
             'output': {
                 'default_format': 'markdown',
                 'save_intermediates': True

@@ -62,6 +62,94 @@ def get_version():
     return "SuperSkills (version unknown)"
 
 
+def _handle_natural_language(user_input: str, args) -> int:
+    """Handle natural language input by parsing intent and routing"""
+    import json
+    import os
+    from .utils.config import CLIConfig
+    from .core.intent_parser import IntentParser
+    from .core.intent_router import IntentRouter
+    
+    config = CLIConfig()
+    logger = get_logger()
+    
+    # Check if intent parsing is enabled
+    if not config.get('intent.enabled', True):
+        print("Intent parsing disabled. Use exact command syntax.")
+        print("Run 'superskills --help' to see available commands.")
+        return 1
+    
+    # Override config with CLI flags if provided
+    if hasattr(args, 'intent_model') and args.intent_model:
+        os.environ['SUPERSKILLS_INTENT_MODEL'] = args.intent_model
+    if hasattr(args, 'intent_provider') and args.intent_provider:
+        os.environ['SUPERSKILLS_INTENT_PROVIDER'] = args.intent_provider
+    
+    try:
+        # Parse intent
+        parser = IntentParser(config)
+        intent = parser.parse(user_input, context={})
+        
+        logger.debug(f"Parsed intent: {intent.action} (confidence: {intent.confidence})")
+        
+        # Handle by confidence level
+        confidence_threshold = config.get('intent.confidence_threshold', 0.5)
+        always_confirm_medium = config.get('intent.always_confirm_medium', True)
+        
+        if intent.confidence >= 0.8:
+            # High confidence: execute with feedback
+            print(f"→ {intent.reasoning}")
+            router = IntentRouter(config)
+            return router.route(intent)
+        
+        elif intent.confidence >= confidence_threshold:
+            # Medium confidence: confirm first (if configured)
+            if always_confirm_medium:
+                print(f"I interpret this as:")
+                print(f"  {intent.reasoning}\n")
+                print(f"Action: {intent.action}")
+                if intent.target:
+                    print(f"Target: {intent.target}")
+                if intent.parameters:
+                    param_str = json.dumps(intent.parameters, indent=2)
+                    if len(param_str) < 200:
+                        print(f"Parameters: {param_str}")
+                
+                try:
+                    response = input("\nProceed? [Y/n] ")
+                    if response.lower() in ['', 'y', 'yes']:
+                        router = IntentRouter(config)
+                        return router.route(intent)
+                    else:
+                        print("Cancelled.")
+                        return 0
+                except KeyboardInterrupt:
+                    print("\nCancelled.")
+                    return 0
+            else:
+                # Execute without confirmation
+                print(f"→ {intent.reasoning}")
+                router = IntentRouter(config)
+                return router.route(intent)
+        
+        else:
+            # Low confidence: suggest alternatives
+            print(f"I'm not sure what you meant. Here are some suggestions:\n")
+            suggestions = parser.suggest_alternatives(intent)
+            for i, suggestion in enumerate(suggestions, 1):
+                print(f"  {i}. {suggestion}")
+            print("\nPlease rephrase or use exact command syntax.")
+            print("Run 'superskills --help' for available commands.")
+            return 1
+    
+    except Exception as e:
+        logger.error(f"Natural language processing failed: {e}")
+        print(f"✗ Error processing request: {e}")
+        print("\nTry using exact command syntax instead.")
+        print("Run 'superskills --help' for available commands.")
+        return 1
+
+
 def main():
     # Load environment variables from .env files
     load_environment()
@@ -74,6 +162,11 @@ def main():
     parser.add_argument('--version', action='version', version=get_version())
     parser.add_argument('--verbose', '-v', action='store_true', 
                        help='Enable verbose logging (DEBUG level)')
+    parser.add_argument('--intent-model', help='Override LLM model for intent parsing')
+    parser.add_argument('--intent-provider', choices=['gemini', 'anthropic', 'openai'],
+                       help='Override LLM provider for intent parsing')
+    parser.add_argument('--no-intent', action='store_true',
+                       help='Disable intent parsing (force exact syntax)')
     
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
     
@@ -172,9 +265,29 @@ def main():
     discover_parser.add_argument('--json', dest='json_output', action='store_true', 
                                 help='Output in JSON format')
     
+    # Check for natural language input (quoted strings) before parsing
+    raw_args = sys.argv[1:]
+    is_natural_language = False
+    user_input = None
+    
+    # Detect quoted natural language input (check before argparse processes it)
+    if len(raw_args) > 0:
+        first_arg = raw_args[0]
+        # Skip if it's a flag
+        if not first_arg.startswith('-'):
+            # Check if first arg is a quoted string
+            if (first_arg.startswith('"') and first_arg.endswith('"')) or \
+               (first_arg.startswith("'") and first_arg.endswith("'")):
+                is_natural_language = True
+                user_input = first_arg[1:-1]  # Remove quotes
+    
     args = parser.parse_args()
     
     logger = get_logger(verbose=args.verbose)
+    
+    # Handle natural language input (unless --no-intent flag is set)
+    if is_natural_language and not getattr(args, 'no_intent', False):
+        return _handle_natural_language(user_input, args)
     
     if not args.command:
         parser.print_help()

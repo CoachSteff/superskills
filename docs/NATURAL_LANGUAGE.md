@@ -2,19 +2,33 @@
 
 ## Overview
 
-The Superskills CLI now supports natural language input, allowing you to interact with the system using plain English instead of memorizing exact command syntax.
+The Superskills CLI supports natural language input, allowing you to interact with the system using plain English instead of memorizing exact command syntax.
 
 ## Usage
 
 ### Basic Syntax
 
-To use natural language mode, wrap your request in quotes:
+The CLI supports natural language in two ways:
 
+**1. Auto-detect (Recommended):**
 ```bash
-superskills "find the Superworker executive summary"
-superskills "list all available skills"
-superskills "run copywriter on summary.txt"
+# Just type naturally - no command needed!
+superskills find the Superworker executive summary
+superskills list all available skills
+superskills run copywriter on summary.txt
 ```
+
+**2. Explicit `prompt` command:**
+```bash
+# Use when auto-detect might be ambiguous
+superskills prompt find the summary
+superskills prompt what skills help with podcasts
+```
+
+**How It Works:**
+- If you type a command that doesn't match known commands (list, show, call, etc.), it's automatically treated as natural language
+- The `prompt` command always triggers natural language processing
+- All existing commands work exactly as before
 
 ### Configuration
 
@@ -29,8 +43,8 @@ Natural language parsing is powered by an LLM (default: Gemini Flash). You can c
 
 2. **CLI flags:**
    ```bash
-   superskills --intent-model "gpt-4o-mini" "find my files"
-   superskills --intent-provider anthropic "list skills"
+   superskills --intent-model "gpt-4o-mini" find my files
+   superskills --intent-provider anthropic prompt list skills
    ```
 
 3. **Config file** (~/.superskills/config.yaml):
@@ -62,7 +76,7 @@ intent:
 
 ### Search for Files
 ```bash
-superskills "find the Superworker executive summary"
+superskills find the Superworker executive summary
 → Searching files for: Superworker executive summary
 Found 2 matches:
   1. ~/Documents/Superworker/executive_summary.pdf
@@ -71,28 +85,28 @@ Found 2 matches:
 
 ### Execute a Skill
 ```bash
-superskills "run copywriter on summary.txt"
+superskills run copywriter on summary.txt
 → Execute copywriter skill with file input
 [... skill output ...]
 ```
 
 ### List Skills
 ```bash
-superskills "show me all skills"
+superskills show me all skills
 → List all available skills
 [... list output ...]
 ```
 
 ### Discover Skills by Capability
 ```bash
-superskills "what skills can help with podcasts?"
+superskills what skills can help with podcasts?
 → Discover skills related to podcasts
 [... matching skills ...]
 ```
 
 ### Configuration
 ```bash
-superskills "set temperature to 0.5"
+superskills set temperature to 0.5
 I interpret this as:
   Set API temperature configuration
 
@@ -104,6 +118,14 @@ Parameters: {
 }
 
 Proceed? [Y/n]
+```
+
+### Using Explicit `prompt` Command
+```bash
+# When you want to be explicit
+superskills prompt find files
+superskills prompt what can help me create content
+superskills prompt list available workflows
 ```
 
 ## Confidence Levels

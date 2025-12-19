@@ -93,10 +93,13 @@ pip install --user -e .
 
 7. **Try natural language mode (v2.1+):**
    ```bash
-   # Just quote your request!
-   superskills "find the Superworker executive summary"
-   superskills "list all available skills"
-   superskills "run copywriter on summary.txt"
+   # Just type naturally!
+   superskills find the Superworker executive summary
+   superskills list all available skills
+   superskills run copywriter on summary.txt
+   
+   # Or use explicit 'prompt' command
+   superskills prompt what can help me create podcasts
    ```
    See [NATURAL_LANGUAGE.md](docs/NATURAL_LANGUAGE.md) for details.
 

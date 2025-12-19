@@ -265,33 +265,42 @@ def main():
     discover_parser.add_argument('--json', dest='json_output', action='store_true', 
                                 help='Output in JSON format')
     
-    # Check for natural language input (quoted strings) before parsing
-    raw_args = sys.argv[1:]
-    is_natural_language = False
-    user_input = None
-    
-    # Detect quoted natural language input (check before argparse processes it)
-    if len(raw_args) > 0:
-        first_arg = raw_args[0]
-        # Skip if it's a flag
-        if not first_arg.startswith('-'):
-            # Check if first arg is a quoted string
-            if (first_arg.startswith('"') and first_arg.endswith('"')) or \
-               (first_arg.startswith("'") and first_arg.endswith("'")):
-                is_natural_language = True
-                user_input = first_arg[1:-1]  # Remove quotes
+    # Add explicit 'prompt' subcommand for natural language queries
+    prompt_parser = subparsers.add_parser('prompt', 
+        help='Natural language query (explicit)')
+    prompt_parser.add_argument('query', nargs='+', 
+        help='Natural language query text')
     
     args = parser.parse_args()
     
     logger = get_logger(verbose=args.verbose)
     
-    # Handle natural language input (unless --no-intent flag is set)
-    if is_natural_language and not getattr(args, 'no_intent', False):
+    # Define known commands for auto-detection
+    KNOWN_COMMANDS = {
+        'init', 'list', 'show', 'call', 'run', 
+        'status', 'validate', 'workflow', 'export', 
+        'config', 'discover', 'prompt'
+    }
+    
+    # Auto-detect natural language: unknown command + not a flag + intent enabled
+    raw_args = sys.argv[1:]
+    if (not args.command and 
+        len(raw_args) > 0 and 
+        not raw_args[0].startswith('-') and
+        raw_args[0] not in KNOWN_COMMANDS and
+        not getattr(args, 'no_intent', False)):
+        
+        # Unknown command - treat as natural language
+        user_input = ' '.join(raw_args)
+        logger.debug(f"Auto-detected natural language query: {user_input}")
         return _handle_natural_language(user_input, args)
     
     if not args.command:
-        parser.print_help()
-        return 0
+        print("No command specified. Try:\n")
+        print("  superskills list              # List all skills")
+        print("  superskills prompt find files # Natural language query")
+        print("  superskills --help            # Show all commands")
+        return 1
     
     logger.info(f"Executing command: {args.command}")
     
@@ -416,6 +425,12 @@ def main():
                 kwargs['json_output'] = True
             
             return discover_command(**kwargs)
+        
+        elif args.command == 'prompt':
+            # Explicit natural language query
+            user_input = ' '.join(args.query)
+            logger.debug(f"Explicit prompt command: {user_input}")
+            return _handle_natural_language(user_input, args)
         
         else:
             parser.print_help()

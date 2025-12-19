@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.2] - 2024-12-18
+
+### Fixed
+- **CRITICAL: Natural Language Interface** - Fixed broken quote-detection mechanism
+  - Replaced quote-based detection with auto-detection of unknown commands
+  - Shell quote-stripping prevented v2.1.0 implementation from working
+  - Now works: `superskills find my files` (no quotes needed!)
+  - Added explicit `prompt` subcommand: `superskills prompt <query>`
+  - 100% backward compatible with all existing commands
+
+### Technical Details
+- Auto-detect: Unknown commands (not matching known commands) treated as natural language
+- Explicit: `prompt` subcommand always triggers natural language processing
+- Quote-based detection removed (fundamentally incompatible with shell parsing)
+- Known commands: init, list, show, call, run, status, validate, workflow, export, config, discover, prompt
+
+### Migration
+- **v2.1.0 users:** No action needed, syntax improved
+- Previous documentation showed `superskills "query"` (didn't work)
+- Now use: `superskills query` or `superskills prompt query` (works!)
+- More intuitive, no shell escaping required
+
 ## [2.1.1] - 2024-12-19
 
 ### Summary

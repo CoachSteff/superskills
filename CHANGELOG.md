@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.1] - 2024-12-19
+
+### Summary
+Patch release: Added missing media processing dependencies for narrator and designer skills.
+
+### Added
+- **Media Processing Dependencies**
+  - `pydub>=0.25.0` - Audio manipulation for narrator skill
+  - `audioop-lts>=0.2.0` - Audio operations for Python 3.13+ compatibility
+  - `Pillow>=10.0.0` - Image processing for designer skill
+  - These were previously in optional `[media]` extras, now included in core dependencies
+
+### Changed
+- Media dependencies moved from optional to core requirements
+- Ensures narrator (audio generation) and designer (image generation) work out-of-the-box
+
+### Fixed
+- Installation issues when using narrator or designer skills without `pip install superskills[media]`
+- Python 3.13+ compatibility with `audioop-lts` package
+
 ## [2.1.0] - 2024-12-18
 
 ### Summary
@@ -71,29 +91,283 @@ Major feature release: Natural language interface with AI-powered intent parsing
 - All imports validated, syntax checked
 - Documentation: Comprehensive user guide with troubleshooting
 
-### Configuration Example
-```yaml
-intent:
-  enabled: true
-  provider: gemini
-  model: gemini-2.0-flash-exp
-  confidence_threshold: 0.5
-  always_confirm_medium: true
-
-search:
-  paths:
-    - ${OBSIDIAN_VAULT_PATH}
-    - ~/Documents
-    - ~/Downloads
-    - .
-  use_ripgrep: true
-  max_results: 50
-```
-
-## [2.0.2] - 2024-12-17
+## [2.0.3] - 2024-12-17
 
 ### Summary
-**New Skill**: Obsidian filesystem vault manager added, enabling programmatic management of personal knowledge bases with hierarchical tag taxonomy support and wiki link auto-update.
+Feature release: Obsidian filesystem vault manager skill and enhanced narrator architecture with specialized sub-skills.
+
+### Added
+- **Obsidian Skill** (`superskills/obsidian/`) - Filesystem-based Obsidian vault manager
+  - Full CRUD operations on Markdown notes (create, read, update)
+  - Advanced search: text search, hierarchical tag filtering, folder navigation
+  - Hierarchical tag taxonomy support (topic/ai, status/draft, type/blog)
+  - Wiki link management: auto-update links on move/rename, backlink discovery
+  - Hub note creation: generate index notes grouped by tag categories
+  - Frontmatter YAML parsing and manipulation with auto-timestamps
+  - Read-only mode for safe vault exploration
+  - Path validation preventing vault escape (security)
+  - Change planning (dry-run mode)
+  - 46 comprehensive unit tests with 74% code coverage
+  - Complete documentation: SKILL.md, README.md, .env.template
+  - CLI integration via JSON-based command interface
+  - Python API: `from superskills.obsidian.src import ObsidianClient`
+
+- **CLI Test Coverage**: 8 successful CLI tests covering all major operations
+  - List notes, search by tag, text search, get note
+  - Create note, add tags, find backlinks, create hub
+
+- **Narrator Skill Family**: Hierarchical skill architecture with 5 specialized narrator subskills
+  - `narrator-podcast` - Conversational podcast voiceovers (140-160 WPM, Steff Pro voice)
+  - `narrator-meditation` - Calm meditation guides (slower pacing, Steff Pro voice)
+  - `narrator-educational` - Clear educational content (130-150 WPM, Steff Basic Dutch voice)
+  - `narrator-marketing` - Energetic marketing content (150-170 WPM, Steff Basic voice)
+  - `narrator-social` - Fast-paced social media (160-180 WPM, Steff Basic voice)
+  - Each subskill has dedicated SKILL.md and PROFILE.md.template files
+  - Nested folder structure: `superskills/narrator/{podcast,meditation,educational,marketing,social}/`
+
+- **Hierarchical Skill Display**: Enhanced `superskills list` command
+  - Tree-style indentation for parent-child skill relationships
+  - Visual hierarchy using `├─` and `└─` characters
+  - Shows 45 total skills (40 base + 5 narrator subskills)
+  - Example display:
+    ```
+    - narrator
+      ├─ narrator-educational
+      ├─ narrator-marketing
+      ├─ narrator-meditation
+      ├─ narrator-podcast
+      └─ narrator-social
+    ```
+
+- **AI Assistant Integration Guide**: New `docs/AI_ASSISTANT_GUIDE.md`
+  - Discovery-first patterns for IDE AI assistants
+  - Skill families explanation with narrator example
+  - Common mistakes section (don't invent CLI parameters)
+  - Examples by use case (podcast, meditation, marketing, etc.)
+  - Integration tips and troubleshooting guide
+  - Linked from README.md and IDE_INTEGRATION.md
+
+### Changed
+- **BREAKING**: Removed `--content-type` and `--profile-type` CLI parameters
+  - Old syntax: `superskills call narrator --content-type podcast` ❌
+  - New syntax: `superskills call narrator-podcast` ✅
+  - Simplifies CLI interface - no business logic in CLI layer
+  - Each narrator variant is now a discoverable skill
+
+- **Skill Executor Enhancement**: Added JSON input parsing for Obsidian skill
+  - New handler in `cli/core/skill_executor.py` for Obsidian skill
+  - Parses JSON input and delegates to `superskills.obsidian.src.execute()`
+  - Example: `echo '{"action": "list"}' | superskills call obsidian`
+
+- **Skill Loader Enhancement**: Recursive subskill discovery
+  - `SkillLoader.discover_skills()` now scans subdirectories for nested skills
+  - Skips `src/` and hidden directories
+  - Added `parent_skill` field to `SkillInfo` dataclass for hierarchy tracking
+  - PYTHON_SKILLS registry expanded with 5 narrator subskills
+
+- **Skill Executor Refactor**: Hardcoded configuration mapping
+  - Narrator family uses skill name to determine voice profile and content type
+  - Configuration lives in `skill_executor.py`, not CLI arguments
+  - Each subskill has predictable, documented defaults
+  - Example: `narrator-meditation` → `content_type='meditation', profile_type='meditation'`
+
+- **README.md**: Updated Python-Powered Skills table
+  - Added Obsidian to Featured API-Integrated Skills section
+  - Description: "Filesystem | Obsidian vault manager - read/write notes, hierarchical tags, wiki links"
+
+- **Skill Loader**: Registered Obsidian skill in PYTHON_SKILLS registry
+  - Entry: `'obsidian': 'superskills.obsidian.src.ObsidianClient:ObsidianClient'`
+
+- **Workflow Updates**: Using specialized narrator skills
+  - `podcast-generation/workflow.yaml` now uses `narrator-podcast` instead of `narrator` + config
+  - Removed `config:` sections from workflow steps
+  - Cleaner, more maintainable workflow definitions
+
+- **Documentation Updates**: Aligned with new architecture
+  - `QUICKSTART.md` shows specialized skills, removed fake CLI parameters
+  - `docs/IDE_INTEGRATION.md` corrected examples, added AI guide link
+  - `superskills/narrator/SKILL.md` references specialized subskills
+  - `README.md` includes AI Assistant Guide in documentation section
+
+- **Project Organization**: Cleaned up root directory to maintain only essential files
+  - Moved implementation docs to `dev/` directory (IMPLEMENTATION_*.md, VERIFICATION.md, etc.)
+  - Moved test files to `dev/` directory (test-podcast-*.md, meditation_script.md)
+  - Moved QUICKSTART.md to `docs/` directory
+  - Updated README.md references to point to correct locations
+  - Root now contains only: WARP.md, ROADMAP.md, CHANGELOG.md, README.md, CONTRIBUTING.md
+
+- **.cursorrules Enhancement**: Added comprehensive CHANGELOG.md maintenance guidelines
+  - Mandatory CHANGELOG.md update workflow before commits
+  - Detailed format and best practices with examples
+  - Pre-commit checklist for CHANGELOG.md verification
+  - Pre-release checklist for proper version management
+  - Clear categorization rules (Added/Changed/Fixed/Security/Performance)
+  - Anti-patterns to avoid and user-facing description guidelines
+
+### Fixed
+- **Credential Loading**: Removed invalid `superskills/narrator/.env` with corrupted API key
+  - File had extra 's' prefix in ELEVENLABS_API_KEY
+  - Now correctly loads from root `.env` file
+  - Skill-specific .env files take precedence when valid
+
+### Migration Guide
+
+**For Users:**
+If you were using the old narrator CLI syntax, update to specialized skills:
+
+```bash
+# Old (no longer works)
+superskills call narrator --content-type podcast --profile-type podcast
+
+# New (recommended)
+superskills call narrator-podcast --input script.md
+
+# For different content types
+superskills call narrator-meditation --input meditation.md
+superskills call narrator-educational --input lesson.md
+superskills call narrator-marketing --input promo.md
+superskills call narrator-social --input social-post.md
+```
+
+**For Workflows:**
+Update workflow definitions to use specialized narrator skills:
+
+```yaml
+# Old
+- name: narrate
+  skill: narrator
+  config:
+    content_type: podcast
+    profile_type: podcast
+
+# New
+- name: narrate
+  skill: narrator-podcast
+```
+
+## [2.0.2] - 2024-12-10
+
+### Summary
+Feature release: Intelligent model resolution with automatic alias expansion and config auto-regeneration.
+
+### Added
+- **Model Resolver System**: Automatic resolution of model aliases to stable versions
+  - `ModelResolver` class with lazy resolution (only on first API call)
+  - Global caching to prevent redundant API calls
+  - 4 model aliases configured:
+    - `claude-3-opus-latest` → `claude-3-opus-20240229`
+    - `claude-3-sonnet-latest` → `claude-3-5-sonnet-20241022`
+    - `claude-3-haiku-latest` → `claude-3-5-haiku-20241022`
+    - `claude-4.5-sonnet` → `claude-3-5-sonnet-20241022`
+  - Automatic fallback on 404 errors with user notification
+  - Non-aliased models pass through unchanged
+  - Test suite with 100% pass rate (16/16 tests)
+  
+- **Config Auto-Regeneration**: Detects and fixes outdated configurations
+  - Detects version < 2.0.1
+  - Detects deprecated models (`claude-sonnet-4`, `claude-4.5-sonnet`)
+  - Auto-regenerates with `claude-3-sonnet-latest`
+  - Clear notification: `⚠ Outdated config detected. Regenerating...`
+  
+- **Model Discovery Tool**: `tools/discover_models.py` for finding available models
+  - Lists all models from Anthropic API
+  - Helps identify latest model versions
+  - Useful for maintaining alias mappings
+  
+- **Documentation**:
+  - MODEL_RESOLVER_TEST_REPORT.md with comprehensive test results
+  - Updated QUICKSTART.md with model resolution examples
+
+### Changed
+- Default model: `claude-4.5-sonnet` → `claude-3-sonnet-latest` (auto-resolves)
+- APIClient now uses ModelResolver for all API calls
+- Config default updated to use latest alias
+- All 3 config locations updated (api_client.py, config.py, skill_executor.py)
+
+### Performance
+- Initialization: < 1ms (no API call)
+- First resolution: ~100-200ms (one API test call)
+- Cached lookups: < 0.1ms (dictionary access)
+- Overall impact: Negligible
+
+### Test Results
+✅ 100% pass rate (16/16 tests)
+- 5 pytest unit tests
+- 6 integration tests
+- 3 config auto-regeneration tests
+- 2 CLI integration tests
+
+### Backward Compatibility
+- ✅ Non-aliased models work unchanged
+- ✅ Existing code continues to work
+- ✅ No breaking changes
+
+## [2.0.1] - 2024-12-10
+
+### Summary
+**Critical Patch Release**: Fixes blocking installation and runtime issues from v2.0.0. All users should upgrade immediately.
+
+### Fixed
+- **CRITICAL: Invalid model name** - Changed from `claude-sonnet-4` (doesn't exist) to `claude-4.5-sonnet` (latest Sonnet)
+  - Updated in `cli/utils/api_client.py` default parameter
+  - Updated in `cli/utils/config.py` default configuration  
+  - Updated in `cli/core/skill_executor.py` fallback model
+  - Updated in `docs/IDE_INTEGRATION.md` documentation
+  - Fixes 404 errors: "model: claude-sonnet-4 does not exist"
+  
+- **CRITICAL: .env files not loading** - Environment variables now properly loaded from `.env` files with correct precedence
+  - Added `load_dotenv()` to `cli/main.py` entry point
+  - Added skill-specific credential loading to `cli/core/skill_executor.py`
+  - **Correct precedence order** (highest to lowest):
+    1. System environment variables (always respected)
+    2. Skill-specific `.env` files (`superskills/{skill}/.env`)
+    3. User config `.env` (`~/.superskills/.env`)
+    4. Project root `.env`
+  - Skill-specific `.env` files override global settings for that skill only
+  - Fixes "ANTHROPIC_API_KEY not found" errors when .env exists
+  
+- **CRITICAL: Cached config with invalid model** - Auto-regeneration of outdated configurations
+  - Detects version mismatch (< 2.0.1)
+  - Detects invalid model name (`claude-sonnet-4`)
+  - Automatically regenerates config with correct defaults
+  - Shows warning: "⚠ Outdated config detected. Regenerating with claude-4.5-sonnet..."
+  - Users no longer need to manually delete `~/.superskills/config.yaml`
+  
+- **MINOR: setup.sh input handling** - Trimmed whitespace from user input
+  - Option "1" now correctly recognized (was failing with trailing spaces)
+  - Improved installation reliability
+
+### Changed
+- Default model everywhere: `claude-4.5-sonnet` (was `claude-sonnet-4`)
+- Config version tracking: Added `version: 2.0.1` field for migration detection
+- .env loading precedence: Skill-specific `.env` files now correctly override global settings
+
+### Documentation
+- Added troubleshooting sections to `QUICKSTART.md`:
+  - Model 404 error solutions
+  - .env loading explanation
+  - Config regeneration instructions
+  - API key setup verification
+
+### Migration from v2.0.0
+
+**No action required** - Config auto-regenerates on first run.
+
+If you experience issues:
+```bash
+# 1. Reinstall CLI
+pipx uninstall superskills
+pipx install -e .
+
+# 2. Verify config
+cat ~/.superskills/config.yaml | grep model
+# Should show: model: claude-4.5-sonnet
+
+# 3. Test with real API key
+superskills call researcher "AI trends"
+```
+
+## [2.0.0] - 2024-12-09
 
 ### Added
 - **Obsidian Skill** (`superskills/obsidian/`) - Filesystem-based Obsidian vault manager
@@ -270,291 +544,6 @@ steps:
 
 ### Planned
 - IDE AI integration framework
-
-## [2.0.2] - 2025-12-10
-
-### Summary
-**Feature Release**: Intelligent model resolution with automatic alias expansion and config auto-regeneration.
-
-### Added
-- **Model Resolver System**: Automatic resolution of model aliases to stable versions
-  - `ModelResolver` class with lazy resolution (only on first API call)
-  - Global caching to prevent redundant API calls
-  - 4 model aliases configured:
-    - `claude-3-opus-latest` → `claude-3-opus-20240229`
-    - `claude-3-sonnet-latest` → `claude-3-5-sonnet-20241022`
-    - `claude-3-haiku-latest` → `claude-3-5-haiku-20241022`
-    - `claude-4.5-sonnet` → `claude-3-5-sonnet-20241022`
-  - Automatic fallback on 404 errors with user notification
-  - Non-aliased models pass through unchanged
-  - Test suite with 100% pass rate (16/16 tests)
-  
-- **Config Auto-Regeneration**: Detects and fixes outdated configurations
-  - Detects version < 2.0.1
-  - Detects deprecated models (`claude-sonnet-4`, `claude-4.5-sonnet`)
-  - Auto-regenerates with `claude-3-sonnet-latest`
-  - Clear notification: `⚠ Outdated config detected. Regenerating...`
-  
-- **Model Discovery Tool**: `tools/discover_models.py` for finding available models
-  - Lists all models from Anthropic API
-  - Helps identify latest model versions
-  - Useful for maintaining alias mappings
-  
-- **Documentation**:
-  - MODEL_RESOLVER_TEST_REPORT.md with comprehensive test results
-  - Updated QUICKSTART.md with model resolution examples
-
-### Changed
-- Default model: `claude-4.5-sonnet` → `claude-3-sonnet-latest` (auto-resolves)
-- APIClient now uses ModelResolver for all API calls
-- Config default updated to use latest alias
-- All 3 config locations updated (api_client.py, config.py, skill_executor.py)
-
-### Performance
-- Initialization: < 1ms (no API call)
-- First resolution: ~100-200ms (one API test call)
-- Cached lookups: < 0.1ms (dictionary access)
-- Overall impact: Negligible
-
-### Test Results
-✅ 100% pass rate (16/16 tests)
-- 5 pytest unit tests
-- 6 integration tests
-- 3 config auto-regeneration tests
-- 2 CLI integration tests
-
-### Backward Compatibility
-- ✅ Non-aliased models work unchanged
-- ✅ Existing code continues to work
-- ✅ No breaking changes
-
-## [2.0.1] - 2025-12-10
-
-### Summary
-**Critical Patch Release**: Fixes blocking installation and runtime issues from v2.0.0. All users should upgrade immediately.
-
-### Fixed
-- **CRITICAL: Invalid model name** - Changed from `claude-sonnet-4` (doesn't exist) to `claude-4.5-sonnet` (latest Sonnet)
-  - Updated in `cli/utils/api_client.py` default parameter
-  - Updated in `cli/utils/config.py` default configuration  
-  - Updated in `cli/core/skill_executor.py` fallback model
-  - Updated in `docs/IDE_INTEGRATION.md` documentation
-  - Fixes 404 errors: "model: claude-sonnet-4 does not exist"
-  
-- **CRITICAL: .env files not loading** - Environment variables now properly loaded from `.env` files with correct precedence
-  - Added `load_dotenv()` to `cli/main.py` entry point
-  - Added skill-specific credential loading to `cli/core/skill_executor.py`
-  - **Correct precedence order** (highest to lowest):
-    1. System environment variables (always respected)
-    2. Skill-specific `.env` files (`superskills/{skill}/.env`)
-    3. User config `.env` (`~/.superskills/.env`)
-    4. Project root `.env`
-  - Skill-specific `.env` files override global settings for that skill only
-  - Fixes "ANTHROPIC_API_KEY not found" errors when .env exists
-  
-- **CRITICAL: Cached config with invalid model** - Auto-regeneration of outdated configurations
-  - Detects version mismatch (< 2.0.0)
-  - Detects invalid model name (`claude-sonnet-4`)
-  - Automatically regenerates config with correct defaults
-  - Shows warning: "⚠ Outdated config detected. Regenerating with claude-4.5-sonnet..."
-  - Users no longer need to manually delete `~/.superskills/config.yaml`
-  
-- **MINOR: setup.sh input handling** - Trimmed whitespace from user input
-  - Option "1" now correctly recognized (was failing with trailing spaces)
-  - Improved installation reliability
-
-### Changed
-- Default model everywhere: `claude-4.5-sonnet` (was `claude-sonnet-4`)
-- Config version tracking: Added `version: 2.0.1` field for migration detection
-- .env loading precedence: Skill-specific `.env` files now correctly override global settings
-
-### Documentation
-- Added troubleshooting sections to `QUICKSTART.md`:
-  - Model 404 error solutions
-  - .env loading explanation
-  - Config regeneration instructions
-  - API key setup verification
-
-### Migration from v2.0.0
-
-**No action required** - Config auto-regenerates on first run.
-
-If you experience issues:
-```bash
-# 1. Reinstall CLI
-pipx uninstall superskills
-pipx install -e .
-
-# 2. Verify config
-cat ~/.superskills/config.yaml | grep model
-# Should show: model: claude-4.5-sonnet
-
-# 3. Test with real API key
-superskills call researcher "AI trends"
-```
-
-## [2.0.0] - 2025-12-09
-
-### Summary
-**Major Release**: Production-ready CLI with 40 skills, comprehensive testing, and quality validation. All critical bugs fixed, 95% quality grade achieved.
-
-### Added
-- **SuperSkills CLI**: Complete command-line interface for all skills
-  - `superskills` command with 11 working commands
-  - Skill discovery system detecting all 40 skills (29 Prompt + 11 Python)
-  - Skill executor for both prompt-based and Python-powered skills
-  - Workflow engine for multi-step orchestration
-  - Configuration management in `~/.superskills/`
-  - Commands: init, list, call, run, status, workflow, export, discover, validate
-  
-- **New Skill Documentation**: 8 missing SKILL.md files created
-  - coursepackager, craft, emailcampaigner, knowledgebase, presenter, scraper, transcriber, videoeditor
-  - All 40 skills now have proper SKILL.md files
-  
-- **Validation System**: New `superskills validate` command
-  - Checks skill integrity and accessibility
-  - Verifies SKILL.md files exist and are valid
-  - Reports missing files and configuration issues
-  
-- **Enhanced CLI Features**:
-  - Export command with skill metadata (JSON/Markdown)
-  - Discovery command with capability-based search
-  - JSON output mode for all commands (`--json` flag)
-  - Structured error messages with helpful guidance
-  - Version detection now working correctly
-  
-- **Documentation**:
-  - IDE Integration guide (docs/IDE_INTEGRATION.md)
-  - Test reports (TEST_REPORT.md, BUGS_AND_IMPROVEMENTS.md, TESTING_SUMMARY.md, TEST_COMPLETION_REPORT.md)
-  - Enhanced README with CLI installation and usage
-  - Automated setup script (setup.sh)
-
-### Changed
-- **BREAKING**: CLI moved from `superskills/cli/` to `/cli/` (root level)
-  - Import path changed: `from superskills.cli` → `from cli`
-  - Entry point remains `superskills` command
-  - Skills directory correctly resolved to `/superskills/`
-  - Path resolution uses project root detection (pyproject.toml, .git)
-
-- **Installation**: pipx is now the recommended installation method for non-technical users
-  - `setup.sh` defaults to pipx (option 1) for global access
-  - Virtual environment moved to option 2 (for developers)
-  - Documentation updated to assume global installation
-  - Added post-install verification in setup script
-  - `superskills` command works from any directory after pipx install
-  
-- **Fixed Critical Bugs** (5 major issues resolved):
-  1. SkillLoader directory resolution - now detects all 40 skills
-  2. Version detection - correctly shows v2.0.0
-  3. Export command version - returns correct 2.0.0 in metadata
-  4. Documentation accuracy - updated to 40 skills (29 Prompt + 11 Python)
-  5. Missing SKILL.md files - created for 8 skills
-  
-- **BREAKING**: Workflow structure simplified
-  - Workflows now use input/output folder pattern (no Python files in workflow folders)
-  - Use `superskills run <workflow>` commands instead of custom Python runners
-  - Folder-based workflows have `workflow.yaml` with `io` configuration
-  - Example: `workflows/podcast-generation/` (formerly `workflows/podcast-workflow/`)
-  
-- Enhanced error messages with actionable guidance
-- Improved capability tagging for skill discovery
-- Updated all documentation for accuracy
-
-### Added
-- Watch mode for workflows: `superskills run <workflow> --watch`
-  - Monitors workflow's `input/` folder for new files
-  - Automatically processes files as they appear
-  - Press Ctrl+C to stop watching
-
-- Batch mode for workflows: `superskills run <workflow> --batch`
-  - Processes all files in workflow's `input/` folder at once
-  - Shows progress and summary statistics
-  
-- Folder-based workflow detection
-  - CLI now finds workflows in three locations:
-    1. `workflows/definitions/{name}.yaml` (simple workflows)
-    2. `workflows/custom/{name}.yaml` (custom simple workflows)
-    3. `workflows/{name}/workflow.yaml` (folder-based workflows with input/output)
-
-- Enhanced workflow configuration
-  - `io.input_dir` and `io.output_dir` settings in workflow.yaml
-  - `save_to` parameter in workflow steps for file output
-  - `${filename}` variable for dynamic output naming
-
-### Removed
-- Python files from workflows (run_workflow.py, process_direct.py, requirements.txt)
-- Workflow-specific source code directories (src/ folders)
-- Old `inbox/` directory (renamed to `input/`)
-
-### Migration Guide
-
-**CLI Installation:**
-```bash
-# Reinstall CLI in development mode
-pip install -e .  # or pipx install -e . or pip install --user -e .
-
-# Verify installation
-superskills --help
-superskills list
-```
-
-**Workflows:**
-
-Old structure (v1.x):
-```
-workflows/podcast-workflow/
-├── run_workflow.py          # Removed
-├── process_direct.py         # Removed  
-├── requirements.txt          # Removed
-├── src/                      # Removed
-├── inbox/                    # Renamed to input/
-├── output/
-└── config.yaml              # Replaced by workflow.yaml
-```
-
-New structure (v2.0):
-```
-workflows/podcast-generation/
-├── input/                   # Place source files here
-├── output/                  # Generated files appear here
-├── workflow.yaml            # Unified configuration
-└── README.md                # CLI usage instructions
-```
-
-**Usage Changes:**
-
-Before (v1.x):
-```bash
-cd workflows/podcast-workflow
-python run_workflow.py
-# Drop files in inbox/ folder
-```
-
-After (v2.0):
-```bash
-# Option 1: Single file
-superskills run podcast-generation --input input/my-script.md
-
-# Option 2: Watch folder
-superskills run podcast-generation --watch
-
-# Option 3: Batch process
-superskills run podcast-generation --batch
-```
-
-### Technical Details
-
-**Path Resolution:**
-- CLI now at `/cli/` instead of `/superskills/cli/`
-- Skills remain at `/superskills/{skill-name}/`
-- Workflows at `/workflows/{workflow-name}/` or `/workflows/definitions/`
-- Project root detected via pyproject.toml or .git directory
-
-**Workflow Engine:**
-- New `watch_and_execute()` method for file monitoring
-- New `batch_execute()` method for bulk processing
-- Enhanced `_find_workflow_file()` to support folder-based workflows
-- Variables: `input`, `input_file`, `filename` automatically provided in watch/batch modes
 
 ## [1.1.1] - 2025-12-08
 

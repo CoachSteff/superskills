@@ -114,7 +114,18 @@ superskills discover --query "executive summary"
 ```
 
 **Google API Migration:**
-No user action required - internal change only. If you maintain custom skills using google.generativeai:
+```bash
+# Upgrade from v2.1.x (replaces google-generativeai with google-genai)
+pipx upgrade superskills
+
+# Or if using pip
+pip install --upgrade superskills
+
+# Verify natural language interface works
+superskills prompt "list all skills"
+```
+
+For custom skills using google.generativeai:
 ```python
 # Old
 import google.generativeai as genai

@@ -183,21 +183,24 @@ class ImageGenerator:
         # For now, create a placeholder image
         
         try:
-            import google.generativeai as genai
+            from google import genai
             
-            genai.configure(api_key=self.api_key)
+            client = genai.Client(api_key=self.api_key)
             
             # Use Gemini's image generation
             # This is simplified - actual implementation may vary based on API
-            model = genai.ImageGenerationModel("imagen-3.0-generate-001")
-            result = model.generate_images(
+            response = client.models.generate_images(
+                model="imagen-3.0-generate-001",
                 prompt=prompt,
-                number_of_images=1,
-                aspect_ratio=f"{width}:{height}"
+                config={
+                    "number_of_images": 1,
+                    "aspect_ratio": f"{width}:{height}"
+                }
             )
             
             # Get first image
-            image_bytes = result.images[0]._pil_image
+            image_data = response.images[0].image.data
+            image_bytes = Image.open(BytesIO(image_data))
             return image_bytes
             
         except Exception as e:

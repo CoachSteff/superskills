@@ -6,7 +6,7 @@ import os
 import time
 from abc import ABC, abstractmethod
 from typing import Optional, Dict, Any
-import google.generativeai as genai
+from google import genai
 from anthropic import Anthropic, APIError, APIConnectionError, RateLimitError, AuthenticationError
 from openai import OpenAI, APIError as OpenAIAPIError
 
@@ -48,15 +48,13 @@ class GeminiProvider(LLMProvider):
                 "Or add it to a .env file in your project root."
             )
         
-        genai.configure(api_key=self.api_key)
-        self.model_name = model
-        self.max_tokens = max_tokens
-        self.temperature = temperature
-        
         try:
-            self.model = genai.GenerativeModel(model)
+            self.client = genai.Client(api_key=self.api_key)
+            self.model_name = model
+            self.max_tokens = max_tokens
+            self.temperature = temperature
         except Exception as e:
-            raise ValueError(f"Failed to initialize Gemini model '{model}': {e}")
+            raise ValueError(f"Failed to initialize Gemini client: {e}")
     
     def call(self, system_prompt: str, user_prompt: str, **kwargs) -> str:
         """Call Gemini API with retry logic"""
@@ -65,16 +63,18 @@ class GeminiProvider(LLMProvider):
         # Combine system and user prompts for Gemini
         combined_prompt = f"{system_prompt}\n\n---\n\n{user_prompt}"
         
-        generation_config = genai.GenerationConfig(
-            max_output_tokens=kwargs.get('max_tokens', self.max_tokens),
-            temperature=kwargs.get('temperature', self.temperature),
-        )
+        # Build config
+        config = {
+            "max_output_tokens": kwargs.get('max_tokens', self.max_tokens),
+            "temperature": kwargs.get('temperature', self.temperature),
+        }
         
         for attempt in range(max_retries):
             try:
-                response = self.model.generate_content(
-                    combined_prompt,
-                    generation_config=generation_config
+                response = self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=combined_prompt,
+                    config=config
                 )
                 
                 return response.text

@@ -19,6 +19,14 @@ def validate_command():
     - No deprecated .skill files exist
     - PROFILE.md.template exists for prompt skills
     """
+    # Skills that use local libraries only (no API keys needed)
+    LIBRARY_ONLY_SKILLS = {
+        'scraper',       # Crawl4AI (open-source library)
+        'coursepackager', # ReportLab (local PDF generation)
+        'videoeditor',   # FFmpeg (local binary)
+        'presenter',     # python-pptx (local library)
+    }
+    
     print("Checking skill integrity...\n")
     
     loader = SkillLoader()
@@ -57,8 +65,9 @@ def validate_command():
             if not any((skill_dir / "src").glob("*.py")):
                 warnings.append(f"  - {skill_name}: Has src/ directory but no Python files")
             
+            # Only check for .env.template if skill requires API keys (not library-only)
             env_template = skill_dir / ".env.template"
-            if not env_template.exists() and skill_name in loader.PYTHON_SKILLS:
+            if not env_template.exists() and skill_name in loader.PYTHON_SKILLS and skill_name not in LIBRARY_ONLY_SKILLS:
                 warnings.append(f"  - {skill_name}: Missing .env.template (API-dependent skill)")
         else:
             prompt_skills += 1
@@ -83,6 +92,7 @@ def validate_command():
         print(f"\n⚠ {len(warnings)} warnings found:")
         for warning in warnings:
             print(warning)
+        print("\nℹ️  Note: Some Python skills use local libraries and don't require .env.template")
     
     if issues:
         print(f"\n✗ {len(issues)} issues found:")

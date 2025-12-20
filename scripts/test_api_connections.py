@@ -43,7 +43,7 @@ API_TESTS = {
     "Gemini": {
         "credential": "GEMINI_API_KEY",
         "test_func": "test_gemini",
-        "import_check": "google.generativeai"
+        "import_check": "google.genai"
     },
     "Craft": {
         "credential": "CRAFT_API_ENDPOINT",
@@ -166,26 +166,29 @@ def test_elevenlabs(verbose=False):
 def test_gemini(verbose=False):
     """Test Google Gemini API connection."""
     try:
-        import google.generativeai as genai
+        from google import genai
         api_key = os.getenv("GEMINI_API_KEY")
         
         if not api_key:
             return False, "Credential not set"
         
-        genai.configure(api_key=api_key)
-        # List models to verify API key
-        models = genai.list_models()
-        model_list = list(models)
+        client = genai.Client(api_key=api_key)
+        # Test simple generation to verify API key
+        response = client.models.generate_content(
+            model="gemini-2.0-flash-exp",
+            contents="Test",
+            config={"max_output_tokens": 10}
+        )
         
-        if model_list:
+        if response.text:
             if verbose:
-                return True, f"API valid, {len(model_list)} models available"
+                return True, "API valid, connection successful"
             return True, "API key valid"
-        return False, "No models found"
+        return False, "No response from API"
     
     except Exception as e:
         error_msg = str(e)
-        if "API key not valid" in error_msg:
+        if "API key not valid" in error_msg or "authentication" in error_msg.lower():
             return False, "Invalid API key"
         return False, str(e)[:50]
 

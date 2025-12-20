@@ -273,7 +273,8 @@ def _expand_query_terms(query: str) -> List[str]:
     synonyms = {
         'voice': ['audio', 'speech', 'tts', 'narration', 'voiceover', 'spoken'],
         'audio': ['voice', 'sound', 'speech', 'tts', 'narration'],
-        'podcast': ['audio', 'voice', 'narration', 'voiceover', 'spoken'],
+        'podcast': ['audio', 'voice', 'narration', 'voiceover', 'spoken', 'podcasts'],
+        'podcasts': ['podcast', 'audio', 'voice', 'narration', 'voiceover', 'spoken'],
         'write': ['writing', 'content', 'author', 'compose', 'create'],
         'writing': ['write', 'content', 'author', 'compose', 'create'],
         'image': ['visual', 'graphic', 'picture', 'illustration', 'design'],

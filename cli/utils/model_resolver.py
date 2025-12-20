@@ -9,9 +9,9 @@ class ModelResolver:
     
     MODEL_ALIASES = {
         'claude-3-opus-latest': 'claude-3-opus-20240229',
-        'claude-3-sonnet-latest': 'claude-3-5-sonnet-20241022',
-        'claude-3-haiku-latest': 'claude-3-5-haiku-20241022',
-        'claude-4.5-sonnet': 'claude-3-5-sonnet-20241022'
+        'claude-3-sonnet-latest': 'claude-sonnet-4-20250514',
+        'claude-3-haiku-latest': 'claude-sonnet-4-20250514',
+        'claude-4.5-sonnet': 'claude-sonnet-4-20250514'
     }
     
     _resolved_cache: Dict[str, str] = {}

@@ -7,6 +7,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.2.1] - 2024-12-20
+
+### Summary
+Critical patch release: Fixes model 404 errors, workflow detection, discovery scoring, and documentation accuracy. All prompt-based skills now functional with Claude Sonnet 4.
+
+### Fixed
+- **CRITICAL: Model 404 errors** - Updated model aliases to use `claude-sonnet-4-20250514`
+  - All Claude 3.5 Sonnet/Haiku models deprecated by Anthropic (returned 404 errors)
+  - Updated `MODEL_ALIASES` in `cli/utils/model_resolver.py`:
+    - `claude-3-sonnet-latest` → `claude-sonnet-4-20250514` (was `claude-3-5-sonnet-20241022`)
+    - `claude-3-haiku-latest` → `claude-sonnet-4-20250514` (was `claude-3-5-haiku-20241022`)
+    - `claude-4.5-sonnet` → `claude-sonnet-4-20250514` (was `claude-3-5-sonnet-20241022`)
+  - Fixes: All 30 prompt-based skills (researcher, author, copywriter, etc.) now execute successfully
+  
+- **CRITICAL: Workflow detection bug** - `superskills workflow list` now finds folder-based workflows
+  - Extended `list_workflows()` to scan `workflows/` root directory for `{name}/workflow.yaml` pattern
+  - Previously only checked `workflows/definitions/*.yaml` and `workflows/custom/*.yaml`
+  - Users' personal workflows (e.g., `workflows/podcast-generation/`) now properly detected
+  - Fixes: "No workflows found" error when workflows exist
+  
+- **Discovery scoring discrepancy** - Plural query forms now return correct relevance scores
+  - Added bidirectional synonym mappings for "podcast" ↔ "podcasts"
+  - Query "podcasts" now scores 70.00 for narrator (was 11.00)
+  - Enhanced `_expand_query_terms()` in `cli/commands/discover.py`
+  - Consistent results regardless of singular/plural form
+  
+- **Documentation accuracy** - Corrected all `--json` flag references to `--format json`
+  - Updated 5 instances in `README.md` (lines 343, 349, 360, 362, 384)
+  - Updated 24 instances in `docs/IDE_INTEGRATION.md`
+  - All documented examples now work exactly as shown
+  - Eliminates user confusion from copy-paste errors
+
+### Changed
+- Model resolver fallbacks now point to Claude Sonnet 4 (latest stable model)
+- Workflow listing now includes "user" type for personal workflows in `workflows/` root
+
+### Technical Details
+- Model migration: Claude 3.5 family end-of-life confirmed via Anthropic API
+- Workflow detection: Maintains backward compatibility with definitions/custom pattern
+- Discovery scoring: Added 2 new synonym entries without changing algorithm
+- Documentation: Global replacements verified for syntax accuracy
+
+### Verification
+```bash
+# Model fix verification
+superskills call researcher "test query"
+# Expected: No 404 error, uses claude-sonnet-4-20250514
+
+# Workflow fix verification  
+superskills workflow list
+# Expected: Shows podcast-generation and other user workflows
+
+# Discovery fix verification
+superskills discover --query "podcasts"
+# Expected: narrator scores ~70.00 (similar to "podcast")
+
+# Documentation fix verification
+superskills call author "test" --format json
+# Expected: Returns JSON-formatted output
+```
+
 ## [2.2.0] - 2024-12-20
 
 ### Summary

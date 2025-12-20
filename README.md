@@ -340,13 +340,13 @@ superskills export --output .cursorrules-skills.json
 superskills discover --query "voice generation"
 
 # Use JSON output for structured responses
-superskills call author "Write about AI" --json
+superskills call author "Write about AI" --format json
 ```
 
 ### Key Features
 
 - **Intelligent Delegation**: IDE AI automatically routes tasks to specialized skills
-- **JSON Output Mode**: Structured responses for easy parsing (`--json` flag)
+- **JSON Output Mode**: Structured responses for easy parsing (`--format json` parameter)
 - **Stdin Support**: Pipe workflows and chain skills
 - **Skill Discovery**: Find skills by capability or task description
 - **Metadata Export**: Generate skill reference for IDE AI consumption
@@ -357,9 +357,9 @@ superskills call author "Write about AI" --json
 User: "Research AI trends and write an article"
   ↓
 IDE AI:
-  1. superskills call researcher "AI automation trends" --json
+  1. superskills call researcher "AI automation trends" --format json
   2. Parse JSON output
-  3. superskills call author --input research.md --json
+  3. superskills call author --input research.md --format json
   4. Refine and deliver
 ```
 
@@ -381,7 +381,7 @@ superskills call researcher "AI automation trends"
 superskills call author --input research.md --output article.md
 
 # JSON output mode (for IDE integration)
-superskills call author "Write about AI" --json
+superskills call author "Write about AI" --format json
 
 # Execute workflow
 superskills run <workflow-name>

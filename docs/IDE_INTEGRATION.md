@@ -40,7 +40,7 @@ superskills export --output .cursorrules-skills.json
 superskills discover --query "voice generation"
 
 # Test JSON output mode
-superskills call researcher "AI trends" --json
+superskills call researcher "AI trends" --format json
 ```
 
 ## Delegation Strategy
@@ -89,12 +89,12 @@ superskills call author --input research.md --output article.md
 
 **JSON output (recommended for IDE integration):**
 ```bash
-superskills call author "Write about AI" --json
+superskills call author "Write about AI" --format json
 ```
 
 **Stdin piping:**
 ```bash
-echo "AI automation trends" | superskills call researcher --json
+echo "AI automation trends" | superskills call researcher --format json
 ```
 
 ### Workflow Execution
@@ -102,16 +102,16 @@ echo "AI automation trends" | superskills call researcher --json
 **Pre-built workflows:**
 ```bash
 # Content creation pipeline
-superskills run content-creation --topic "AI coaching" --json
+superskills run content-creation --topic "AI coaching" --format json
 
 # Podcast generation
-superskills run podcast-generation --input script.txt --json
+superskills run podcast-generation --input script.txt --format json
 
 # Training material development
-superskills run training-material --input recording.mp3 --json
+superskills run training-material --input recording.mp3 --format json
 
 # Client engagement
-superskills run client-engagement --input "https://client.com" --json
+superskills run client-engagement --input "https://client.com" --format json
 ```
 
 **Dry-run (preview without execution):**
@@ -123,12 +123,12 @@ superskills run content-creation --topic "topic" --dry-run
 
 **Find skills by capability:**
 ```bash
-superskills discover --query "voice generation" --json
+superskills discover --query "voice generation" --format json
 ```
 
 **Find workflow for task:**
 ```bash
-superskills discover --task "research and write article" --json
+superskills discover --task "research and write article" --format json
 ```
 
 ### Metadata Export
@@ -154,7 +154,7 @@ superskills export --has-api
 
 ## JSON Output Format
 
-All commands support `--json` flag for structured, parseable responses.
+All commands support `--format json` for structured, parseable responses.
 
 ### Skill Call Response
 
@@ -222,13 +222,13 @@ All commands support `--json` flag for structured, parseable responses.
 **IDE AI orchestration:**
 ```bash
 # 1. Research
-research_output=$(superskills call researcher "AI automation trends" --json)
+research_output=$(superskills call researcher "AI automation trends" --format json)
 
 # 2. Parse and extract research
 research_text=$(echo "$research_output" | jq -r '.output')
 
 # 3. Write article
-article_output=$(superskills call author --input <(echo "$research_text") --json)
+article_output=$(superskills call author --input <(echo "$research_text") --format json)
 
 # 4. Review and refine (direct handling by IDE AI)
 # ... apply any code/formatting changes ...
@@ -243,7 +243,7 @@ article_output=$(superskills call author --input <(echo "$research_text") --json
 **IDE AI orchestration:**
 ```bash
 # 1. Use content-creation workflow
-script=$(superskills run content-creation --topic "productivity" --json | jq -r '.output')
+script=$(superskills run content-creation --topic "productivity" --format json | jq -r '.output')
 
 # 2. Review script, make adjustments
 # ... IDE AI can refine script directly ...
@@ -261,10 +261,10 @@ superskills call narrator-podcast --input <(echo "$script") --format json
 **IDE AI orchestration:**
 ```bash
 # 1. Discover relevant skill
-skill=$(superskills discover --query "web extraction" --json | jq -r '.results[0].name')
+skill=$(superskills discover --query "web extraction" --format json | jq -r '.results[0].name')
 
 # 2. Execute skill
-superskills call "$skill" "https://example.com" --json
+superskills call "$skill" "https://example.com" --format json
 ```
 
 ## Context Handoff Best Practices
@@ -274,7 +274,7 @@ superskills call "$skill" "https://example.com" --json
 ✅ **Good:**
 - Pass minimal necessary context
 - Use temp files or stdin for large inputs
-- Always use `--json` for structured responses
+- Always use `--format json` for structured responses
 - Sanitize sensitive data before delegation
 
 ❌ **Avoid:**
@@ -345,28 +345,28 @@ superskills call "$skill" "https://example.com" --json
 ```yaml
 Steps: researcher → strategist → author → editor
 Use: Blog posts, articles, content marketing
-Command: superskills run content-creation --topic "<topic>" --json
+Command: superskills run content-creation --topic "<topic>" --format json
 ```
 
 ### Podcast Generation
 ```yaml
 Steps: copywriter → narrator
 Use: Audio content, voiceovers, podcasts
-Command: superskills run podcast-generation --input script.txt --json
+Command: superskills run podcast-generation --input script.txt --format json
 ```
 
 ### Training Material
 ```yaml
 Steps: transcriber → author → editor
 Use: Course creation, training docs
-Command: superskills run training-material --input recording.mp3 --json
+Command: superskills run training-material --input recording.mp3 --format json
 ```
 
 ### Client Engagement
 ```yaml
 Steps: scraper → researcher → copywriter → sales
 Use: Lead generation, sales outreach
-Command: superskills run client-engagement --input "<url>" --json
+Command: superskills run client-engagement --input "<url>" --format json
 ```
 
 ## Error Handling
@@ -410,7 +410,7 @@ import json
 import subprocess
 
 result = subprocess.run(
-    ['superskills', 'call', 'author', 'Write about AI', '--json'],
+    ['superskills', 'call', 'author', 'Write about AI', '--format', 'json'],
     capture_output=True,
     text=True
 )
@@ -462,7 +462,7 @@ Verdent provides advanced agent capabilities.
 
 1. Verify installation: `superskills --version`
 2. Check skill exists: `superskills list`
-3. Test directly: `superskills call <skill> "test" --json`
+3. Test directly: `superskills call <skill> "test" --format json`
 4. Check logs: `~/.superskills/logs/`
 
 ### API errors
@@ -473,8 +473,8 @@ Verdent provides advanced agent capabilities.
 
 ### JSON parsing errors
 
-1. Ensure `--json` flag is used
-2. Validate JSON: `superskills call skill "test" --json | jq`
+1. Ensure `--format json` is used
+2. Validate JSON: `superskills call skill "test" --format json | jq`
 3. Check for stderr output mixed with stdout
 
 ### Performance issues
@@ -511,16 +511,16 @@ variables:
 
 **Execute:**
 ```bash
-superskills run my-workflow --topic "AI trends" --json
+superskills run my-workflow --topic "AI trends" --format json
 ```
 
 ### Skill Chaining
 
 ```bash
 # Chain skills with pipes
-superskills call researcher "AI trends" --json \
+superskills call researcher "AI trends" --format json \
   | jq -r '.output' \
-  | superskills call author --json
+  | superskills call author --format json
 ```
 
 ### Batch Operations
@@ -528,7 +528,7 @@ superskills call researcher "AI trends" --json \
 ```bash
 # Process multiple inputs
 for topic in "AI" "ML" "Automation"; do
-  superskills call researcher "$topic" --json --output "${topic}_research.json"
+  superskills call researcher "$topic" --format json --output "${topic}_research.json"
 done
 ```
 

@@ -243,6 +243,30 @@ class WorkflowEngine:
                 except Exception as e:
                     print(f"Warning: Failed to load {workflow_file}: {e}")
         
+        # Scan folder-based workflows in workflows/ root
+        workflows_root = get_workflows_dir()
+        if workflows_root.exists():
+            for workflow_folder in workflows_root.iterdir():
+                if not workflow_folder.is_dir():
+                    continue
+                if workflow_folder.name in ['definitions', 'custom']:
+                    continue  # Already scanned above
+                
+                workflow_file = workflow_folder / 'workflow.yaml'
+                if workflow_file.exists():
+                    try:
+                        with open(workflow_file, 'r') as f:
+                            workflow = yaml.safe_load(f)
+                        
+                        workflows.append({
+                            'name': workflow.get('name', workflow_folder.name),
+                            'description': workflow.get('description', 'No description'),
+                            'type': 'user',
+                            'file': str(workflow_file)
+                        })
+                    except Exception as e:
+                        print(f"Warning: Failed to load {workflow_file}: {e}")
+        
         return workflows
     
     def watch_and_execute(self, workflow_name: str, interval: int = 1) -> int:

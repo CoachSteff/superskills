@@ -69,30 +69,53 @@ def discover_command(query: str = None, task: str = None, json_output: bool = Fa
 
 
 def _search_skills(query: str, skills: List) -> List[Dict]:
-    """Search skills by query with fuzzy matching."""
+    """Search skills by query with enhanced relevance scoring."""
     query_lower = query.lower()
     results = []
+    
+    # Get query synonyms for better matching
+    query_terms = _expand_query_terms(query_lower)
     
     for skill in skills:
         score = 0.0
         
-        if query_lower in skill.name.lower():
+        # Exact name match (highest priority)
+        if query_lower == skill.name.lower():
+            score += 15.0
+        elif query_lower in skill.name.lower():
             score += 10.0
         
+        # Get skill capabilities
+        capabilities = _get_skill_capabilities(skill.name)
+        
+        # Exact capability tag match (high priority)
+        for capability in capabilities:
+            if query_lower == capability.lower():
+                score += 12.0
+            elif query_lower in capability.lower():
+                score += 5.0
+        
+        # Synonym/related term matching
+        for term in query_terms:
+            for capability in capabilities:
+                if term in capability.lower():
+                    score += 7.0
+            if term in skill.description.lower():
+                score += 4.0
+            if term in skill.name.lower():
+                score += 6.0
+        
+        # Description keyword match
         if query_lower in skill.description.lower():
             score += 5.0
         
-        capabilities = _get_skill_capabilities(skill.name)
-        for capability in capabilities:
-            if query_lower in capability.lower():
-                score += 3.0
-        
+        # Multi-word query keyword matching
         keywords = _extract_keywords(query_lower)
         for keyword in keywords:
             if keyword in skill.description.lower():
                 score += 2.0
             if keyword in skill.name.lower():
-                score += 2.0
+                score += 3.0
         
         if score > 0:
             results.append({
@@ -177,21 +200,58 @@ def _suggest_workflow(task: str, skills: List) -> List[Dict]:
 
 
 def _get_skill_capabilities(skill_name: str) -> List[str]:
-    """Get capabilities for a skill."""
+    """Get capabilities for a skill with expanded terms."""
     capabilities = {
-        'author': ['writing', 'ghostwriting', 'content-creation', 'brand-voice'],
-        'narrator': ['voice-generation', 'text-to-speech', 'audio', 'podcast'],
-        'researcher': ['research', 'analysis', 'web-search', 'data-gathering'],
-        'designer': ['image-generation', 'ai-art', 'visual-design', 'brand-assets'],
-        'transcriber': ['transcription', 'speech-to-text', 'audio-processing'],
-        'editor': ['editing', 'proofreading', 'quality-control', 'refinement'],
-        'copywriter': ['marketing-copy', 'sales-messaging', 'persuasive-writing'],
-        'strategist': ['strategy', 'planning', 'frameworks', 'analysis'],
-        'scraper': ['web-scraping', 'data-extraction', 'content-harvesting'],
-        'marketer': ['social-media', 'scheduling', 'multi-platform-posting'],
-        'coach': ['coaching', 'session-design', 'client-guidance'],
-        'developer': ['code-generation', 'debugging', 'software-development'],
-        'translator': ['translation', 'localization', 'multilingual'],
+        # Core content creation
+        'author': ['writing', 'ghostwriting', 'content-creation', 'brand-voice', 'articles', 'blog', 'documentation'],
+        'copywriter': ['marketing-copy', 'sales-messaging', 'persuasive-writing', 'advertising', 'promotional'],
+        'editor': ['editing', 'proofreading', 'quality-control', 'refinement', 'polish', 'review'],
+        'strategist': ['strategy', 'planning', 'frameworks', 'analysis', 'positioning', 'roadmap'],
+        
+        # Voice and audio (narrator family)
+        'narrator': ['voice-generation', 'text-to-speech', 'audio', 'narration', 'voiceover', 'tts', 'speech'],
+        'narrator-podcast': ['podcast', 'voice', 'audio', 'narration', 'conversational', 'tts', 'speech'],
+        'narrator-meditation': ['meditation', 'voice', 'audio', 'calm', 'mindfulness', 'tts', 'relaxation'],
+        'narrator-educational': ['educational', 'voice', 'audio', 'training', 'learning', 'tts', 'instruction'],
+        'narrator-marketing': ['marketing', 'voice', 'audio', 'promotional', 'advertising', 'tts', 'commercial'],
+        'narrator-social': ['social-media', 'voice', 'audio', 'short-form', 'viral', 'tts', 'engaging'],
+        
+        # Audio processing
+        'transcriber': ['transcription', 'speech-to-text', 'audio-processing', 'stt', 'audio-to-text'],
+        
+        # Research and data
+        'researcher': ['research', 'analysis', 'web-search', 'data-gathering', 'investigation', 'sources'],
+        'scraper': ['web-scraping', 'data-extraction', 'content-harvesting', 'crawling', 'automation'],
+        
+        # Visual content
+        'designer': ['image-generation', 'ai-art', 'visual-design', 'brand-assets', 'graphics', 'visuals', 'illustration'],
+        
+        # Marketing and social
+        'marketer': ['social-media', 'scheduling', 'multi-platform-posting', 'distribution', 'publishing'],
+        'emailcampaigner': ['email', 'campaigns', 'newsletters', 'sendgrid', 'email-marketing', 'outreach'],
+        
+        # Coaching and consulting
+        'coach': ['coaching', 'session-design', 'client-guidance', 'mentoring', 'facilitation'],
+        'product': ['product-management', 'roadmap', 'features', 'prioritization', 'product-strategy'],
+        'sales': ['sales', 'outreach', 'prospecting', 'business-development', 'lead-generation'],
+        
+        # Technical
+        'developer': ['code-generation', 'debugging', 'software-development', 'programming', 'coding'],
+        'translator': ['translation', 'localization', 'multilingual', 'language', 'internationalization'],
+        
+        # Business operations
+        'risk-manager': ['risk-assessment', 'compliance', 'mitigation', 'risk-analysis', 'governance'],
+        'compliance-manager': ['compliance', 'regulations', 'audit', 'governance', 'policy'],
+        'legal': ['legal', 'contracts', 'agreements', 'legal-review', 'terms'],
+        'process-engineer': ['process-improvement', 'optimization', 'lean', 'six-sigma', 'efficiency'],
+        
+        # Documentation and knowledge
+        'knowledgebase': ['documentation', 'knowledge-management', 'wiki', 'information-architecture', 'kb'],
+        'coursepackager': ['course-creation', 'pdf', 'training-materials', 'educational-content', 'learning'],
+        'presenter': ['presentations', 'slides', 'powerpoint', 'keynote', 'slide-decks', 'ppt'],
+        
+        # Media production
+        'videoeditor': ['video-editing', 'ffmpeg', 'video-processing', 'multimedia', 'video-production'],
     }
     
     return capabilities.get(skill_name, [])
@@ -206,3 +266,37 @@ def _extract_keywords(query: str) -> List[str]:
     keywords = [w for w in words if w not in stop_words and len(w) > 2]
     
     return keywords
+
+
+def _expand_query_terms(query: str) -> List[str]:
+    """Expand query with synonyms and related terms for better matching."""
+    synonyms = {
+        'voice': ['audio', 'speech', 'tts', 'narration', 'voiceover', 'spoken'],
+        'audio': ['voice', 'sound', 'speech', 'tts', 'narration'],
+        'podcast': ['audio', 'voice', 'narration', 'voiceover', 'spoken'],
+        'write': ['writing', 'content', 'author', 'compose', 'create'],
+        'writing': ['write', 'content', 'author', 'compose', 'create'],
+        'image': ['visual', 'graphic', 'picture', 'illustration', 'design'],
+        'visual': ['image', 'graphic', 'picture', 'illustration', 'design'],
+        'design': ['visual', 'image', 'graphic', 'create', 'layout'],
+        'research': ['investigate', 'analyze', 'study', 'explore', 'search'],
+        'edit': ['editing', 'review', 'polish', 'refine', 'improve'],
+        'video': ['multimedia', 'film', 'recording', 'footage', 'media'],
+        'translate': ['translation', 'localize', 'language', 'multilingual'],
+        'code': ['coding', 'programming', 'development', 'software', 'script'],
+        'email': ['mail', 'newsletter', 'campaign', 'message', 'outreach'],
+        'presentation': ['slides', 'powerpoint', 'keynote', 'deck', 'ppt'],
+        'course': ['training', 'educational', 'learning', 'tutorial', 'lesson'],
+        'transcribe': ['transcription', 'speech-to-text', 'stt', 'audio-to-text'],
+    }
+    
+    # Start with the original query terms
+    expanded = set(_extract_keywords(query))
+    
+    # Add synonyms for each term
+    for term in list(expanded):
+        if term in synonyms:
+            expanded.update(synonyms[term])
+    
+    return list(expanded)
+

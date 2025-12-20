@@ -21,7 +21,10 @@ See [Troubleshooting](#troubleshooting).
 
 **Setup (one-time):**
 ```bash
-# Set API keys
+# 1. Copy workflow templates
+cp -r workflows_templates workflows
+
+# 2. Set API keys
 export ANTHROPIC_API_KEY=sk-ant-...
 export ELEVENLABS_API_KEY=...
 
@@ -197,12 +200,24 @@ For custom voice (e.g., "CoachSteff" voice profile):
    }
    ```
 
+## Available Workflows
+
+After copying templates (`cp -r workflows_templates workflows`), you'll have access to:
+
+1. **podcast-generation** - Markdown scripts → Professional podcast audio
+2. **content-creation** - Topic → Publication-ready article (researcher → strategist → author → editor)
+3. **training-material** - Recordings → Structured training guides
+
+See [workflows_templates/README.md](../workflows_templates/README.md) for complete documentation.
+
 ## File Locations
 
-- **Input:** `workflows/podcast-generation/input/`
-- **Output:** `workflows/podcast-generation/output/`
+- **Templates:** `workflows_templates/` (read-only examples, in git)
+- **Your Workflows:** `workflows/` (personal, gitignored)
+- **Input:** `workflows/{workflow-name}/input/`
+- **Output:** `workflows/{workflow-name}/output/`
 - **Logs:** Run with `superskills --verbose run ...`
-- **Config:** `workflows/podcast-generation/workflow.yaml`
+- **Config:** `workflows/{workflow-name}/workflow.yaml`
 
 ## Example: Complete Podcast Generation
 
@@ -227,7 +242,7 @@ Expected output files:
 
 ## See Also
 
-- [README.md](README.md) - Complete documentation
-- [CLI Setup Guide](dev/CLI_SETUP.md) - Detailed installation
-- [Podcast Workflow](workflows/podcast-generation/README.md) - Workflow specifics
-- [CHANGELOG.md](CHANGELOG.md) - Recent changes and migration guide
+- [README.md](../README.md) - Complete documentation
+- [CLI Setup Guide](../dev/CLI_SETUP.md) - Detailed installation
+- [Workflow Templates](../workflows_templates/README.md) - All available workflows
+- [CHANGELOG.md](../CHANGELOG.md) - Recent changes and migration guide

@@ -8,27 +8,37 @@ The Superskills CLI supports natural language input, allowing you to interact wi
 
 ### Basic Syntax
 
-The CLI supports natural language in two ways:
+Natural language mode requires the explicit `prompt` subcommand:
 
-**1. Auto-detect (Recommended):**
+**Use the `prompt` command:**
 ```bash
-# Just type naturally - no command needed!
-superskills find the Superworker executive summary
-superskills list all available skills
-superskills run copywriter on summary.txt
+# Correct - use 'prompt' for natural language
+superskills prompt "find the Superworker executive summary"
+superskills prompt "list all available skills"
+superskills prompt "what skills help with podcasts"
+superskills prompt "run copywriter on summary.txt"
 ```
 
-**2. Explicit `prompt` command:**
+**For faster execution, use exact commands:**
 ```bash
-# Use when auto-detect might be ambiguous
-superskills prompt find the summary
-superskills prompt what skills help with podcasts
+# Direct commands (no LLM call, instant execution)
+superskills list
+superskills show narrator
+superskills discover --query "podcasts"
+superskills call copywriter "Write about AI"
 ```
+
+**Why `prompt` is required:**
+- Shell parsing splits multi-word input before the CLI receives it
+- `superskills find the summary` becomes `["find", "the", "summary"]` separate arguments
+- The `prompt` subcommand explicitly signals: "treat everything after as natural language"
+- This ensures reliable natural language processing
 
 **How It Works:**
-- If you type a command that doesn't match known commands (list, show, call, etc.), it's automatically treated as natural language
-- The `prompt` command always triggers natural language processing
-- All existing commands work exactly as before
+- The `prompt` command takes everything after it as a single natural language query
+- LLM parses the intent and routes to appropriate command
+- Confidence-based execution (high confidence = auto-execute, medium = confirm, low = suggest alternatives)
+- All existing exact commands work as before
 
 ### Configuration
 
@@ -76,7 +86,7 @@ intent:
 
 ### Search for Files
 ```bash
-superskills find the Superworker executive summary
+superskills prompt "find the Superworker executive summary"
 → Searching files for: Superworker executive summary
 Found 2 matches:
   1. ~/Documents/Superworker/executive_summary.pdf
@@ -85,28 +95,28 @@ Found 2 matches:
 
 ### Execute a Skill
 ```bash
-superskills run copywriter on summary.txt
+superskills prompt "run copywriter on summary.txt"
 → Execute copywriter skill with file input
 [... skill output ...]
 ```
 
 ### List Skills
 ```bash
-superskills show me all skills
+superskills prompt "show me all skills"
 → List all available skills
 [... list output ...]
 ```
 
 ### Discover Skills by Capability
 ```bash
-superskills what skills can help with podcasts?
+superskills prompt "what skills can help with podcasts?"
 → Discover skills related to podcasts
 [... matching skills ...]
 ```
 
 ### Configuration
 ```bash
-superskills set temperature to 0.5
+superskills prompt "set temperature to 0.5"
 I interpret this as:
   Set API temperature configuration
 
@@ -118,14 +128,6 @@ Parameters: {
 }
 
 Proceed? [Y/n]
-```
-
-### Using Explicit `prompt` Command
-```bash
-# When you want to be explicit
-superskills prompt find files
-superskills prompt what can help me create content
-superskills prompt list available workflows
 ```
 
 ## Confidence Levels
@@ -218,6 +220,22 @@ All existing commands work exactly as before:
 superskills list
 superskills show copywriter
 superskills call copywriter "Write a blog post"
+superskills discover --query "voice generation"
 ```
 
-Natural language is purely additive - quote your input to use it, don't quote for exact syntax.
+Natural language is purely additive - use `prompt` for natural language, use exact commands for direct access.
+
+## Known Limitations
+
+**Multi-word natural language requires `prompt`:**
+- **Why?** Shell splits arguments before CLI sees them
+- `superskills find my files` → `["find", "my", "files"]` (three separate args)
+- `superskills prompt "find my files"` → natural language query
+
+**Workaround:**
+- Always use `prompt` for natural language
+- Use exact commands for faster, direct execution
+
+**Future improvement:**
+- Auto-detection for single unknown words may trigger suggestions
+- Full multi-word auto-detection limited by shell behavior

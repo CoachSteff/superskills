@@ -91,15 +91,26 @@ pip install --user -e .
    # Edit PROFILE.md with your brand voice, expertise, and style
    ```
 
-7. **Try natural language mode (v2.1+):**
+7. **Set up workflows (optional):**
    ```bash
-   # Just type naturally!
-   superskills find the Superworker executive summary
-   superskills list all available skills
-   superskills run copywriter on summary.txt
+   # Copy workflow templates to create your personal workflows
+   cp -r workflows_templates workflows
    
-   # Or use explicit 'prompt' command
-   superskills prompt what can help me create podcasts
+   # Verify workflows are available
+   superskills workflow list
+   ```
+
+8. **Try natural language mode (v2.1+):**
+   ```bash
+   # Use the 'prompt' command for natural language
+   superskills prompt "find the Superworker executive summary"
+   superskills prompt "what can help me create podcasts"
+   superskills prompt "list all available skills"
+   
+   # For faster execution, use exact commands:
+   superskills list
+   superskills discover --query "podcasts"
+   superskills show narrator
    ```
    See [NATURAL_LANGUAGE.md](docs/NATURAL_LANGUAGE.md) for details.
 
@@ -132,6 +143,13 @@ export PATH="$HOME/.local/bin:$PATH"
 
 ### Quick Example: Generate Podcast
 
+**First-time setup:**
+```bash
+# Copy workflow templates (one-time setup)
+cp -r workflows_templates workflows
+```
+
+**Generate podcast:**
 ```bash
 # 1. Place your script in the workflow input folder
 cp your-script.md workflows/podcast-generation/input/
@@ -150,7 +168,7 @@ superskills run podcast-generation --input your-script.md
 # 3. Output appears in: workflows/podcast-generation/output/
 ```
 
-See [QUICKSTART.md](docs/QUICKSTART.md) for more examples.
+See [QUICKSTART.md](docs/QUICKSTART.md) for more examples and [workflows_templates/README.md](workflows_templates/README.md) for all available workflows.
 
 ### Using with Claude Desktop
 

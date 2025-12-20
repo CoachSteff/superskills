@@ -1,0 +1,32 @@
+name: podcast-generation
+description: Generate professional podcast audio from markdown scripts
+
+# Input/Output directories (relative to this workflow.yaml file)
+io:
+  input_dir: input
+  output_dir: output
+
+# Workflow variables (optional)
+variables:
+  voice_style: podcast  # podcast, meditation, educational, marketing, social
+
+# Processing steps
+steps:
+  - name: enhance_script
+    skill: copywriter
+    input: ${input_file}
+    output: enhanced_script
+    config:
+      # Optimize script for natural spoken delivery
+      optimization_focus: conversational
+      target_format: podcast_script
+  
+  - name: generate_audio
+    skill: narrator-podcast
+    input: ${enhanced_script}
+    output: audio_file
+    config:
+      # Use podcast-optimized voice settings
+      voice_profile: ${voice_style}
+      output_format: mp3
+      quality: high

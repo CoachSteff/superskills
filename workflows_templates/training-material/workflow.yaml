@@ -1,0 +1,46 @@
+name: training-material
+description: Convert recordings into structured training content
+
+io:
+  input_dir: input
+  output_dir: output
+
+variables:
+  training_type: "workshop"  # workshop, webinar, course, tutorial
+  include_timestamps: true
+
+steps:
+  - name: transcribe
+    skill: transcriber
+    input: ${input_file}
+    output: transcript
+    config:
+      provider: whisper  # or assemblyai
+      include_speaker_labels: true
+      include_timestamps: ${include_timestamps}
+      language: auto
+  
+  - name: structure
+    skill: author
+    input: |
+      Transcript: ${transcript}
+      Training Type: ${training_type}
+      
+      Task: Transform this transcript into structured training documentation with:
+      - Clear learning objectives
+      - Key concepts section
+      - Step-by-step procedures
+      - Actionable takeaways
+      - FAQ (common questions from transcript)
+    output: structured_content
+    config:
+      format: training_guide
+  
+  - name: polish
+    skill: editor
+    input: ${structured_content}
+    output: final_training_material
+    config:
+      review_type: instructional
+      optimize_for_learning: true
+      check_clarity: true

@@ -43,8 +43,8 @@ CREDENTIALS = {
         "ELEVENLABS_VOICE_ID": "ElevenLabs Voice ID"
     },
     "Marketer": {
-        "POSTIZ_API_KEY": "Postiz API",
-        "POSTIZ_WORKSPACE_ID": "Postiz Workspace"
+        # Note: Marketer now uses Notion+n8n workflow (see superskills/marketer/SKILL.md)
+        # No dedicated API credentials required - uses Notion API Key below
     },
     "Planner": {
         "MICROSOFT_CLIENT_ID": "Microsoft Azure Client ID",
@@ -90,6 +90,15 @@ total_credentials = 0
 for skill, creds in CREDENTIALS.items():
     print(f"📦 {skill}")
     print("-" * 70)
+    
+    # Special handling for workflow-based skills
+    if not creds:
+        print(f"  ℹ️  This skill uses workflow-based integration (no API keys required)")
+        if skill == "Marketer":
+            print(f"  📖 Uses Notion+n8n workflow - see superskills/marketer/SKILL.md")
+            print(f"  🔗 Requires: Notion API Key (see 'Notion' section)")
+        print()
+        continue
     
     skill_found = 0
     for key, description in creds.items():

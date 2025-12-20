@@ -1,0 +1,24 @@
+# SuperSkills Helper Profile
+
+This profile is minimal since the helper skill provides general guidance and doesn't need customization for personal voice or brand.
+
+## Usage Context
+
+The helper skill provides information about:
+- CLI commands and usage
+- Setup and configuration
+- Profile creation for other skills
+- Workflow design
+- Troubleshooting
+
+## Response Style
+
+- Clear, accessible language
+- Step-by-step instructions
+- Specific commands and file paths
+- Relevant examples
+- Encouraging and supportive tone
+
+## Notes
+
+The helper skill uses built-in knowledge of SuperSkills and doesn't require user-specific customization.

@@ -7,6 +7,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.0] - 2024-12-20
+
+### Summary
+Feature release: Introduces the SuperSkills Helper skill - a comprehensive assistant for usage guidance, setup, profile creation, workflow design, and troubleshooting. Enhances user experience with expert guidance for all SuperSkills features.
+
+### Added
+- **SuperSkills Helper Skill** - Expert assistant for all SuperSkills usage
+  - Comprehensive usage guidance for all CLI commands
+  - Step-by-step setup assistance (installation, API keys, initialization)
+  - Profile creation guidance with examples and templates
+  - Workflow design support with YAML validation and examples
+  - Troubleshooting diagnostics for common issues
+  - 5 detailed example scenarios (first-time setup, profile creation, workflow design, error resolution, skill discovery)
+  - Structured output templates for consistent, helpful responses
+  - Knowledge base covering CLI commands, configuration, skill system, workflows, and common problems
+  - Discoverable via `superskills discover --query "help"` (score: 30.00)
+  - Accessible via natural language: `superskills prompt "help me get started"`
+  - Located: `/superskills/helper/SKILL.md` (1,454 lines)
+
+### Changed
+- Total skill count: 41 → 42 skills (30 prompt-based + 12 Python-powered)
+- Discovery system now includes helper skill with high relevance for help/setup/troubleshooting queries
+
+### Technical Details
+- Skill type: Prompt-based (no Python dependencies)
+- Auto-discovered by existing skill loader
+- Includes PROFILE.md.template (minimal, guidance-focused)
+- No CLI code changes required
+- Fully integrated with intent routing system
+
+### Use Cases
+```bash
+# Get started with SuperSkills
+echo "How do I get started?" | superskills call helper
+
+# Learn about profiles
+echo "Help me create a profile for copywriter" | superskills call helper
+
+# Design a workflow
+echo "I want to create a workflow for blog posts" | superskills call helper
+
+# Troubleshoot errors
+echo "I'm getting a model 404 error" | superskills call helper
+
+# Discover via search
+superskills discover --query "troubleshooting"
+```
+
+### Verification
+```bash
+# Validate helper skill
+superskills validate
+# Expected: 42 skills validated (12 Python, 30 Prompt)
+
+# Check discovery
+superskills show helper
+# Expected: Full skill details with PROFILE.md template
+
+# Test execution
+echo "How do I use SuperSkills?" | superskills call helper
+# Expected: Comprehensive getting-started guide
+
+# Search discoverability
+superskills discover --query "help"
+# Expected: helper skill ranked first (score: 30.00)
+```
+
+### Impact
+- **User Onboarding:** Simplified first-time user experience with guided setup
+- **Self-Service Support:** Users can resolve common issues without external documentation
+- **Profile Adoption:** Clearer guidance increases PROFILE.md customization
+- **Workflow Creation:** Lower barrier to creating custom workflows
+- **Discovery:** Easier to understand and leverage SuperSkills features
+
 ## [2.2.1] - 2024-12-20
 
 ### Summary

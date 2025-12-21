@@ -82,7 +82,7 @@ Major feature release: Introduces Gemini 3 Flash as default provider, adds compr
   - Added `superskills test` usage examples
   - Updated PR checklist to use new test command
 
-- **Total Skills**: 42 → 43 skills (30 prompt + 13 Python-powered)
+- **Total Skills**: 47 → 48 skills (30 prompt + 18 Python-powered)
 
 ### Fixed
 - **Model 404 Errors**

@@ -5,7 +5,7 @@ python-dotenv>=1.0.0
 # AI/ML Services
 openai>=1.0.0              # Transcriber, QuizMaker, Summarizer
 anthropic>=0.7.0           # Alternative summarization
-google-generativeai>=0.3.0 # Designer (Gemini Imagen)
+google-genai>=0.2.0         # Gemini API (Designer, LLM provider)
 elevenlabs>=0.2.0          # Narrator (text-to-speech)
 
 # Web Scraping

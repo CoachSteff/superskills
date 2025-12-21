@@ -14,7 +14,7 @@ Privacy-first audio/video transcription using local Whisper models. Zero cloud d
 ## Quick Start
 
 ```python
-from superskills.transcriber_local.src import Local Transcriber
+from superskills.transcriber_local.src import LocalTranscriber
 
 # Initialize with your preferred model
 transcriber = LocalTranscriber(model_size="small")

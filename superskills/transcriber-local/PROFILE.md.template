@@ -1,0 +1,30 @@
+# User Profile
+## Privacy & Security Focus
+**Name**: [Your Name/Brand]
+**Role**: [Privacy-Conscious Content Creator / Compliance Officer / Field Researcher]
+
+## Transcription Preferences
+- **Privacy Level**: [High / Medium / Standard]
+- **Typical Content**: [Client Sessions / Field Interviews / Medical Records / Legal Depositions]
+- **Volume**: [Hours per week]
+- **Quality vs Speed**: [Accuracy Priority / Balanced / Speed Priority]
+
+## Hardware Configuration
+- **Device**: [CPU Only / NVIDIA GPU / Apple Silicon]
+- **Preferred Model**: [tiny / base / small / medium / large]
+- **Batch Processing**: [Yes / No]
+
+## Compliance Requirements
+- **Frameworks**: [HIPAA / GDPR / SOC 2 / None]
+- **Data Retention**: [Delete After Processing / Archive Locally / Custom]
+- **Audit Trail**: [Required / Not Required]
+
+## Integration Preferences
+- **Output Formats**: [TXT / JSON / SRT / VTT]
+- **Downstream Skills**: [author / editor / coursepackager / narrator]
+- **Typical Workflow**: [Describe your usual transcription → editing → publishing flow]
+
+## Example Use Cases
+1. [e.g., "Client coaching sessions - never transmitted to cloud"]
+2. [e.g., "Field research interviews in remote locations"]
+3. [e.g., "Medical dictation requiring HIPAA compliance"]

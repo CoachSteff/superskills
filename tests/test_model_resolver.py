@@ -14,20 +14,39 @@ from cli.utils.model_resolver import ModelResolver
 def test_model_aliases():
     print("Testing MODEL_ALIASES...")
     
-    expected_aliases = {
-        'claude-3-opus-latest': 'claude-3-opus-20240229',
-        'claude-3-sonnet-latest': 'claude-3-5-sonnet-20241022',
-        'claude-3-haiku-latest': 'claude-3-5-haiku-20241022',
-        'claude-4.5-sonnet': 'claude-3-5-sonnet-20241022'
+    # Load registry to get expected mappings
+    from cli.utils.model_resolver import ModelResolver
+    registry = ModelResolver._load_registry()
+    
+    expected_models = {
+        'claude-opus-latest': 'claude-3-opus-20240229',
+        'claude-sonnet-latest': 'claude-sonnet-4-20250514',
+        'claude-haiku-latest': 'claude-sonnet-4-20250514',
+        'gemini-flash-latest': 'gemini-3-flash-preview',
+        'gemini-flash-2': 'gemini-2.0-flash-exp',
     }
     
-    for alias, fallback in expected_aliases.items():
-        assert alias in ModelResolver.MODEL_ALIASES, f"Missing alias: {alias}"
-        assert ModelResolver.MODEL_ALIASES[alias] == fallback, \
-            f"Wrong fallback for {alias}: expected {fallback}, got {ModelResolver.MODEL_ALIASES[alias]}"
-        print(f"  ✓ {alias} -> {fallback}")
+    for model_name, expected_id in expected_models.items():
+        assert model_name in registry['models'], f"Missing model: {model_name}"
+        assert registry['models'][model_name]['id'] == expected_id, \
+            f"Wrong ID for {model_name}: expected {expected_id}, got {registry['models'][model_name]['id']}"
+        print(f"  ✓ {model_name} -> {expected_id}")
     
-    print("✅ All aliases configured correctly\n")
+    # Test legacy aliases
+    expected_aliases = {
+        'claude-3-opus-latest': 'claude-opus-latest',
+        'claude-3-sonnet-latest': 'claude-sonnet-latest',
+        'claude-3-haiku-latest': 'claude-haiku-latest',
+        'claude-4.5-sonnet': 'claude-sonnet-latest',
+    }
+    
+    for alias, target in expected_aliases.items():
+        assert alias in registry.get('legacy_aliases', {}), f"Missing legacy alias: {alias}"
+        assert registry['legacy_aliases'][alias] == target, \
+            f"Wrong mapping for {alias}: expected {target}, got {registry['legacy_aliases'][alias]}"
+        print(f"  ✓ Legacy alias: {alias} -> {target}")
+    
+    print("✅ All models and aliases configured correctly\n")
 
 
 def test_cache_functionality():
@@ -58,20 +77,20 @@ def test_non_aliased_model():
         print("  ⚠️  ANTHROPIC_API_KEY not set, skipping API test")
         print("  Testing cache-only behavior for non-aliased model...")
         
-        ModelResolver._resolved_cache['claude-3-5-sonnet-20241022'] = 'claude-3-5-sonnet-20241022'
-        result = ModelResolver._resolved_cache.get('claude-3-5-sonnet-20241022')
-        assert result == 'claude-3-5-sonnet-20241022', "Non-aliased model should pass through"
+        ModelResolver._resolved_cache['claude-sonnet-4-20250514'] = 'claude-sonnet-4-20250514'
+        result = ModelResolver._resolved_cache.get('claude-sonnet-4-20250514')
+        assert result == 'claude-sonnet-4-20250514', "Non-aliased model should pass through"
         print("  ✓ Non-aliased model passes through cache correctly")
         ModelResolver.clear_cache()
         print("✅ Non-aliased model test passed (cache-only)\n")
         return
     
     try:
-        result = ModelResolver.resolve('claude-3-5-sonnet-20241022', api_key)
-        assert result == 'claude-3-5-sonnet-20241022', "Non-aliased model should pass through"
-        print(f"  ✓ Non-aliased model: claude-3-5-sonnet-20241022 -> {result}")
+        result = ModelResolver.resolve('claude-sonnet-4-20250514', api_key)
+        assert result == 'claude-sonnet-4-20250514', "Non-aliased model should pass through"
+        print(f"  ✓ Non-aliased model: claude-sonnet-4-20250514 -> {result}")
         
-        assert 'claude-3-5-sonnet-20241022' in ModelResolver._resolved_cache, "Should cache result"
+        assert 'claude-sonnet-4-20250514' in ModelResolver._resolved_cache, "Should cache result"
         print("  ✓ Result cached")
         
         print("✅ Non-aliased model test passed\n")
@@ -88,34 +107,45 @@ def test_config_integration():
     config = CLIConfig()
     default_config = config._get_default_config()
     
-    model = default_config['api']['anthropic']['model']
-    assert model == 'claude-3-sonnet-latest', \
-        f"Default model should be 'claude-3-sonnet-latest', got '{model}'"
-    print(f"  ✓ Default config model: {model}")
+    # Test new config structure
+    assert default_config.get('version') == '2.4.0', "Version should be 2.4.0"
+    print(f"  ✓ Config version: {default_config['version']}")
+    
+    provider = default_config.get('api', {}).get('provider')
+    assert provider == 'gemini', f"Default provider should be 'gemini', got '{provider}'"
+    print(f"  ✓ Default provider: {provider}")
+    
+    model = default_config.get('api', {}).get('model')
+    assert model == 'gemini-flash-latest', f"Default model should be 'gemini-flash-latest', got '{model}'"
+    print(f"  ✓ Default model: {model}")
     
     print("✅ Config integration test passed\n")
 
 
 def test_api_client_integration():
-    print("Testing API client integration...")
+    print("Testing LLM provider integration...")
     
-    from cli.utils.api_client import APIClient
+    from cli.utils.llm_client import LLMProvider
     
-    test_api_key = os.getenv('ANTHROPIC_API_KEY', 'sk-ant-test123')
+    gemini_api_key = os.getenv('GEMINI_API_KEY', 'test-key-123')
     
     try:
-        client = APIClient(api_key=test_api_key, model='claude-3-sonnet-latest')
-        assert client.model == 'claude-3-sonnet-latest', "Model should be set correctly"
-        assert client._resolved_model is None, "Model should not be resolved until first call"
-        print(f"  ✓ Client initialized with model: {client.model}")
-        print(f"  ✓ Lazy resolution confirmed (_resolved_model is None)")
+        provider = LLMProvider.create(
+            provider='gemini',
+            model='gemini-flash-latest',
+            api_key=gemini_api_key
+        )
+        assert provider is not None, "Provider should be created"
+        assert provider.__class__.__name__ == 'GeminiProvider', "Should create GeminiProvider"
+        print(f"  ✓ LLM provider initialized: {provider.__class__.__name__}")
+        print(f"  ✓ Model: {provider.model_name}")
         
-        print("✅ API client integration test passed\n")
+        print("✅ LLM provider integration test passed\n")
     except ValueError as e:
-        if "ANTHROPIC_API_KEY not found" in str(e):
-            print("  ⚠️  ANTHROPIC_API_KEY not set, using mock test")
-            print("  ✓ Client validation working correctly")
-            print("✅ API client integration test passed (validation only)\n")
+        if "GEMINI_API_KEY not found" in str(e):
+            print("  ⚠️  GEMINI_API_KEY not set, using mock test")
+            print("  ✓ Provider validation working correctly")
+            print("✅ LLM provider integration test passed (validation only)\n")
         else:
             raise
 

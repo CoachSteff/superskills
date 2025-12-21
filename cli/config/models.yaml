@@ -1,0 +1,46 @@
+# Model registry for stable logical names → concrete provider model IDs
+# Update this file when providers release new model versions
+
+version: '1.0.0'
+
+models:
+  # Gemini models
+  gemini-flash-latest:
+    provider: google
+    id: gemini-3-flash-preview
+    description: "Gemini 3 Flash (latest preview)"
+  
+  gemini-flash-2:
+    provider: google
+    id: gemini-2.0-flash-exp
+    description: "Gemini 2.0 Flash (experimental)"
+  
+  # Anthropic Claude models
+  claude-opus-latest:
+    provider: anthropic
+    id: claude-3-opus-20240229
+    description: "Claude 3 Opus (Feb 2024)"
+  
+  claude-sonnet-latest:
+    provider: anthropic
+    id: claude-sonnet-4-20250514
+    description: "Claude Sonnet 4 (May 2025)"
+  
+  claude-haiku-latest:
+    provider: anthropic
+    id: claude-sonnet-4-20250514
+    description: "Claude Sonnet 4 fallback for Haiku"
+  
+  # OpenAI models
+  openai-default:
+    provider: openai
+    id: gpt-4o-mini
+    description: "GPT-4o mini (default)"
+
+# Legacy alias mappings for backward compatibility
+legacy_aliases:
+  claude-3-opus-latest: claude-opus-latest
+  claude-3-sonnet-latest: claude-sonnet-latest
+  claude-3-haiku-latest: claude-haiku-latest
+  claude-4.5-sonnet: claude-sonnet-latest
+  gemini-2.0-flash-exp: gemini-flash-2

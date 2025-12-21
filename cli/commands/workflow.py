@@ -18,7 +18,25 @@ def workflow_list_command(**kwargs):
     workflows = engine.list_workflows()
     
     if not workflows:
-        print("No workflows found.")
+        print("No workflows found.\n")
+        print("To set up example workflows:")
+        print("  • Run: superskills init (interactive setup)")
+        print("  • Or manually copy from: workflows_templates/\n")
+        
+        # Show available templates
+        from cli.utils.paths import get_project_root
+        templates_dir = get_project_root() / 'workflows_templates'
+        
+        if templates_dir.exists():
+            templates = [d for d in templates_dir.iterdir() 
+                        if d.is_dir() and not d.name.startswith('.') 
+                        and (d / 'workflow.yaml').exists()]
+            
+            if templates:
+                print("Available templates:")
+                for template in sorted(templates, key=lambda x: x.name):
+                    print(f"  • {template.name}")
+        
         return 0
     
     output = WorkflowListFormatter.format(workflows, output_format)

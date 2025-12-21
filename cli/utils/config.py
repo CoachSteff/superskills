@@ -37,14 +37,23 @@ class CLIConfig:
         
         # Auto-regenerate if version mismatch or invalid model
         needs_regen = False
-        if self._config.get('version') != '2.0.1':
+        current_version = self._config.get('version')
+        
+        if current_version != '2.4.0':
             needs_regen = True
-        model = str(self._config.get('api', {}).get('anthropic', {}).get('model', ''))
+        
+        # Check for old config structure (api.anthropic.*)
+        if 'anthropic' in self._config.get('api', {}):
+            needs_regen = True
+        
+        # Check for invalid model names
+        model = str(self._config.get('api', {}).get('model', ''))
         if 'claude-sonnet-4' in model or model == 'claude-4.5-sonnet':
             needs_regen = True
         
         if needs_regen:
-            print("⚠ Outdated config detected. Regenerating with claude-3-sonnet-latest...")
+            old_version = current_version or 'unknown'
+            print(f"⚠ Config updated from {old_version} to v2.4.0. Now using Gemini 3 Flash by default.")
             self._config = self._get_default_config()
             self.save()
         
@@ -61,18 +70,17 @@ class CLIConfig:
     
     def _get_default_config(self) -> Dict[str, Any]:
         return {
-            'version': '2.0.1',
+            'version': '2.4.0',
             'api': {
-                'anthropic': {
-                    'model': 'claude-3-sonnet-latest',
-                    'max_tokens': 4000,
-                    'temperature': 0.7
-                }
+                'provider': 'gemini',
+                'model': 'gemini-flash-latest',
+                'max_tokens': 4000,
+                'temperature': 0.7
             },
             'intent': {
                 'enabled': True,
                 'provider': 'gemini',
-                'model': 'gemini-2.0-flash-exp',
+                'model': 'gemini-flash-2',
                 'confidence_threshold': 0.5,
                 'always_confirm_medium': True
             },

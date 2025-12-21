@@ -11,6 +11,7 @@ from .commands.show import show_command
 from .commands.call import call_command
 from .commands.run import run_command
 from .commands.status import status_command
+from .commands.test import test_command
 from .commands.workflow import workflow_list_command, workflow_validate_command
 from .commands.export import export_command
 from .commands.discover import discover_command
@@ -21,6 +22,7 @@ from .commands.config import (
 )
 from .utils.logger import get_logger
 from .utils.paths import get_project_root
+from .utils.version import get_version as _get_version
 
 
 def load_environment():
@@ -50,16 +52,8 @@ def load_environment():
 
 def get_version():
     """Read version from pyproject.toml"""
-    pyproject_path = get_project_root() / "pyproject.toml"
-    try:
-        with open(pyproject_path, 'r') as f:
-            for line in f:
-                if line.strip().startswith('version'):
-                    version = line.split('=')[1].strip().strip('"').strip("'")
-                    return f"SuperSkills v{version}"
-    except Exception:
-        pass
-    return "SuperSkills (version unknown)"
+    version = _get_version()
+    return f"SuperSkills v{version}"
 
 
 def _handle_natural_language(user_input: str, args) -> int:
@@ -213,6 +207,11 @@ def main():
     
     subparsers.add_parser('validate', help='Validate skill integrity and completeness')
     
+    test_parser = subparsers.add_parser('test', help='Run the test suite')
+    test_parser.add_argument('--quick', action='store_true', help='Run fast tests only (skip slow integration tests)')
+    test_parser.add_argument('--file', help='Run specific test file (e.g., test_narrator.py)')
+    test_parser.add_argument('--coverage', action='store_true', help='Generate coverage report')
+    
     workflow_parser = subparsers.add_parser('workflow', help='Manage workflows')
     workflow_subparsers = workflow_parser.add_subparsers(dest='workflow_command')
     
@@ -358,6 +357,15 @@ def main():
         
         elif args.command == 'validate':
             return validate_command()
+        
+        elif args.command == 'test':
+            kwargs = {
+                'quick': args.quick,
+                'file': args.file,
+                'coverage': args.coverage,
+                'verbose': args.verbose
+            }
+            return test_command(**kwargs)
         
         elif args.command == 'workflow':
             if args.workflow_command == 'list':

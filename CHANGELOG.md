@@ -7,6 +7,140 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.0] - 2024-12-21
+
+### Summary
+Major feature release: Introduces Gemini 3 Flash as default provider, adds comprehensive testing tools, workflow automation, and privacy-focused local transcription. Addresses model resolution issues and significantly improves developer experience.
+
+### Added
+- **Gemini 3 Flash Default Provider**
+  - Switched from Anthropic to Gemini as default LLM provider
+  - Model: `gemini-flash-latest` → `gemini-3-flash-preview`
+  - Centralized model registry (`cli/config/models.yaml`)
+  - Multi-provider support (Gemini, Anthropic, OpenAI)
+  - Backward compatible with legacy Anthropic configurations
+
+- **Model Resolution System**
+  - Registry-based model resolution with version tracking
+  - Automatic fallback for invalid model IDs (fixes 404 errors)
+  - Legacy alias support (`claude-3-sonnet-latest` → `claude-sonnet-latest`)
+  - Cache system for resolved models
+  - Provider-aware resolution
+
+- **Test Command (`superskills test`)**
+  - Run full test suite: `superskills test`
+  - Quick tests (skip slow): `superskills test --quick`
+  - Specific file: `superskills test --file test_narrator.py`
+  - Coverage report: `superskills test --coverage`
+  - Automatic pytest detection with helpful error messages
+  - CI/CD ready with proper exit codes
+
+- **Workflow Setup Automation**
+  - Interactive workflow template selection in `superskills init`
+  - Choose individual templates or install all
+  - Automatic directory creation (input/, output/)
+  - Preserves existing workflows
+  - Shows available templates when no workflows found
+  - 3 built-in templates: content-creation, podcast-generation, training-material
+
+- **Transcriber-Local Skill** (NEW)
+  - Privacy-focused offline transcription using local Whisper models
+  - Zero cloud dependencies after model download
+  - GDPR/HIPAA compliant (no data transmission)
+  - GPU acceleration (CUDA, Apple Silicon MPS)
+  - 5 model sizes (tiny → large) for speed/accuracy trade-offs
+  - Multiple output formats (TXT, JSON, SRT, VTT)
+  - Batch processing support
+  - Unlimited usage with zero API costs
+  - Located: `/superskills/transcriber-local/`
+
+- **Version Utility**
+  - Centralized version reading (`cli/utils/version.py`)
+  - Supports Python 3.9-3.13+ (tomli/tomllib/regex fallback)
+  - Consistent version display across CLI
+
+### Changed
+- **Configuration Structure**
+  - Version: `2.3.0` → `2.4.0`
+  - Config version: `2.0.1` → `2.4.0`
+  - Default API structure changed from `api.anthropic.*` to `api.provider` + `api.model`
+  - Auto-migration for existing users with informative messages
+  - Intent parsing remains on Gemini (unchanged)
+
+- **Skill Executor**
+  - Replaced Anthropic-only `APIClient` with flexible `LLMProvider`
+  - Supports provider switching via configuration
+  - Backward compatible with legacy config structure
+
+- **Workflow List Command**
+  - Enhanced empty state messaging
+  - Shows available templates
+  - Provides setup guidance
+
+- **Documentation**
+  - Updated CONTRIBUTING.md with comprehensive testing section
+  - Added `superskills test` usage examples
+  - Updated PR checklist to use new test command
+
+- **Total Skills**: 42 → 43 skills (30 prompt + 13 Python-powered)
+
+### Fixed
+- **Model 404 Errors**
+  - Invalid `claude-3-sonnet-latest` now resolves correctly
+  - Registry maps logical names to valid concrete IDs
+  - Fallback system prevents API errors
+
+- **Model Resolution**
+  - Handles legacy aliases automatically
+  - Caches resolved models for performance
+  - Provider-aware resolution logic
+
+### Technical Details
+
+**Model Registry Schema:**
+```yaml
+models:
+  gemini-flash-latest:
+    provider: google
+    id: gemini-3-flash-preview
+  claude-sonnet-latest:
+    provider: anthropic
+    id: claude-sonnet-4-20250514
+legacy_aliases:
+  claude-3-sonnet-latest: claude-sonnet-latest
+  gemini-2.0-flash-exp: gemini-flash-2
+```
+
+**Dependencies Added:**
+- `pyyaml>=6.0.0` (already present)
+- `tomli>=2.0.0` (optional, for Python <3.11)
+
+**Breaking Changes:**
+- None (fully backward compatible)
+
+**Migration:**
+- Automatic config migration on first run
+- Legacy `api.anthropic.*` configs still work
+- No user action required
+
+### Developer Experience
+- Testing workflow simplified with `superskills test`
+- Workflow setup no longer requires manual copying
+- Better error messages for model resolution
+- Consistent version display
+- Improved documentation for contributors
+
+### Security
+- No credentials in model registry
+- API keys still environment-only
+- Local transcription for sensitive content
+- No breaking security changes
+
+### Performance
+- Model resolution cached after first lookup
+- Registry loaded once on initialization
+- No impact on API call latency
+
 ## [2.3.0] - 2024-12-20
 
 ### Summary

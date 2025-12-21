@@ -79,6 +79,48 @@ superskills/narrator/
 
 ## Testing
 
+SuperSkills includes a comprehensive test suite. You can run tests in several ways:
+
+### Quick Test (Recommended)
+```bash
+superskills test
+```
+
+This runs the full test suite with verbose output.
+
+### Fast Tests Only
+Skip slow integration tests for quick validation:
+```bash
+superskills test --quick
+```
+
+### Specific Test File
+Run a single test file:
+```bash
+superskills test --file test_narrator.py
+```
+
+### With Coverage
+Generate a coverage report:
+```bash
+superskills test --coverage
+```
+
+After running, open the HTML report:
+```bash
+open htmlcov/index.html  # macOS
+xdg-open htmlcov/index.html  # Linux
+start htmlcov/index.html  # Windows
+```
+
+### Traditional pytest
+If you prefer using pytest directly:
+```bash
+pytest tests/ -v
+```
+
+### Writing Tests
+
 All external APIs must be mocked:
 ```python
 def test_api_call(mocker):
@@ -88,19 +130,27 @@ def test_api_call(mocker):
     assert result.success == True
 ```
 
-Run tests: `pytest tests/ -v`
+### Test Requirements
+- All tests must pass before submitting a PR
+- New features must include corresponding tests
+- Aim for >80% code coverage for new code
+
+Run the full test suite before submitting:
+```bash
+superskills test --coverage
+```
 
 ## Pull Request Process
 
 1. Create feature branch
 2. Write tests first (TDD)
 3. Update documentation
-4. Pass all tests: `pytest tests/ -v`
+4. Pass all tests: `superskills test`
 5. Format code: `black . --line-length 100`
 6. Submit PR with clear description
 
 ## Code Review Checklist
-- ✅ Tests pass
+- ✅ Tests pass (`superskills test`)
 - ✅ Documentation updated
 - ✅ No credentials committed
 - ✅ PROFILE.md files not committed

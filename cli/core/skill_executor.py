@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any, Optional
 from cli.core.skill_loader import SkillLoader, SkillInfo
-from cli.utils.api_client import APIClient
+from cli.utils.llm_client import LLMProvider
 from cli.utils.config import CLIConfig
 from cli.utils.logger import get_logger
 
@@ -15,7 +15,7 @@ class SkillExecutor:
     def __init__(self, config: CLIConfig):
         self.config = config
         self.loader = SkillLoader()
-        self.api_client = None
+        self.llm_provider = None
         self.logger = get_logger()
     
     def execute(self, skill_name: str, input_text: str, **kwargs) -> Dict[str, Any]:
@@ -38,22 +38,32 @@ class SkillExecutor:
         
         system_prompt = self._build_system_prompt(content['skill'], content['profile'])
         
-        if self.api_client is None:
-            self.logger.debug("Initializing API client")
-            api_key = self.config.get_api_key('anthropic')
-            model = self.config.get('api.anthropic.model', 'claude-3-sonnet-latest')
-            max_tokens = self.config.get('api.anthropic.max_tokens', 4000)
-            temperature = self.config.get('api.anthropic.temperature', 0.7)
+        if self.llm_provider is None:
+            self.logger.debug("Initializing LLM provider")
             
-            self.api_client = APIClient(
-                api_key=api_key,
+            # Support both old (api.anthropic.*) and new (api.provider) config structures
+            provider_name = self.config.get('api.provider')
+            if provider_name:
+                # New config structure
+                model = self.config.get('api.model', 'gemini-flash-latest')
+                max_tokens = self.config.get('api.max_tokens', 4000)
+                temperature = self.config.get('api.temperature', 0.7)
+            else:
+                # Legacy config structure (api.anthropic.*)
+                provider_name = 'anthropic'
+                model = self.config.get('api.anthropic.model', 'claude-sonnet-latest')
+                max_tokens = self.config.get('api.anthropic.max_tokens', 4000)
+                temperature = self.config.get('api.anthropic.temperature', 0.7)
+            
+            self.llm_provider = LLMProvider.create(
+                provider=provider_name,
                 model=model,
                 max_tokens=max_tokens,
                 temperature=temperature
             )
         
-        self.logger.info(f"Calling API with model: {self.api_client.model}")
-        output = self.api_client.call(
+        self.logger.info(f"Calling {self.llm_provider.__class__.__name__}")
+        output = self.llm_provider.call(
             system_prompt=system_prompt,
             user_prompt=input_text,
             **kwargs
@@ -66,7 +76,7 @@ class SkillExecutor:
             'metadata': {
                 'skill': skill_info.name,
                 'type': 'prompt',
-                'model': self.api_client.model
+                'provider': self.llm_provider.__class__.__name__
             }
         }
     

@@ -40,8 +40,12 @@ def mock_document_data():
 class TestCraftClient:
     """Test CraftClient class."""
     
-    def test_init_requires_endpoint(self):
+    def test_init_requires_endpoint(self, monkeypatch):
         """Test that initialization requires API endpoint."""
+        # Ensure env var is not set
+        monkeypatch.delenv("CRAFT_API_ENDPOINT", raising=False)
+        monkeypatch.delenv("CRAFT_API_KEY", raising=False)
+        
         with pytest.raises(ValueError, match="CRAFT_API_ENDPOINT"):
             CraftClient()
     
@@ -197,8 +201,8 @@ class TestCraftClient:
         # Verify content
         with open(file_path, 'r') as f:
             content = f.read()
-            assert "Test Document" in content
             assert "# Test Content" in content
+            assert "This is a test" in content
     
     @patch('requests.Session.get')
     def test_export_document_json(self, mock_get, craft_client, mock_document_data):

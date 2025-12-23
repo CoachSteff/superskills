@@ -4,16 +4,16 @@
 version: '1.0.0'
 
 models:
-  # Gemini models
+  # Gemini models (using google-genai SDK format with models/ prefix)
   gemini-flash-latest:
     provider: google
-    id: gemini-3-flash-preview
-    description: "Gemini 3 Flash (latest preview)"
+    id: models/gemini-2.0-flash-exp
+    description: "Gemini 2.0 Flash Experimental (recommended)"
   
-  gemini-flash-2:
+  gemini-pro-latest:
     provider: google
-    id: gemini-2.0-flash-exp
-    description: "Gemini 2.0 Flash (experimental)"
+    id: models/gemini-1.5-pro
+    description: "Gemini 1.5 Pro (stable)"
   
   # Anthropic Claude models
   claude-opus-latest:
@@ -43,4 +43,7 @@ legacy_aliases:
   claude-3-sonnet-latest: claude-sonnet-latest
   claude-3-haiku-latest: claude-haiku-latest
   claude-4.5-sonnet: claude-sonnet-latest
-  gemini-2.0-flash-exp: gemini-flash-2
+  # Redirect deprecated Gemini experimental models to stable
+  gemini-2.0-flash-exp: gemini-flash-latest
+  gemini-flash-2: gemini-flash-latest
+  gemini-3-flash-preview: gemini-flash-latest

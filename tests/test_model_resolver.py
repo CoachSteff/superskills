@@ -22,8 +22,8 @@ def test_model_aliases():
         'claude-opus-latest': 'claude-3-opus-20240229',
         'claude-sonnet-latest': 'claude-sonnet-4-20250514',
         'claude-haiku-latest': 'claude-sonnet-4-20250514',
-        'gemini-flash-latest': 'gemini-3-flash-preview',
-        'gemini-flash-2': 'gemini-2.0-flash-exp',
+        'gemini-flash-latest': 'models/gemini-2.0-flash-exp',
+        'gemini-pro-latest': 'models/gemini-1.5-pro',
     }
     
     for model_name, expected_id in expected_models.items():
@@ -38,6 +38,9 @@ def test_model_aliases():
         'claude-3-sonnet-latest': 'claude-sonnet-latest',
         'claude-3-haiku-latest': 'claude-haiku-latest',
         'claude-4.5-sonnet': 'claude-sonnet-latest',
+        'gemini-flash-2': 'gemini-flash-latest',
+        'gemini-2.0-flash-exp': 'gemini-flash-latest',
+        'gemini-3-flash-preview': 'gemini-flash-latest',
     }
     
     for alias, target in expected_aliases.items():
@@ -108,7 +111,7 @@ def test_config_integration():
     default_config = config._get_default_config()
     
     # Test new config structure
-    assert default_config.get('version') == '2.4.0', "Version should be 2.4.0"
+    assert default_config.get('version') == '2.4.1', "Version should be 2.4.1"
     print(f"  ✓ Config version: {default_config['version']}")
     
     provider = default_config.get('api', {}).get('provider')

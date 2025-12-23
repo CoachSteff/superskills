@@ -27,8 +27,8 @@ class ModelResolver:
                     'claude-opus-latest': {'provider': 'anthropic', 'id': 'claude-3-opus-20240229'},
                     'claude-sonnet-latest': {'provider': 'anthropic', 'id': 'claude-sonnet-4-20250514'},
                     'claude-haiku-latest': {'provider': 'anthropic', 'id': 'claude-sonnet-4-20250514'},
-                    'gemini-flash-latest': {'provider': 'google', 'id': 'gemini-3-flash-preview'},
-                    'gemini-flash-2': {'provider': 'google', 'id': 'gemini-2.0-flash-exp'},
+                    'gemini-flash-latest': {'provider': 'google', 'id': 'models/gemini-2.0-flash-exp'},
+                    'gemini-pro-latest': {'provider': 'google', 'id': 'models/gemini-1.5-pro'},
                     'openai-default': {'provider': 'openai', 'id': 'gpt-4o-mini'},
                 },
                 'legacy_aliases': {
@@ -36,7 +36,9 @@ class ModelResolver:
                     'claude-3-sonnet-latest': 'claude-sonnet-latest',
                     'claude-3-haiku-latest': 'claude-haiku-latest',
                     'claude-4.5-sonnet': 'claude-sonnet-latest',
-                    'gemini-2.0-flash-exp': 'gemini-flash-2',
+                    'gemini-2.0-flash-exp': 'gemini-flash-latest',
+                    'gemini-flash-2': 'gemini-flash-latest',
+                    'gemini-3-flash-preview': 'gemini-flash-latest',
                 }
             }
             return cls._registry
@@ -78,6 +80,31 @@ class ModelResolver:
         model_info = registry['models'][model]
         concrete_id = model_info['id']
         model_provider = model_info['provider']
+        
+        # For Gemini models, validate against known working models
+        if model_provider == 'google' and (provider == 'gemini' or provider == 'google'):
+            # List of verified working Gemini models (google-genai SDK format)
+            VERIFIED_GEMINI_MODELS = [
+                'models/gemini-2.0-flash-exp',
+                'models/gemini-1.5-flash',
+                'models/gemini-1.5-pro',
+                'models/gemini-pro',
+                'gemini-2.0-flash-exp',  # Without prefix (legacy)
+                'gemini-1.5-flash',
+                'gemini-1.5-pro',
+                'gemini-pro'
+            ]
+            
+            # If concrete_id is not in verified list, use fallback
+            if concrete_id not in VERIFIED_GEMINI_MODELS:
+                fallback = 'models/gemini-2.0-flash-exp'
+                print(f"⚠ Model '{concrete_id}' may not be available. Using fallback: {fallback}")
+                cls._resolved_cache[model] = fallback
+                return fallback
+            
+            # Use the concrete ID for Gemini
+            cls._resolved_cache[model] = concrete_id
+            return concrete_id
         
         # For Anthropic models, test if the alias is available
         if model_provider == 'anthropic' and provider != 'google' and provider != 'openai':

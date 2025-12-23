@@ -39,7 +39,7 @@ class CLIConfig:
         needs_regen = False
         current_version = self._config.get('version')
         
-        if current_version != '2.4.0':
+        if current_version != '2.4.1':
             needs_regen = True
         
         # Check for old config structure (api.anthropic.*)
@@ -49,12 +49,19 @@ class CLIConfig:
         # Check for invalid model names
         model = str(self._config.get('api', {}).get('model', ''))
         intent_model = str(self._config.get('intent', {}).get('model', ''))
-        if 'claude-sonnet-4' in model or model == 'claude-4.5-sonnet' or intent_model == 'gemini-flash-2':
+        if ('claude-sonnet-4' in model or 
+            model == 'claude-4.5-sonnet' or 
+            intent_model == 'gemini-flash-2' or
+            intent_model == 'gemini-2.0-flash-exp' or
+            intent_model == 'gemini-3-flash-preview' or
+            model == 'gemini-flash-2' or
+            model == 'gemini-2.0-flash-exp' or
+            model == 'gemini-3-flash-preview'):
             needs_regen = True
         
         if needs_regen:
             old_version = current_version or 'unknown'
-            print(f"⚠ Config updated from {old_version} to v2.4.0. Now using Gemini 3 Flash by default.")
+            print(f"⚠ Config updated from {old_version} to v2.4.1. Now using stable Gemini 1.5 Flash.")
             self._config = self._get_default_config()
             self.save()
         
@@ -71,7 +78,7 @@ class CLIConfig:
     
     def _get_default_config(self) -> Dict[str, Any]:
         return {
-            'version': '2.4.0',
+            'version': '2.4.1',
             'api': {
                 'provider': 'gemini',
                 'model': 'gemini-flash-latest',

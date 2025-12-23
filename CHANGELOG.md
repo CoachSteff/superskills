@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Natural Language Prompt Command (Bug Fix)**
+  - Fixed `gemini-flash-2` model 404 error preventing `superskills prompt` command
+  - Updated Gemini model mappings to use correct google-genai SDK format (`models/` prefix)
+  - Changed `gemini-flash-latest` → `models/gemini-2.0-flash-exp` (working model)
+  - Added Gemini model validation in ModelResolver (similar to Anthropic validation)
+  - Legacy aliases redirect deprecated models to stable versions
+
+### Changed
+- **Configuration Version**
+  - Config version: `2.4.1` → `2.4.2` (interim working version)
+  - Auto-migrates users from experimental/preview models to stable
+  
+### Technical Details
+- Updated `cli/config/models.yaml` with correct Gemini model IDs
+- Enhanced `ModelResolver` with Gemini-specific validation
+- Added fallback logic for invalid Gemini models
+- Updated test suite to match new model configuration
+
 ## [2.4.1] - 2024-12-23
 
 ### Summary

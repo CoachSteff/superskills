@@ -6,13 +6,13 @@ Custom skill library for Claude Desktop that automates coaching, training, and c
 
 ## Overview
 
-SuperSkills is a comprehensive AI automation toolkit with **42 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
+SuperSkills is a comprehensive AI automation toolkit with **48 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
 
 **What You Get:**
-- 30 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
-- 12 Python-Powered Skills - Full API integrations with advanced automation
+- 32 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
+- 16 Python-Powered Skills - Full API integrations with advanced automation
 - Hierarchical skill families (e.g., narrator-podcast, narrator-meditation, narrator-educational)
-- Comprehensive test suite (90+ unit tests)
+- Comprehensive test suite (196 unit tests)
 - Credential management system (hybrid env vars + .env files)
 - Production-ready patterns and templates
 

@@ -47,14 +47,27 @@ class IntentParser:
         with open(schema_path, 'r') as f:
             self.schema = json.load(f)
         
-        # Initialize LLM provider
+        # Initialize LLM provider with model resolution
+        from cli.utils.model_resolver import ModelResolver
+        
         provider_name = os.getenv('SUPERSKILLS_INTENT_PROVIDER') or config.get('intent.provider', 'gemini')
-        model = os.getenv('SUPERSKILLS_INTENT_MODEL') or config.get('intent.model', 'gemini-2.0-flash-exp')
+        model_alias = os.getenv('SUPERSKILLS_INTENT_MODEL') or config.get('intent.model', 'gemini-flash-latest')
+        
+        # Resolve model alias to concrete ID
+        resolved_model = model_alias
+        try:
+            # Get API key for model resolution (if needed)
+            api_key = os.getenv('GEMINI_API_KEY') or os.getenv('ANTHROPIC_API_KEY') or os.getenv('OPENAI_API_KEY') or ''
+            resolved_model = ModelResolver.resolve(model_alias, api_key, provider=provider_name)
+            if resolved_model != model_alias:
+                self.logger.info(f"Resolved model: {model_alias} → {resolved_model}")
+        except Exception as e:
+            self.logger.warning(f"Model resolution failed, using alias directly: {e}")
         
         try:
             self.llm_provider = LLMProvider.create(
                 provider=provider_name,
-                model=model,
+                model=resolved_model,
                 temperature=0.3,
                 max_tokens=2000
             )

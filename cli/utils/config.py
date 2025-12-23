@@ -48,7 +48,8 @@ class CLIConfig:
         
         # Check for invalid model names
         model = str(self._config.get('api', {}).get('model', ''))
-        if 'claude-sonnet-4' in model or model == 'claude-4.5-sonnet':
+        intent_model = str(self._config.get('intent', {}).get('model', ''))
+        if 'claude-sonnet-4' in model or model == 'claude-4.5-sonnet' or intent_model == 'gemini-flash-2':
             needs_regen = True
         
         if needs_regen:
@@ -80,7 +81,7 @@ class CLIConfig:
             'intent': {
                 'enabled': True,
                 'provider': 'gemini',
-                'model': 'gemini-flash-2',
+                'model': 'gemini-flash-latest',
                 'confidence_threshold': 0.5,
                 'always_confirm_medium': True
             },

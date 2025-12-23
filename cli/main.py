@@ -249,6 +249,10 @@ def main():
     config_list_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                                     default='markdown', help='Output format')
     
+    config_show_parser = config_subparsers.add_parser('show', help='Show all configuration (alias for list)')
+    config_show_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
+                                    default='markdown', help='Output format')
+    
     config_reset_parser = config_subparsers.add_parser('reset', help='Reset configuration to defaults')
     config_reset_parser.add_argument('--confirm', action='store_true',
                                      help='Confirm reset operation')
@@ -402,7 +406,7 @@ def main():
                 return config_get_command(args.key, **kwargs)
             elif args.config_command == 'set':
                 return config_set_command(args.key, args.value)
-            elif args.config_command == 'list':
+            elif args.config_command == 'list' or args.config_command == 'show':
                 kwargs = {}
                 if hasattr(args, 'format') and args.format:
                     kwargs['format'] = args.format

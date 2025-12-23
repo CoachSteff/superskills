@@ -10,9 +10,9 @@ import sys
 sys.modules['pydub'] = MagicMock()
 sys.modules['pydub.AudioSegment'] = MagicMock()
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "superskills" / "narrator" / "src"))
-from Voiceover import VoiceoverGenerator, ScriptOptimizer
-from Podcast import PodcastGenerator, PodcastSegment
+# Proper package imports
+from superskills.narrator.src.Voiceover import VoiceoverGenerator, ScriptOptimizer
+from superskills.narrator.src.Podcast import PodcastGenerator, PodcastSegment
 
 
 class TestScriptOptimizer:

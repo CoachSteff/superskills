@@ -82,7 +82,8 @@ Major feature release: Introduces Gemini 3 Flash as default provider, adds compr
   - Added `superskills test` usage examples
   - Updated PR checklist to use new test command
 
-- **Total Skills**: 47 → 48 skills (30 prompt + 18 Python-powered)
+- **Total Skills**: 48 skills (32 prompt-based + 16 Python-powered)
+  - Note: Narrator skill family includes 1 parent + 5 specialized subskills (podcast, meditation, educational, marketing, social) = 6 total narrator entries
 
 ### Fixed
 - **Model 404 Errors**
@@ -161,7 +162,8 @@ Feature release: Introduces the SuperSkills Helper skill - a comprehensive assis
   - Located: `/superskills/helper/SKILL.md` (1,454 lines)
 
 ### Changed
-- Total skill count: 41 → 42 skills (30 prompt-based + 12 Python-powered)
+- Total skill count: 46 → 48 skills (31 prompt-based + 17 Python-powered including transcriber-local)
+  - v2.3.0 baseline corrected: 46 skills (narrator-family expansion + transcriber-local added in v2.0.3)
 - Discovery system now includes helper skill with high relevance for help/setup/troubleshooting queries
 
 ### Technical Details

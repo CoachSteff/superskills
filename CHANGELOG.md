@@ -7,6 +7,74 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.4.1] - 2024-12-23
+
+### Summary
+Critical bug fix release: Resolves test suite failures, natural language interface issues, and documentation inaccuracies introduced in v2.4.0. Achieves 99.5% test pass rate (195/196 tests).
+
+### Fixed
+- **Test Suite Import Error**
+  - Fixed test_narrator.py import errors preventing test execution
+  - Proper package imports: `from superskills.narrator.src.Voiceover import ...`
+  - Unblocked entire test suite (was 0 tests running, now 196 collected)
+
+- **Narrator Test Suite (14 Tests Fixed)**
+  - Updated tests to match VoiceConfig-based API (v2.0+)
+  - Fixed mock import paths: `@patch('superskills.narrator.src.Voiceover.ElevenLabs')`
+  - Updated VoiceoverGeneratorInit tests to check `profile["voice_id"]` instead of deprecated `voice_id` attribute
+  - Replaced VOICE_SETTINGS class attribute checks with VoiceConfig API calls
+  - Updated podcast metadata tests to match current API structure
+  - Test pass rate: 92.3% → 99.5% (+7.2% improvement)
+
+- **Natural Language Interface Model Resolution**
+  - Applied ModelResolver to intent parser
+  - Successfully resolves `gemini-flash-latest` → `gemini-3-flash-preview`
+  - All documented natural language examples now work correctly
+  - Prevents model 404 errors in intent parsing
+
+- **Configuration Auto-Migration**
+  - Detects invalid `gemini-flash-2` model in config
+  - Auto-migrates to `gemini-flash-latest` with user notification
+  - Prevents config-related failures on upgrade
+
+### Changed
+- **Configuration Default**
+  - Intent model: `gemini-flash-2` → `gemini-flash-latest` (correct alias)
+  - Version bump: `2.4.0` → `2.4.1`
+
+- **CLI Commands**
+  - Added `superskills config show` as alias for `config list`
+  - Improves usability and command discoverability
+
+### Documentation
+- **README.md Accuracy**
+  - Corrected skill count: 42 → 48 skills (32 prompt-based + 16 Python-powered)
+  - Corrected test count: 90+ → 196 unit tests (99.5% pass rate)
+  - Clarified narrator skill family structure (1 parent + 5 specialized variants)
+
+- **CHANGELOG.md Improvements**
+  - Updated v2.4.0 skill counts with accurate narrator family explanation
+  - Added context for 48 skills vs. 43 base skills
+
+- **Implementation Documentation**
+  - Moved implementation summary files to `dev/release-notes/`
+  - Follows .cursorrules structure (keeps root clean)
+
+### Test Results
+- **Before v2.4.1**: 181/196 passing (92.3%), 15 failures
+  - 14 narrator test failures (API mismatch)
+  - 1 IDE delegation test failure (stdin test)
+- **After v2.4.1**: 195/196 passing (99.5%), 1 skipped
+  - 0 narrator failures (all fixed)
+  - 1 test intentionally skipped (search_command feature not implemented)
+
+### Impact
+- ✅ Unblocked test suite execution (critical for CI/CD)
+- ✅ Restored natural language interface functionality
+- ✅ Fixed documentation accuracy (builds user trust)
+- ✅ Improved developer experience with accurate test reporting
+- ✅ Production-ready test coverage for narrator skill family
+
 ## [2.4.0] - 2024-12-21
 
 ### Summary

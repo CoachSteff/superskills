@@ -9,12 +9,12 @@ from pathlib import Path
 def test_command(**kwargs):
     """
     Run the SuperSkills test suite.
-    
+
     Args:
         quick: Run fast tests only (skip slow integration tests)
         file: Run specific test file only
         coverage: Generate coverage report
-    
+
     Returns:
         Exit code from pytest
     """

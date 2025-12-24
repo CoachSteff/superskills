@@ -12,11 +12,11 @@ from cli.utils.config import CLIConfig
 def config_get_command(key: str = None, **kwargs):
     """
     Get configuration value(s).
-    
+
     Args:
         key: Config key (dot-notation) or None for all
         **kwargs: Additional arguments (format)
-    
+
     Returns:
         0 on success, 1 on error
     """
@@ -64,12 +64,12 @@ def config_get_command(key: str = None, **kwargs):
 def config_set_command(key: str, value: str, **kwargs):
     """
     Set configuration value.
-    
+
     Args:
         key: Config key (dot-notation)
         value: Value to set
         **kwargs: Additional arguments
-    
+
     Returns:
         0 on success, 1 on error
     """
@@ -107,10 +107,10 @@ def config_set_command(key: str, value: str, **kwargs):
 def config_list_command(**kwargs):
     """
     List all configuration keys and values.
-    
+
     Args:
         **kwargs: Additional arguments (format)
-    
+
     Returns:
         0 on success, 1 on error
     """
@@ -140,10 +140,10 @@ def config_list_command(**kwargs):
 def config_reset_command(**kwargs):
     """
     Reset configuration to defaults.
-    
+
     Args:
         **kwargs: Additional arguments (confirm)
-    
+
     Returns:
         0 on success, 1 on error
     """
@@ -173,10 +173,10 @@ def config_reset_command(**kwargs):
 def config_edit_command(**kwargs):
     """
     Open configuration file in default editor.
-    
+
     Args:
         **kwargs: Additional arguments (editor)
-    
+
     Returns:
         0 on success, 1 on error
     """
@@ -211,10 +211,10 @@ def config_edit_command(**kwargs):
 def config_path_command(**kwargs):
     """
     Show configuration file path.
-    
+
     Args:
         **kwargs: Additional arguments
-    
+
     Returns:
         0 on success
     """

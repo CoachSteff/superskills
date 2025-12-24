@@ -58,7 +58,7 @@ class LocalTranscriber:
         verbose: bool = True
     ):
         """Initialize LocalTranscriber.
-        
+
         Args:
             output_dir: Directory to save transcripts
             model_size: Whisper model size (tiny, base, small, medium, large)
@@ -107,13 +107,13 @@ class LocalTranscriber:
         output_format: OutputFormat = "txt"
     ) -> TranscriptionResult:
         """Transcribe audio/video file locally.
-        
+
         Args:
             file_path: Path to audio/video file
             language: Language code (e.g., 'en', 'es'). Auto-detect if None
             include_timestamps: Include word-level timestamps
             output_format: Output format (txt, json, srt, vtt)
-            
+
         Returns:
             TranscriptionResult with transcript and metadata
         """
@@ -202,13 +202,13 @@ class LocalTranscriber:
         output_format: OutputFormat = "txt"
     ) -> List[TranscriptionResult]:
         """Transcribe multiple files.
-        
+
         Args:
             file_paths: List of file paths
             language: Language code. Auto-detect if None
             include_timestamps: Include word-level timestamps
             output_format: Output format (txt, json, srt, vtt)
-            
+
         Returns:
             List of TranscriptionResult objects
         """
@@ -244,11 +244,11 @@ class LocalTranscriber:
         format: OutputFormat
     ) -> str:
         """Save transcription to file.
-        
+
         Args:
             result: TranscriptionResult object
             format: Output format
-            
+
         Returns:
             Path to saved file
         """
@@ -342,14 +342,14 @@ def transcribe_file(
     device: Optional[str] = None
 ) -> TranscriptionResult:
     """Convenience function for quick transcription.
-    
+
     Args:
         file_path: Path to audio/video file
         model_size: Whisper model size
         language: Language code (auto-detect if None)
         output_format: Output format
         device: Device to use (auto-detect if None)
-        
+
     Returns:
         TranscriptionResult
     """

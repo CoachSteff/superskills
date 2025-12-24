@@ -11,17 +11,14 @@ from typing import Dict, List, Optional
 try:
     from reportlab.lib import colors
     from reportlab.lib.enums import TA_CENTER, TA_LEFT
-    from reportlab.lib.pagesizes import A4, letter
+    from reportlab.lib.pagesizes import letter
     from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
     from reportlab.lib.units import inch
     from reportlab.platypus import (
-        Image,
         PageBreak,
         Paragraph,
         SimpleDocTemplate,
         Spacer,
-        Table,
-        TableStyle,
     )
     REPORTLAB_AVAILABLE = True
 except ImportError:
@@ -53,7 +50,7 @@ class CoursePackager:
         verbose: bool = True
     ):
         """Initialize CoursePackager.
-        
+
         Args:
             output_dir: Directory to save course packages
             verbose: Enable verbose logging
@@ -104,13 +101,13 @@ class CoursePackager:
         include_toc: bool = True
     ) -> CoursePackageResult:
         """Create a course workbook PDF.
-        
+
         Args:
             title: Workbook title
             sections: List of section dicts with 'title', 'content', 'exercises'
             output_name: Output filename (without extension)
             include_toc: Include table of contents
-            
+
         Returns:
             CoursePackageResult with workbook details
         """
@@ -211,14 +208,14 @@ class CoursePackager:
         output_name: Optional[str] = None
     ) -> CoursePackageResult:
         """Generate a course completion certificate.
-        
+
         Args:
             student_name: Student's name
             course_name: Course name
             completion_date: Completion date (defaults to today)
             instructor_name: Instructor's name
             output_name: Output filename
-            
+
         Returns:
             CoursePackageResult with certificate details
         """
@@ -319,12 +316,12 @@ class CoursePackager:
         include_manifest: bool = True
     ) -> CoursePackageResult:
         """Bundle course resources into a ZIP file.
-        
+
         Args:
             resource_paths: List of file/directory paths to include
             bundle_name: Name of the bundle
             include_manifest: Include a manifest file
-            
+
         Returns:
             CoursePackageResult with bundle details
         """
@@ -401,13 +398,13 @@ class CoursePackager:
         include_certificate_template: bool = True
     ) -> CoursePackageResult:
         """Create a complete course package.
-        
+
         Args:
             course_name: Course name
             workbook_sections: Workbook sections
             resource_paths: Additional resource files to include
             include_certificate_template: Include blank certificate template
-            
+
         Returns:
             CoursePackageResult with complete package
         """
@@ -472,13 +469,13 @@ def create_course_workbook(
     **kwargs
 ) -> CoursePackageResult:
     """Convenience function to create a course workbook.
-    
+
     Args:
         title: Workbook title
         sections: Workbook sections
         output_dir: Output directory
         **kwargs: Additional arguments for CoursePackager
-        
+
     Returns:
         CoursePackageResult
     """

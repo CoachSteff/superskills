@@ -11,7 +11,7 @@ from typing import Optional
 class CLILogger:
     """
     Centralized logging for SuperSkills CLI.
-    
+
     Logs to both console (INFO+) and file (DEBUG+) with rotation.
     """
 
@@ -63,10 +63,10 @@ class CLILogger:
     def get_logger(cls, verbose: bool = False) -> logging.Logger:
         """
         Get or create the singleton logger instance.
-        
+
         Args:
             verbose: If True, show DEBUG messages in console
-        
+
         Returns:
             Logger instance
         """
@@ -94,10 +94,10 @@ class CLILogger:
 def get_logger(verbose: bool = False) -> logging.Logger:
     """
     Convenience function to get the CLI logger.
-    
+
     Args:
         verbose: If True, show DEBUG messages in console
-    
+
     Returns:
         Logger instance
     """

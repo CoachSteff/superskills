@@ -150,7 +150,7 @@ class TestWordCount:
 
     def test_word_count_basic(self, mock_env_vars, temp_output_dir):
         """Test basic word counting."""
-        generator = VoiceoverGenerator(output_dir=str(temp_output_dir))
+        VoiceoverGenerator(output_dir=str(temp_output_dir))
 
         script = "This is a simple test script"
         # Access the word counting logic indirectly through script length
@@ -226,7 +226,7 @@ class TestVoiceoverGeneration:
             optimize_script=True
         )
 
-        assert result["optimized"] == True
+        assert result["optimized"]
 
     @patch('superskills.narrator.src.Voiceover.ElevenLabs')
     def test_generate_custom_filename(self, mock_elevenlabs_class, mock_env_vars, temp_output_dir):

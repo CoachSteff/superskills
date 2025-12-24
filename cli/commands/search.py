@@ -13,12 +13,12 @@ from cli.utils.logger import get_logger
 def search_command(query: str, search_type: str = 'auto', **kwargs) -> int:
     """
     Search for files, content, or skills
-    
+
     Args:
         query: Search query
         search_type: Type of search (file|content|skill|auto)
         **kwargs: Additional options
-    
+
     Returns:
         Exit code (0 for success, 1 for error)
     """

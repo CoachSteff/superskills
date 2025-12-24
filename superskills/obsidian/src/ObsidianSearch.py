@@ -16,13 +16,13 @@ def text_search(
 ) -> List[Path]:
     """
     Search for text in vault notes.
-    
+
     Args:
         vault_path: Path to vault root
         query: Search query
         search_in: Where to search (content, title, both)
         case_sensitive: Whether search is case-sensitive
-        
+
     Returns:
         List of matching file paths
     """
@@ -58,12 +58,12 @@ def tag_search(
 ) -> List[Path]:
     """
     Search notes by tag.
-    
+
     Args:
         vault_path: Path to vault root
         tag: Tag to search for (e.g., "topic/ai" or "topic")
         exact_match: If False, match tag prefix (e.g., "topic" matches "topic/ai")
-        
+
     Returns:
         List of matching file paths
     """
@@ -101,12 +101,12 @@ def filter_notes_by_folder(
 ) -> List[Path]:
     """
     Get all notes in a specific folder.
-    
+
     Args:
         vault_path: Path to vault root
         folder: Folder path relative to vault root
         recursive: Whether to search subfolders
-        
+
     Returns:
         List of note paths
     """

@@ -123,7 +123,7 @@ def test_anthropic(verbose=False):
         if not api_key:
             return False, "Credential not set"
 
-        client = anthropic.Anthropic(api_key=api_key)
+        anthropic.Anthropic(api_key=api_key)
         # Simple API info check
         # Note: Anthropic doesn't have a simple health check, so we'll just validate format
         if api_key.startswith("sk-ant-"):
@@ -151,7 +151,7 @@ def test_elevenlabs(verbose=False):
         )
 
         if response.status_code == 200:
-            data = response.json()
+            response.json()
             if verbose and voice_id:
                 return True, f"API valid, Voice ID: {voice_id[:8]}..."
             return True, "API key valid"
@@ -420,7 +420,7 @@ def main():
     print("=" * 70)
 
     total_configured = results["success"] + results["failed"]
-    total_tested = len(apis_to_test)
+    len(apis_to_test)
 
     print(f"Summary: {results['success']}/{total_configured} configured APIs working")
     if results["skipped"] > 0:

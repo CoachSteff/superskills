@@ -80,7 +80,7 @@ class CraftClient:
         verbose: bool = True
     ):
         """Initialize Craft API client.
-        
+
         Args:
             api_endpoint: Craft Imagine API endpoint URL
             api_key: API authentication key (if required)
@@ -123,14 +123,14 @@ class CraftClient:
         format: ContentFormat = "markdown"
     ) -> CraftOperationResult:
         """Create a new document in Craft.
-        
+
         Args:
             title: Document title
             content: Document content (markdown, HTML, or JSON)
             space_id: Space ID to create document in
             parent_id: Parent document ID (for nested docs)
             format: Content format (markdown, html, json)
-            
+
         Returns:
             CraftOperationResult with creation status
         """
@@ -171,10 +171,10 @@ class CraftClient:
 
     def get_document(self, document_id: str) -> Optional[CraftDocument]:
         """Retrieve a document by ID.
-        
+
         Args:
             document_id: Document ID
-            
+
         Returns:
             CraftDocument or None if not found
         """
@@ -197,12 +197,12 @@ class CraftClient:
         title: Optional[str] = None
     ) -> CraftOperationResult:
         """Update an existing document.
-        
+
         Args:
             document_id: Document ID to update
             content: New content (optional)
             title: New title (optional)
-            
+
         Returns:
             CraftOperationResult with update status
         """
@@ -246,10 +246,10 @@ class CraftClient:
 
     def delete_document(self, document_id: str) -> CraftOperationResult:
         """Delete a document.
-        
+
         Args:
             document_id: Document ID to delete
-            
+
         Returns:
             CraftOperationResult with deletion status
         """
@@ -283,11 +283,11 @@ class CraftClient:
         limit: int = 50
     ) -> List[CraftDocument]:
         """List documents.
-        
+
         Args:
             space_id: Filter by space ID (optional)
             limit: Maximum number of documents to return
-            
+
         Returns:
             List of CraftDocument objects
         """
@@ -330,12 +330,12 @@ class CraftClient:
         limit: int = 20
     ) -> List[CraftDocument]:
         """Search for documents.
-        
+
         Args:
             query: Search query
             space_id: Filter by space ID (optional)
             limit: Maximum results
-            
+
         Returns:
             List of matching CraftDocument objects
         """
@@ -376,12 +376,12 @@ class CraftClient:
         block_type: BlockType = "text"
     ) -> CraftOperationResult:
         """Append content to a document.
-        
+
         Args:
             document_id: Document ID
             content: Content to append
             block_type: Type of content block
-            
+
         Returns:
             CraftOperationResult with operation status
         """
@@ -422,12 +422,12 @@ class CraftClient:
         output_filename: Optional[str] = None
     ) -> str:
         """Export a document to file.
-        
+
         Args:
             document_id: Document ID to export
             format: Export format (markdown, html, json)
             output_filename: Custom filename (auto-generated if None)
-            
+
         Returns:
             Path to exported file
         """
@@ -488,11 +488,11 @@ class CraftClient:
         format: ContentFormat = "markdown"
     ) -> List[str]:
         """Export all documents to files.
-        
+
         Args:
             space_id: Filter by space ID (optional)
             format: Export format
-            
+
         Returns:
             List of exported file paths
         """
@@ -522,12 +522,12 @@ class CraftClient:
         permission: Permission = "read"
     ) -> CraftOperationResult:
         """Share a document with a user.
-        
+
         Args:
             document_id: Document ID to share
             email: Email of user to share with
             permission: Permission level (read, write, admin)
-            
+
         Returns:
             CraftOperationResult with share status
         """
@@ -566,11 +566,11 @@ class CraftClient:
         public: bool = False
     ) -> str:
         """Get shareable URL for a document.
-        
+
         Args:
             document_id: Document ID
             public: Generate public URL (if False, requires auth)
-            
+
         Returns:
             Document URL
         """
@@ -591,11 +591,11 @@ class CraftClient:
         space_id: Optional[str] = None
     ) -> List[CraftOperationResult]:
         """Import multiple documents at once.
-        
+
         Args:
             documents: List of document dicts with 'title' and 'content'
             space_id: Space ID to import into
-            
+
         Returns:
             List of CraftOperationResult objects
         """
@@ -626,13 +626,13 @@ class CraftClient:
         params: Optional[Dict] = None
     ) -> Dict:
         """Make HTTP request to Craft API.
-        
+
         Args:
             method: HTTP method (GET, POST, PUT, DELETE)
             endpoint: API endpoint path
             data: Request body data
             params: Query parameters
-            
+
         Returns:
             Response data as dict
         """
@@ -666,10 +666,10 @@ class CraftClient:
 
     def _parse_document(self, data: Dict) -> CraftDocument:
         """Parse API response into CraftDocument.
-        
+
         Args:
             data: Document data from API
-            
+
         Returns:
             CraftDocument object
         """

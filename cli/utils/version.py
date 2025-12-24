@@ -8,7 +8,7 @@ from pathlib import Path
 def get_version() -> str:
     """
     Get version from pyproject.toml.
-    
+
     Returns:
         Version string (e.g., "2.4.0") or "unknown" if not found
     """

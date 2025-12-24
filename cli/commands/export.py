@@ -28,7 +28,7 @@ def export_command(output_file: str = None, format_type: str = 'json',
                    markdown: bool = False):
     """
     Export skill metadata for IDE AI consumption.
-    
+
     Args:
         output_file: Optional output file path (default: stdout)
         format_type: Output format (json or markdown)

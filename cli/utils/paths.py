@@ -8,12 +8,12 @@ from typing import Optional
 def get_project_root() -> Path:
     """
     Find the project root directory by looking for anchor files.
-    
+
     Tries multiple strategies:
     1. Look for pyproject.toml (most reliable)
     2. Look for .git directory
     3. Fallback to relative path from package location
-    
+
     Returns:
         Path object pointing to project root
     """
@@ -33,10 +33,10 @@ def get_project_root() -> Path:
 def get_workflows_dir(subdirectory: Optional[str] = None) -> Path:
     """
     Get the workflows directory path.
-    
+
     Args:
         subdirectory: Optional subdirectory name ('definitions' or 'custom')
-    
+
     Returns:
         Path to workflows directory or subdirectory
     """
@@ -52,7 +52,7 @@ def get_workflows_dir(subdirectory: Optional[str] = None) -> Path:
 def get_skills_dir() -> Path:
     """
     Get the skills directory path.
-    
+
     Returns:
         Path to skills directory
     """

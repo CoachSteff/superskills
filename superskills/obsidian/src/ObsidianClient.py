@@ -41,7 +41,7 @@ class ObsidianClient:
     ):
         """
         Initialize Obsidian client.
-        
+
         Args:
             vault_path: Path to vault root (or use OBSIDIAN_VAULT_PATH env var)
             read_only: If True, prevent all write operations
@@ -132,11 +132,11 @@ class ObsidianClient:
     ) -> List[ObsidianNote]:
         """
         List all notes in vault or specific folder.
-        
+
         Args:
             folder: Folder path relative to vault root (None for all)
             recursive: Search subfolders
-            
+
         Returns:
             List of ObsidianNote objects
         """
@@ -165,10 +165,10 @@ class ObsidianClient:
     def get_note(self, path_or_title: str) -> Optional[ObsidianNote]:
         """
         Get a note by path or title.
-        
+
         Args:
             path_or_title: Relative path, absolute path, or note title
-            
+
         Returns:
             ObsidianNote or None if not found
         """
@@ -212,13 +212,13 @@ class ObsidianClient:
     ) -> List[ObsidianNote]:
         """
         Search notes by text.
-        
+
         Args:
             query: Search query
             search_in: Where to search
             case_sensitive: Case-sensitive search
             limit: Maximum results
-            
+
         Returns:
             List of matching notes
         """
@@ -241,11 +241,11 @@ class ObsidianClient:
     ) -> List[ObsidianNote]:
         """
         Find notes by tag.
-        
+
         Args:
             tag: Tag to search for (e.g., "topic/ai" or "topic")
             exact_match: If False, match tag prefix
-            
+
         Returns:
             List of matching notes
         """
@@ -268,11 +268,11 @@ class ObsidianClient:
     ) -> List[ObsidianNote]:
         """
         Find notes matching multiple tags.
-        
+
         Args:
             tags: List of tags
             match_all: If True, note must have all tags (AND). If False, any tag (OR).
-            
+
         Returns:
             List of matching notes
         """
@@ -303,11 +303,11 @@ class ObsidianClient:
     ) -> List[ObsidianNote]:
         """
         Find notes in a specific folder.
-        
+
         Args:
             folder: Folder path relative to vault root
             recursive: Search subfolders
-            
+
         Returns:
             List of notes in folder
         """
@@ -316,10 +316,10 @@ class ObsidianClient:
     def find_backlinks(self, note_path: str) -> List[ObsidianNote]:
         """
         Find all notes that link to the specified note.
-        
+
         Args:
             note_path: Relative path or title of note
-            
+
         Returns:
             List of notes linking to this note
         """
@@ -347,7 +347,7 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Create a new note.
-        
+
         Args:
             path: Relative path for new note (with or without .md)
             content: Note content (body)
@@ -355,7 +355,7 @@ class ObsidianClient:
             tags: Tags to add to frontmatter
             frontmatter: Additional frontmatter fields
             folder: Create in specific folder (overrides path folder)
-            
+
         Returns:
             Operation result
         """
@@ -413,13 +413,13 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Update an existing note.
-        
+
         Args:
             path: Relative path or title
             content: New content (None to keep existing)
             frontmatter: Frontmatter to add/update
             merge_frontmatter_flag: If True, merge. If False, replace.
-            
+
         Returns:
             Operation result
         """
@@ -466,12 +466,12 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Update content under a specific heading.
-        
+
         Args:
             path: Relative path or title
             heading: Heading text
             new_content: New content for section
-            
+
         Returns:
             Operation result
         """
@@ -517,11 +517,11 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Append content to end of note.
-        
+
         Args:
             path: Relative path or title
             content: Content to append
-            
+
         Returns:
             Operation result
         """
@@ -558,12 +558,12 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Move or rename a note.
-        
+
         Args:
             source: Source path or title
             destination: Destination path (relative to vault)
             update_links: Update wiki links (uses auto_update_links if None)
-            
+
         Returns:
             Operation result with affected files
         """
@@ -638,11 +638,11 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Add tags to a note.
-        
+
         Args:
             path: Relative path or title
             tags: Tags to add
-            
+
         Returns:
             Operation result
         """
@@ -684,11 +684,11 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Remove a tag from a note.
-        
+
         Args:
             path: Relative path or title
             tag: Tag to remove
-            
+
         Returns:
             Operation result
         """
@@ -730,11 +730,11 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Replace all tags on a note.
-        
+
         Args:
             path: Relative path or title
             tags: New tags list
-            
+
         Returns:
             Operation result
         """
@@ -772,13 +772,13 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Add a wiki link to a note.
-        
+
         Args:
             source_path: Source note path or title
             target_note: Target note title or path
             position: Where to add link
             heading: Heading name (if position="after_heading")
-            
+
         Returns:
             Operation result
         """
@@ -836,14 +836,14 @@ class ObsidianClient:
     ) -> ObsidianOperationResult:
         """
         Create or update a hub/index note.
-        
+
         Args:
             hub_path: Path for hub note
             title: Hub title
             linked_notes: List of note paths/titles to link
             description: Optional description
             group_by_tag: Group notes by tag category (e.g., "topic")
-            
+
         Returns:
             Operation result
         """
@@ -904,10 +904,10 @@ class ObsidianClient:
     ) -> ObsidianChangesPlan:
         """
         Plan changes without executing (dry-run).
-        
+
         Args:
             operations: List of operation dicts
-            
+
         Returns:
             Change plan
         """
@@ -939,10 +939,10 @@ class ObsidianClient:
     ) -> List[ObsidianOperationResult]:
         """
         Execute a change plan.
-        
+
         Args:
             plan: Change plan to execute
-            
+
         Returns:
             List of operation results
         """

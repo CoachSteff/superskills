@@ -181,7 +181,7 @@ class TestAccessibilityValidation:
         validation = generator.validate_accessibility(str(test_path))
 
         # Small image should pass file size check
-        assert validation["file_size_ok"] == True
+        assert validation["file_size_ok"]
 
 
 class TestImageGeneration:

@@ -52,7 +52,7 @@ class EmailCampaigner:
         verbose: bool = True
     ):
         """Initialize EmailCampaigner.
-        
+
         Args:
             output_dir: Directory to save email logs
             templates_dir: Directory containing email templates
@@ -90,7 +90,7 @@ class EmailCampaigner:
         template_data: Optional[Dict] = None
     ) -> EmailResult:
         """Send a single email.
-        
+
         Args:
             to_email: Recipient email address
             subject: Email subject
@@ -98,7 +98,7 @@ class EmailCampaigner:
             from_email: Sender email (defaults to verified sender)
             content_type: Content type (text/plain or text/html)
             template_data: Data to render template (if content is template)
-            
+
         Returns:
             EmailResult with send status
         """
@@ -166,14 +166,14 @@ class EmailCampaigner:
         personalization: Optional[Dict[str, Dict]] = None
     ) -> List[EmailResult]:
         """Send email campaign to multiple recipients.
-        
+
         Args:
             recipients: List of recipient email addresses
             subject: Email subject
             content: Email content template
             from_email: Sender email
             personalization: Dict mapping email to personalization data
-            
+
         Returns:
             List of EmailResult objects
         """
@@ -213,12 +213,12 @@ class EmailCampaigner:
         from_email: Optional[str] = None
     ) -> Dict[str, List[EmailResult]]:
         """Schedule a drip email sequence.
-        
+
         Args:
             recipients: List of recipient email addresses
             drip_sequence: List of email dicts with 'subject', 'content', 'delay_days'
             from_email: Sender email
-            
+
         Returns:
             Dict mapping sequence step to EmailResult list
         """
@@ -230,7 +230,7 @@ class EmailCampaigner:
         for i, email_config in enumerate(drip_sequence, 1):
             step_key = f"email_{i}"
             subject = email_config.get("subject", "")
-            content = email_config.get("content", "")
+            email_config.get("content", "")
             delay_days = email_config.get("delay_days", 0)
 
             if self.verbose:
@@ -265,12 +265,12 @@ class EmailCampaigner:
         variables: Optional[List[str]] = None
     ) -> str:
         """Create and save an email template.
-        
+
         Args:
             template_name: Template filename (without extension)
             content: Template content with Jinja2 variables
             variables: List of variable names used in template
-            
+
         Returns:
             Path to created template file
         """
@@ -304,11 +304,11 @@ class EmailCampaigner:
         template_data: Dict
     ) -> str:
         """Load and render a template.
-        
+
         Args:
             template_name: Template filename (without extension)
             template_data: Data to render template
-            
+
         Returns:
             Rendered template content
         """
@@ -375,13 +375,13 @@ def send_simple_email(
     **kwargs
 ) -> EmailResult:
     """Convenience function to send a single email.
-    
+
     Args:
         to_email: Recipient email
         subject: Email subject
         content: Email content
         **kwargs: Additional arguments for EmailCampaigner
-        
+
     Returns:
         EmailResult
     """

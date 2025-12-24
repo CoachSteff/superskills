@@ -10,7 +10,6 @@ from typing import Dict, List, Literal, Optional
 
 try:
     from crawl4ai import AsyncWebCrawler
-    from crawl4ai.extraction_strategy import CosineStrategy, LLMExtractionStrategy
     CRAWL4AI_AVAILABLE = True
 except ImportError:
     CRAWL4AI_AVAILABLE = False
@@ -64,7 +63,7 @@ class WebScraper:
         user_agent: Optional[str] = None
     ):
         """Initialize WebScraper.
-        
+
         Args:
             output_dir: Directory to save scraped content
             extraction_mode: How to extract content (markdown, html, structured, llm)
@@ -93,7 +92,7 @@ class WebScraper:
         output_filename: Optional[str] = None
     ) -> ScrapingResult:
         """Scrape a single URL.
-        
+
         Args:
             url: URL to scrape
             wait_for_selector: CSS selector to wait for before scraping
@@ -101,7 +100,7 @@ class WebScraper:
             extraction_strategy: Pre-defined strategy (article, product, contact)
             css_selector: CSS selector to extract specific content
             output_filename: Custom filename for output
-            
+
         Returns:
             ScrapingResult with extracted content
         """
@@ -117,7 +116,7 @@ class WebScraper:
 
             # Add extraction strategy if specified
             if extraction_strategy and extraction_strategy in self.EXTRACTION_STRATEGIES:
-                strategy_config = self.EXTRACTION_STRATEGIES[extraction_strategy]
+                self.EXTRACTION_STRATEGIES[extraction_strategy]
                 if self.verbose:
                     print(f"Using extraction strategy: {extraction_strategy}")
 
@@ -175,12 +174,12 @@ class WebScraper:
         **kwargs
     ) -> List[ScrapingResult]:
         """Scrape multiple URLs concurrently.
-        
+
         Args:
             urls: List of URLs to scrape
             max_concurrent: Maximum number of concurrent requests
             **kwargs: Additional arguments passed to scrape()
-            
+
         Returns:
             List of ScrapingResult objects
         """
@@ -219,7 +218,7 @@ class WebScraper:
         format: OutputFormat = "json"
     ):
         """Save scraping result to file.
-        
+
         Args:
             result: ScrapingResult to save
             filename: Output filename
@@ -260,7 +259,7 @@ class WebScraper:
         filename: str = "batch_results.json"
     ):
         """Save multiple results to a single JSON file.
-        
+
         Args:
             results: List of ScrapingResult objects
             filename: Output filename
@@ -291,12 +290,12 @@ class WebScraper:
 
 def scrape_url(url: str, output_dir: str = "scraped_data", **kwargs) -> ScrapingResult:
     """Convenience function to scrape a single URL synchronously.
-    
+
     Args:
         url: URL to scrape
         output_dir: Output directory
         **kwargs: Additional arguments for WebScraper
-        
+
     Returns:
         ScrapingResult
     """
@@ -306,12 +305,12 @@ def scrape_url(url: str, output_dir: str = "scraped_data", **kwargs) -> Scraping
 
 def scrape_urls(urls: List[str], output_dir: str = "scraped_data", **kwargs) -> List[ScrapingResult]:
     """Convenience function to scrape multiple URLs synchronously.
-    
+
     Args:
         urls: List of URLs to scrape
         output_dir: Output directory
         **kwargs: Additional arguments for WebScraper
-        
+
     Returns:
         List of ScrapingResult objects
     """

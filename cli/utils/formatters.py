@@ -15,11 +15,11 @@ class OutputFormatter:
     def format(data: Dict[str, Any], format_type: str = 'markdown') -> str:
         """
         Format data according to specified format.
-        
+
         Args:
             data: Data to format
             format_type: One of 'json', 'yaml', 'markdown', 'plain'
-        
+
         Returns:
             Formatted string
         """
@@ -119,11 +119,11 @@ class WorkflowListFormatter:
     def format(workflows: list, format_type: str = 'markdown') -> str:
         """
         Format workflow list.
-        
+
         Args:
             workflows: List of workflow dicts
             format_type: Output format
-        
+
         Returns:
             Formatted string
         """
@@ -168,11 +168,11 @@ class SkillListFormatter:
     def format(skills: list, format_type: str = 'markdown') -> str:
         """
         Format skill list.
-        
+
         Args:
             skills: List of skill info objects
             format_type: Output format
-        
+
         Returns:
             Formatted string
         """

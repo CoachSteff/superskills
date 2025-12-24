@@ -53,12 +53,12 @@ class ModelResolver:
     def resolve(cls, model: str, api_key: str, provider: Optional[str] = None) -> str:
         """
         Resolve a model name to its concrete ID.
-        
+
         Args:
             model: Logical model name or concrete ID
             api_key: API key for the provider (used for fallback testing)
             provider: Optional provider name (anthropic, google, openai)
-        
+
         Returns:
             Concrete model ID
         """
@@ -145,10 +145,10 @@ class ModelResolver:
     def get_provider(cls, model: str) -> Optional[str]:
         """
         Get the provider for a given model.
-        
+
         Args:
             model: Logical model name
-        
+
         Returns:
             Provider name (anthropic, google, openai) or None
         """

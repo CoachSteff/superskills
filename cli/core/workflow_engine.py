@@ -143,7 +143,7 @@ class WorkflowEngine:
     def _dry_run_workflow(self, workflow_name: str, workflow: Dict[str, Any]) -> Dict[str, Any]:
         """
         Perform a dry-run of the workflow without executing skills.
-        
+
         Shows what would happen without making API calls.
         """
         print(f"\n{'='*60}")
@@ -275,11 +275,11 @@ class WorkflowEngine:
     def watch_and_execute(self, workflow_name: str, interval: int = 1) -> int:
         """
         Watch workflow input directory and automatically process new files.
-        
+
         Args:
             workflow_name: Name of the workflow to execute
             interval: Check interval in seconds
-            
+
         Returns:
             Exit code (0 for success)
         """
@@ -353,7 +353,7 @@ class WorkflowEngine:
                             'filename': file_path.stem
                         }
 
-                        result = self.execute(workflow_name, variables, dry_run=False)
+                        self.execute(workflow_name, variables, dry_run=False)
 
                         print(f"\n✓ Successfully processed: {file_path.name}")
                         processed_files.add(str(file_path))
@@ -371,10 +371,10 @@ class WorkflowEngine:
     def batch_execute(self, workflow_name: str) -> int:
         """
         Process all files in workflow input directory.
-        
+
         Args:
             workflow_name: Name of the workflow to execute
-            
+
         Returns:
             Exit code (0 for success, 1 for errors)
         """
@@ -434,7 +434,7 @@ class WorkflowEngine:
                     'filename': file_path.stem
                 }
 
-                result = self.execute(workflow_name, variables, dry_run=False)
+                self.execute(workflow_name, variables, dry_run=False)
 
                 print(f"\n✓ Successfully processed: {file_path.name}")
                 success_count += 1

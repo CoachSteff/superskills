@@ -10,7 +10,7 @@ from cli.core.skill_loader import SkillLoader
 def discover_command(query: str = None, task: str = None, json_output: bool = False):
     """
     Discover skills based on query or task description.
-    
+
     Args:
         query: Search query for skill capabilities
         task: Task description to find matching workflow

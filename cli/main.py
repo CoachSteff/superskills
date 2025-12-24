@@ -33,12 +33,12 @@ from .utils.version import get_version as _get_version
 
 def load_environment():
     """Load environment variables from .env files.
-    
+
     This provides base .env loading for CLI operations.
     Individual skills use superskills/core/credentials.py which:
     - Loads global .env (override=False - respects system env)
     - Loads skill-specific .env (override=True - takes precedence over global)
-    
+
     Precedence (highest to lowest):
     1. System environment variables
     2. Skill-specific .env (superskills/{skill}/.env)

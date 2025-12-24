@@ -11,10 +11,10 @@ import yaml
 def parse_frontmatter(content: str) -> Tuple[Dict, str]:
     """
     Extract YAML frontmatter from Markdown content.
-    
+
     Args:
         content: Full Markdown content
-        
+
     Returns:
         Tuple of (frontmatter_dict, content_without_frontmatter)
     """
@@ -36,10 +36,10 @@ def parse_frontmatter(content: str) -> Tuple[Dict, str]:
 def serialize_frontmatter(frontmatter: Dict) -> str:
     """
     Convert frontmatter dict to YAML string with delimiters.
-    
+
     Args:
         frontmatter: Frontmatter dictionary
-        
+
     Returns:
         YAML string wrapped in --- delimiters
     """
@@ -58,12 +58,12 @@ def serialize_frontmatter(frontmatter: Dict) -> str:
 def merge_frontmatter(existing: Dict, new: Dict, update_modified: bool = True) -> Dict:
     """
     Merge two frontmatter dictionaries.
-    
+
     Args:
         existing: Existing frontmatter
         new: New frontmatter to merge
         update_modified: Whether to update modified timestamp
-        
+
     Returns:
         Merged frontmatter dict
     """
@@ -86,10 +86,10 @@ def merge_frontmatter(existing: Dict, new: Dict, update_modified: bool = True) -
 def extract_headings(content: str) -> List[Tuple[int, str]]:
     """
     Extract headings from Markdown content.
-    
+
     Args:
         content: Markdown content
-        
+
     Returns:
         List of (level, text) tuples
     """
@@ -107,10 +107,10 @@ def extract_headings(content: str) -> List[Tuple[int, str]]:
 def extract_tags_from_frontmatter(frontmatter: Dict) -> List[str]:
     """
     Extract tags from frontmatter.
-    
+
     Args:
         frontmatter: Frontmatter dictionary
-        
+
     Returns:
         List of tags
     """
@@ -127,10 +127,10 @@ def extract_tags_from_frontmatter(frontmatter: Dict) -> List[str]:
 def extract_links(content: str) -> List[str]:
     """
     Extract wiki links from Markdown content.
-    
+
     Args:
         content: Markdown content
-        
+
     Returns:
         List of linked note titles/paths
     """
@@ -149,11 +149,11 @@ def extract_links(content: str) -> List[str]:
 def find_section(content: str, heading: str) -> Optional[Tuple[int, int]]:
     """
     Find the start and end position of a section under a heading.
-    
+
     Args:
         content: Markdown content
         heading: Heading text to find (case-insensitive)
-        
+
     Returns:
         Tuple of (start_index, end_index) or None if not found
     """
@@ -193,12 +193,12 @@ def find_section(content: str, heading: str) -> Optional[Tuple[int, int]]:
 def update_link_in_content(content: str, old_target: str, new_target: str) -> str:
     """
     Update wiki links in content from old target to new target.
-    
+
     Args:
         content: Markdown content
         old_target: Old link target
         new_target: New link target
-        
+
     Returns:
         Updated content
     """
@@ -220,12 +220,12 @@ def update_link_in_content(content: str, old_target: str, new_target: str) -> st
 def get_title_from_content(content: str, frontmatter: Dict, filename: str) -> str:
     """
     Extract title from content in priority order.
-    
+
     Args:
         content: Markdown content
         frontmatter: Frontmatter dict
         filename: Filename without extension
-        
+
     Returns:
         Note title
     """

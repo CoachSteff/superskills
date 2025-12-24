@@ -8,7 +8,7 @@ model availability.
 
 Usage:
     python tools/discover_models.py
-    
+
 Environment:
     ANTHROPIC_API_KEY - Required for API access
 """
@@ -36,7 +36,7 @@ KNOWN_MODEL_PATTERNS = [
 
 def test_model(client: Anthropic, model_name: str) -> dict:
     try:
-        response = client.messages.create(
+        client.messages.create(
             model=model_name,
             max_tokens=1,
             messages=[{"role": "user", "content": "test"}]

@@ -54,7 +54,7 @@ class Transcriber:
         verbose: bool = True
     ):
         """Initialize Transcriber.
-        
+
         Args:
             output_dir: Directory to save transcripts
             provider: Transcription provider (openai or assemblyai)
@@ -89,13 +89,13 @@ class Transcriber:
         output_format: OutputFormat = "txt"
     ) -> TranscriptionResult:
         """Transcribe audio/video file.
-        
+
         Args:
             file_path: Path to audio/video file
             language: Language code (e.g., 'en', 'es'). Auto-detect if None
             include_timestamps: Include word-level timestamps
             output_format: Output format (txt, json, srt, vtt)
-            
+
         Returns:
             TranscriptionResult with transcript and metadata
         """
@@ -205,11 +205,11 @@ class Transcriber:
         format: OutputFormat
     ) -> str:
         """Save transcript to file.
-        
+
         Args:
             result: TranscriptionResult to save
             format: Output format
-            
+
         Returns:
             Path to saved file
         """
@@ -291,12 +291,12 @@ class Transcriber:
         max_quotes: int = 5
     ) -> List[str]:
         """Extract key quotes from transcript for marketing.
-        
+
         Args:
             result: TranscriptionResult to extract from
             min_words: Minimum words per quote
             max_quotes: Maximum number of quotes to return
-            
+
         Returns:
             List of quote strings
         """
@@ -318,11 +318,11 @@ class Transcriber:
         **kwargs
     ) -> List[TranscriptionResult]:
         """Transcribe multiple files.
-        
+
         Args:
             file_paths: List of file paths to transcribe
             **kwargs: Additional arguments for transcribe()
-            
+
         Returns:
             List of TranscriptionResult objects
         """
@@ -362,13 +362,13 @@ def transcribe_file(
     **kwargs
 ) -> TranscriptionResult:
     """Convenience function to transcribe a single file.
-    
+
     Args:
         file_path: Path to audio/video file
         output_dir: Output directory
         provider: Transcription provider
         **kwargs: Additional arguments for Transcriber
-        
+
     Returns:
         TranscriptionResult
     """

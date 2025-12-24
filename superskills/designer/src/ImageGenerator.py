@@ -42,7 +42,7 @@ class ImageGenerator:
         brand_style: Optional[str] = None
     ):
         """Initialize image generator.
-        
+
         Args:
             output_dir: Directory to save generated images
             provider: AI provider to use (gemini or midjourney)
@@ -74,12 +74,12 @@ class ImageGenerator:
         style_override: Optional[str] = None
     ) -> str:
         """Optimize prompt for visual generation.
-        
+
         Args:
             concept: Core visual concept to generate
             platform: Target platform (affects composition)
             style_override: Override default brand style
-            
+
         Returns:
             Optimized prompt string
         """
@@ -108,14 +108,14 @@ class ImageGenerator:
         format: Literal["png", "jpg"] = "png"
     ) -> ImageGenerationResult:
         """Generate image using AI.
-        
+
         Args:
             concept: Visual concept description
             platform: Target platform for sizing
             optimize_prompt: Whether to enhance prompt with brand style
             output_filename: Custom output filename (auto-generated if None)
             format: Output format (png or jpg)
-            
+
         Returns:
             ImageGenerationResult with generation details
         """
@@ -169,12 +169,12 @@ class ImageGenerator:
 
     def _generate_with_gemini(self, prompt: str, width: int, height: int) -> Image.Image:
         """Generate image using Google Gemini Imagen.
-        
+
         Args:
             prompt: Image generation prompt
             width: Image width
             height: Image height
-            
+
         Returns:
             PIL Image object
         """
@@ -210,12 +210,12 @@ class ImageGenerator:
 
     def _generate_with_midjourney(self, prompt: str, width: int, height: int) -> Image.Image:
         """Generate image using Midjourney API.
-        
+
         Args:
             prompt: Image generation prompt
             width: Image width
             height: Image height
-            
+
         Returns:
             PIL Image object
         """
@@ -233,12 +233,12 @@ class ImageGenerator:
 
     def _create_placeholder(self, width: int, height: int, text: str) -> Image.Image:
         """Create placeholder image for testing.
-        
+
         Args:
             width: Image width
             height: Image height
             text: Text to display
-            
+
         Returns:
             PIL Image object
         """
@@ -263,10 +263,10 @@ class ImageGenerator:
 
     def validate_accessibility(self, image_path: str) -> dict:
         """Validate image accessibility.
-        
+
         Args:
             image_path: Path to image file
-            
+
         Returns:
             Dict with accessibility validation results
         """

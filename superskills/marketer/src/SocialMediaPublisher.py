@@ -80,12 +80,12 @@ class SocialMediaPublisher:
         max_length: Optional[int] = None
     ) -> str:
         """Optimize content for specific platform.
-        
+
         Args:
             content: Original content
             platform: Target platform
             max_length: Override default character limit
-            
+
         Returns:
             Optimized content string
         """
@@ -100,10 +100,10 @@ class SocialMediaPublisher:
 
     def extract_hashtags(self, text: str) -> List[str]:
         """Extract hashtags from text.
-        
+
         Args:
             text: Text containing hashtags
-            
+
         Returns:
             List of hashtag strings (without #)
         """
@@ -118,12 +118,12 @@ class SocialMediaPublisher:
         max_tags: int = 5
     ) -> str:
         """Format hashtags for platform.
-        
+
         Args:
             hashtags: List of hashtag strings (without #)
             platform: Target platform
             max_tags: Maximum number of hashtags to include
-            
+
         Returns:
             Formatted hashtag string
         """
@@ -153,7 +153,7 @@ class SocialMediaPublisher:
         link: Optional[str] = None
     ) -> List[PostResult]:
         """Post content to social media platforms.
-        
+
         Args:
             content: Post content/caption
             platforms: List of platforms to post to
@@ -161,7 +161,7 @@ class SocialMediaPublisher:
             schedule_time: Optional scheduled posting time (None = post now)
             hashtags: Optional list of hashtags (without #)
             link: Optional link to include
-            
+
         Returns:
             List of PostResult objects
         """
@@ -233,11 +233,11 @@ class SocialMediaPublisher:
         days_ahead: int = 1
     ) -> datetime:
         """Get optimal posting time for platform.
-        
+
         Args:
             platform: Target platform
             days_ahead: How many days in future
-            
+
         Returns:
             Datetime for optimal posting
         """
@@ -269,12 +269,12 @@ class SocialMediaPublisher:
         hashtags: Optional[List[str]] = None
     ) -> dict:
         """Preview how post will look on platform.
-        
+
         Args:
             content: Post content
             platform: Target platform
             hashtags: Optional hashtags
-            
+
         Returns:
             Preview dict with formatted content and metadata
         """

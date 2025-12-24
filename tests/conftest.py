@@ -70,12 +70,12 @@ def sample_script():
     """Sample script for narrator testing."""
     return """
     Welcome to the Superworker Framework!
-    
+
     Today we'll cover three key concepts:
     1. AI-Native Mindset
     2. Workflow Automation
     3. Continuous Learning
-    
+
     Let's dive in!
     """
 

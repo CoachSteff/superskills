@@ -18,7 +18,7 @@ class MasterBriefingLoader:
     def __init__(self, config_dir: Optional[Path] = None):
         """
         Initialize Master Briefing loader.
-        
+
         Args:
             config_dir: Configuration directory path. Defaults to ~/.superskills
         """
@@ -34,7 +34,7 @@ class MasterBriefingLoader:
     def load(self) -> Optional[Dict[str, Any]]:
         """
         Load Master Briefing from YAML file.
-        
+
         Returns:
             Dictionary containing Master Briefing data, or None if file doesn't exist
         """
@@ -74,10 +74,10 @@ class MasterBriefingLoader:
     def get_section(self, section_name: str) -> Optional[Dict[str, Any]]:
         """
         Get a specific section from Master Briefing.
-        
+
         Args:
             section_name: Name of section (e.g., 'identity', 'voice', 'audience')
-        
+
         Returns:
             Section content as dictionary, or None if not found
         """
@@ -90,7 +90,7 @@ class MasterBriefingLoader:
     def format_for_prompt(self) -> str:
         """
         Format Master Briefing as markdown for inclusion in system prompt.
-        
+
         Returns:
             Formatted markdown string, or empty string if no briefing
         """

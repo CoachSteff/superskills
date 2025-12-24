@@ -17,7 +17,7 @@ class LinkIndex:
     def build_index(self, vault_path: Path) -> None:
         """
         Build link index by scanning all notes.
-        
+
         Args:
             vault_path: Path to vault root
         """
@@ -44,10 +44,10 @@ class LinkIndex:
     def get_backlinks(self, note_path: str) -> List[str]:
         """
         Get all notes that link to the specified note.
-        
+
         Args:
             note_path: Relative path or title of note
-            
+
         Returns:
             List of relative paths of notes linking to this note
         """
@@ -73,14 +73,14 @@ def update_links_after_move(
 ) -> List[str]:
     """
     Update all wiki links after moving/renaming a note.
-    
+
     Args:
         vault_path: Path to vault root
         old_path: Old relative path
         new_path: New relative path
         old_title: Old note title (filename without extension)
         new_title: New note title (filename without extension)
-        
+
     Returns:
         List of affected file paths
     """
@@ -115,11 +115,11 @@ def update_links_after_move(
 def resolve_link(vault_path: Path, link_text: str) -> List[Path]:
     """
     Resolve wiki link to actual file path(s).
-    
+
     Args:
         vault_path: Path to vault root
         link_text: Link text from [[...]]
-        
+
     Returns:
         List of matching file paths (can be multiple if ambiguous)
     """

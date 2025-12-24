@@ -29,7 +29,7 @@ class ProgressIndicator:
     def spinner(self, message: str):
         """
         Show a spinner with a message.
-        
+
         Usage:
             with progress.spinner("Processing..."):
                 # do work
@@ -46,11 +46,11 @@ class ProgressIndicator:
     def create_workflow_progress(self, total_steps: int, description: str = "Workflow"):
         """
         Create a progress bar for workflow execution.
-        
+
         Args:
             total_steps: Total number of steps in the workflow
             description: Description to show
-        
+
         Returns:
             Progress context manager
         """
@@ -73,7 +73,7 @@ class ProgressIndicator:
     def update_workflow_progress(self, step: int, message: str):
         """
         Update workflow progress.
-        
+
         Args:
             step: Current step number (1-indexed)
             message: Message to display

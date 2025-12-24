@@ -30,10 +30,10 @@ class WorkflowValidator:
     def validate_workflow(self, workflow_path: Path) -> Tuple[bool, List[str]]:
         """
         Validate a workflow file.
-        
+
         Args:
             workflow_path: Path to workflow YAML file
-        
+
         Returns:
             Tuple of (is_valid, list_of_errors)
         """
@@ -109,7 +109,7 @@ class WorkflowValidator:
     def _has_circular_dependency(self, workflow: Dict[str, Any]) -> bool:
         """
         Check for circular dependencies in workflow variables.
-        
+
         Simplified check: workflow variables shouldn't reference each other.
         """
         workflow_vars = workflow.get('variables', {})
@@ -133,14 +133,14 @@ class PathSanitizer:
     def sanitize_path(path: str, base_dir: Optional[Path] = None) -> Path:
         """
         Sanitize a file path to prevent directory traversal.
-        
+
         Args:
             path: Path to sanitize
             base_dir: Base directory to restrict access to
-        
+
         Returns:
             Sanitized absolute path
-        
+
         Raises:
             ValueError: If path attempts directory traversal
         """
@@ -158,7 +158,7 @@ class PathSanitizer:
                 )
 
         # Check for common attack patterns
-        path_str = str(p)
+        str(p)
         if '..' in Path(path).parts:
             raise ValueError(f"Directory traversal detected in path: {path}")
 
@@ -168,10 +168,10 @@ class PathSanitizer:
     def sanitize_filename(filename: str) -> str:
         """
         Sanitize a filename to remove dangerous characters.
-        
+
         Args:
             filename: Filename to sanitize
-        
+
         Returns:
             Sanitized filename
         """
@@ -200,10 +200,10 @@ class InputValidator:
     def validate_skill_name(name: str) -> bool:
         """
         Validate skill name format.
-        
+
         Args:
             name: Skill name
-        
+
         Returns:
             True if valid
         """
@@ -214,10 +214,10 @@ class InputValidator:
     def validate_variable_name(name: str) -> bool:
         """
         Validate variable name format.
-        
+
         Args:
             name: Variable name
-        
+
         Returns:
             True if valid
         """
@@ -228,11 +228,11 @@ class InputValidator:
     def validate_workflow_depth(workflow: Dict[str, Any], max_depth: int = 50) -> bool:
         """
         Validate workflow doesn't exceed maximum depth.
-        
+
         Args:
             workflow: Workflow definition
             max_depth: Maximum number of steps allowed
-        
+
         Returns:
             True if valid
         """

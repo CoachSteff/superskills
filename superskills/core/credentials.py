@@ -22,11 +22,11 @@ logger = logging.getLogger(__name__)
 
 def load_credentials(skill_name: Optional[str] = None, verbose: bool = False):
     """Load credentials from .env files.
-    
+
     Args:
         skill_name: Optional skill name for per-skill .env loading
         verbose: Print loading information
-    
+
     Priority:
         1. Environment variables (Claude Desktop sets these)
         2. Global .env (root of repo)
@@ -68,15 +68,15 @@ def get_credential(
     required: bool = True
 ) -> Optional[str]:
     """Get credential with helpful error message.
-    
+
     Args:
         key: Environment variable name
         default: Default value if not found
         required: If True, raise error when not found and no default
-        
+
     Returns:
         Credential value or default
-        
+
     Raises:
         ValueError: If credential not found, no default, and required=True
     """
@@ -107,10 +107,10 @@ def get_credential(
 
 def check_credentials(required_keys: list[str]) -> dict[str, bool]:
     """Check which credentials are set.
-    
+
     Args:
         required_keys: List of environment variable names to check
-        
+
     Returns:
         Dict mapping key names to whether they're set (True/False)
     """
@@ -119,10 +119,10 @@ def check_credentials(required_keys: list[str]) -> dict[str, bool]:
 
 def get_credential_status(required_keys: list[str]) -> str:
     """Get a formatted status message for credentials.
-    
+
     Args:
         required_keys: List of environment variable names to check
-        
+
     Returns:
         Formatted status string
     """

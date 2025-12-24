@@ -93,12 +93,12 @@ class SkillExecutor:
     ) -> str:
         """
         Build system prompt with hierarchical context.
-        
+
         Priority (most specific wins):
         1. Skill PROFILE.md (skill-specific customization - highest priority)
         2. Master Briefing (global brand voice)
         3. SKILL.md (role definition - baseline)
-        
+
         The system prompt explicitly instructs the LLM which layer takes priority
         when conflicts arise.
         """

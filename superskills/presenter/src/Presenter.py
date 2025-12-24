@@ -9,7 +9,6 @@ from typing import Dict, List, Literal, Optional
 try:
     from pptx import Presentation
     from pptx.dml.color import RGBColor
-    from pptx.enum.text import PP_ALIGN
     from pptx.util import Inches, Pt
     PPTX_AVAILABLE = True
 except ImportError:
@@ -69,7 +68,7 @@ class Presenter:
         verbose: bool = True
     ):
         """Initialize Presenter.
-        
+
         Args:
             output_dir: Directory to save presentations
             theme: Presentation theme (default, dark, professional)
@@ -98,12 +97,12 @@ class Presenter:
         title_slide: bool = True
     ) -> PresentationResult:
         """Create presentation from markdown file.
-        
+
         Args:
             markdown_file: Path to markdown file
             output_name: Output filename (without extension)
             title_slide: Include title slide
-            
+
         Returns:
             PresentationResult with presentation details
         """
@@ -180,13 +179,13 @@ class Presenter:
         image_path: Optional[str] = None
     ) -> int:
         """Add a slide to the presentation.
-        
+
         Args:
             title: Slide title
             content: Slide content (bullet points or text)
             layout: Slide layout type
             image_path: Path to image to add (optional)
-            
+
         Returns:
             Slide index
         """
@@ -214,13 +213,13 @@ class Presenter:
         output_name: Optional[str] = None
     ) -> str:
         """Export presentation to PDF.
-        
+
         Note: This requires LibreOffice or PowerPoint to be installed.
-        
+
         Args:
             pptx_file: Path to PowerPoint file
             output_name: Output PDF filename
-            
+
         Returns:
             Path to PDF file
         """
@@ -418,12 +417,12 @@ def create_presentation_from_markdown(
     **kwargs
 ) -> PresentationResult:
     """Convenience function to create presentation from markdown.
-    
+
     Args:
         markdown_file: Path to markdown file
         output_dir: Output directory
         **kwargs: Additional arguments for Presenter
-        
+
     Returns:
         PresentationResult
     """

@@ -22,11 +22,11 @@ __all__ = [
 def execute(action: str, **kwargs) -> dict:
     """
     CLI execution wrapper for Obsidian skill.
-    
+
     Args:
         action: Action to perform
         **kwargs: Action-specific arguments
-        
+
     Returns:
         Result dictionary
     """

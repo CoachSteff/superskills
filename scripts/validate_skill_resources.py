@@ -47,7 +47,7 @@ def parse_frontmatter(content: str) -> Dict:
 def validate_skill(skill_path: Path) -> Dict:
     """
     Validate a single SKILL.md file.
-    
+
     Returns dict with validation results.
     """
     skill_name = skill_path.parent.name

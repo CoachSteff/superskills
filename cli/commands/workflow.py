@@ -48,10 +48,10 @@ def workflow_list_command(**kwargs):
 def workflow_validate_command(workflow_name: str):
     """
     Validate a workflow definition.
-    
+
     Args:
         workflow_name: Name of workflow to validate
-    
+
     Returns:
         0 if valid, 1 if invalid
     """

@@ -142,7 +142,7 @@ class SkillLoader:
     def load_skill_content(self, skill_name: str) -> Dict[str, Any]:
         """
         Load skill content with hierarchical profile system.
-        
+
         Returns:
             Dict with keys: 'skill', 'master_briefing', 'profile'
         """

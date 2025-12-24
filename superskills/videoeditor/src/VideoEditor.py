@@ -43,7 +43,7 @@ class VideoEditor:
         verbose: bool = True
     ):
         """Initialize VideoEditor.
-        
+
         Args:
             output_dir: Directory to save edited videos
             verbose: Enable verbose logging
@@ -75,12 +75,12 @@ class VideoEditor:
         output_name: Optional[str] = None
     ) -> List[VideoEditResult]:
         """Extract clips from video at specified timestamps.
-        
+
         Args:
             video_path: Path to source video
             timestamps: List of (start_seconds, end_seconds) tuples
             output_name: Base name for output clips
-            
+
         Returns:
             List of VideoEditResult objects
         """
@@ -134,13 +134,13 @@ class VideoEditor:
         output_name: Optional[str] = None
     ) -> VideoEditResult:
         """Add intro and/or outro to video.
-        
+
         Args:
             video_path: Path to main video
             intro_path: Path to intro video (optional)
             outro_path: Path to outro video (optional)
             output_name: Output filename
-            
+
         Returns:
             VideoEditResult
         """
@@ -188,13 +188,13 @@ class VideoEditor:
         output_name: Optional[str] = None
     ) -> VideoEditResult:
         """Generate preview clip from video.
-        
+
         Args:
             video_path: Path to source video
             duration: Preview duration in seconds
             from_start: If True, clip from start; else from middle
             output_name: Output filename
-            
+
         Returns:
             VideoEditResult
         """
@@ -232,12 +232,12 @@ class VideoEditor:
         output_name: Optional[str] = None
     ) -> VideoEditResult:
         """Resize video for social media platform.
-        
+
         Args:
             video_path: Path to source video
             platform: Platform name (youtube_short, linkedin_video, etc.)
             output_name: Output filename
-            
+
         Returns:
             VideoEditResult
         """
@@ -277,12 +277,12 @@ class VideoEditor:
         output_name: Optional[str] = None
     ) -> VideoEditResult:
         """Burn captions into video.
-        
+
         Args:
             video_path: Path to source video
             srt_file: Path to SRT subtitle file
             output_name: Output filename
-            
+
         Returns:
             VideoEditResult
         """

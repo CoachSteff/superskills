@@ -141,7 +141,7 @@ def _prompt_workflow_setup():
 def init_command(skip_workflows=False):
     """
     Initialize the SuperSkills CLI.
-    
+
     Args:
         skip_workflows: If True, skip interactive workflow setup (for CI/CD)
     """

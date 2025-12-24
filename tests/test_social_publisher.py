@@ -177,7 +177,7 @@ class TestPostPreview:
         assert preview["content"] == content
         assert preview["character_count"] == len(content)
         assert preview["character_limit"] == 3000
-        assert preview["within_limit"] == True
+        assert preview["within_limit"]
 
     def test_preview_post_with_hashtags(self, mock_env_vars):
         """Test preview with hashtags."""
@@ -197,7 +197,7 @@ class TestPostPreview:
 
         preview = publisher.preview_post(content, Platform.TWITTER)
 
-        assert preview["within_limit"] == False
+        assert not preview["within_limit"]
         assert preview["character_count"] > preview["character_limit"]
 
     def test_preview_includes_optimal_time(self, mock_env_vars):
@@ -250,7 +250,7 @@ class TestPostingMocked:
         mock_post.return_value = mock_requests_response
 
         publisher = SocialMediaPublisher()
-        results = publisher.post(
+        publisher.post(
             content="Test post",
             platforms=[Platform.LINKEDIN],
             hashtags=["AI", "Productivity"]

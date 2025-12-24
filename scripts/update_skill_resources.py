@@ -144,7 +144,7 @@ def add_master_briefing_reference(body: str, skill_name: str, is_python: bool) -
 def update_skill_file(skill_path: Path, dry_run: bool = False) -> Dict:
     """
     Update a single SKILL.md file.
-    
+
     Returns dict with status info.
     """
     skill_name = skill_path.parent.name

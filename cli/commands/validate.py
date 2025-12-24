@@ -13,7 +13,7 @@ from cli.utils.paths import get_skills_dir
 def validate_command():
     """
     Validate skill integrity and completeness.
-    
+
     Checks:
     - All skills have SKILL.md files
     - YAML frontmatter is valid

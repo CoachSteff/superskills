@@ -210,7 +210,7 @@ More text.
     def test_extract_links(self):
         """Test extracting wiki links."""
         content = """Some text with [[Link 1]] and [[Link 2|Alias]].
-        
+
 Also [[another link]] here.
 """
         links = extract_links(content)

@@ -97,7 +97,7 @@ class TestLoadCredentials:
                 mock_load.assert_called_once()
                 call_args = mock_load.call_args
                 assert str(call_args[0][0]).endswith('.env')
-                assert call_args[1]['override'] == False
+                assert not call_args[1]['override']
 
     def test_load_credentials_with_skill_name(self, clean_env, temp_repo_structure):
         """Test loading credentials with skill name (global + skill)."""
@@ -121,11 +121,11 @@ class TestLoadCredentials:
 
                 first_call = mock_load.call_args_list[0]
                 assert str(first_call[0][0]).endswith('.env')
-                assert first_call[1]['override'] == False
+                assert not first_call[1]['override']
 
                 second_call = mock_load.call_args_list[1]
                 assert 'test-skill' in str(second_call[0][0])
-                assert second_call[1]['override'] == True
+                assert second_call[1]['override']
 
     def test_load_credentials_skill_override_priority(self, clean_env):
         """Test that skill .env overrides global .env."""

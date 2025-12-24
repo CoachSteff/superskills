@@ -91,8 +91,8 @@ class TestWebScraperInit:
         scraper = WebScraper(output_dir=str(temp_output_dir))
         assert scraper.output_dir == temp_output_dir
         assert scraper.extraction_mode == "markdown"
-        assert scraper.verbose == True
-        assert scraper.headless == True
+        assert scraper.verbose
+        assert scraper.headless
 
     def test_init_with_custom_values(self, temp_output_dir):
         """Test initialization with custom values."""
@@ -103,13 +103,13 @@ class TestWebScraperInit:
             headless=False
         )
         assert scraper.extraction_mode == "html"
-        assert scraper.verbose == False
-        assert scraper.headless == False
+        assert not scraper.verbose
+        assert not scraper.headless
 
     def test_init_creates_output_dir(self, tmp_path):
         """Test that output directory is created."""
         output_dir = tmp_path / "new_dir"
-        scraper = WebScraper(output_dir=str(output_dir))
+        WebScraper(output_dir=str(output_dir))
         assert output_dir.exists()
 
 
@@ -164,7 +164,7 @@ class TestScraping:
         assert result.url == "https://example.com"
         assert result.title == "Test Article"
         assert "Test Article" in result.content
-        assert result.metadata["success"] == True
+        assert result.metadata["success"]
 
     @patch('WebScraper.AsyncWebCrawler')
     async def test_scrape_with_html_mode(self, mock_crawler_class, temp_output_dir, sample_html):
@@ -201,7 +201,7 @@ class TestScraping:
         mock_crawler_class.return_value = mock_crawler
 
         scraper = WebScraper(output_dir=str(temp_output_dir))
-        result = await scraper.scrape(
+        await scraper.scrape(
             "https://example.com",
             wait_for_selector=".content"
         )
@@ -270,7 +270,7 @@ class TestMultipleScraping:
 
         assert len(results) == 3
         # Check that second result has error
-        assert results[1].metadata.get("success") == False
+        assert not results[1].metadata.get("success")
 
 
 class TestSaveResults:

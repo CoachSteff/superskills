@@ -39,7 +39,7 @@ class CLIConfig:
         needs_regen = False
         current_version = self._config.get('version')
         
-        if current_version != '2.4.1':
+        if current_version != '2.5.0':
             needs_regen = True
         
         # Check for old config structure (api.anthropic.*)
@@ -61,7 +61,7 @@ class CLIConfig:
         
         if needs_regen:
             old_version = current_version or 'unknown'
-            print(f"⚠ Config updated from {old_version} to v2.4.1. Now using stable Gemini 1.5 Flash.")
+            print(f"⚠ Config updated from {old_version} to v2.5.0. Now using stable Gemini 1.5 Flash.")
             self._config = self._get_default_config()
             self.save()
         
@@ -78,7 +78,7 @@ class CLIConfig:
     
     def _get_default_config(self) -> Dict[str, Any]:
         return {
-            'version': '2.4.1',
+            'version': '2.5.0',
             'api': {
                 'provider': 'gemini',
                 'model': 'gemini-flash-latest',

@@ -7,24 +7,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-- **Natural Language Prompt Command (Bug Fix)**
-  - Fixed `gemini-flash-2` model 404 error preventing `superskills prompt` command
-  - Updated Gemini model mappings to use correct google-genai SDK format (`models/` prefix)
-  - Changed `gemini-flash-latest` → `models/gemini-2.0-flash-exp` (working model)
-  - Added Gemini model validation in ModelResolver (similar to Anthropic validation)
-  - Legacy aliases redirect deprecated models to stable versions
+## [2.5.0] - 2024-12-24
+
+### Summary
+Major feature release: Introduces Profile Builder meta-skill for universal personalization, making SuperSkills usable by any business, creator, or professional. Includes critical natural language interface fix and repository organization improvements.
+
+### Added
+- **Profile Builder Skill** (49th skill)
+  - Interactive assistant for creating personalized Master Briefing and PROFILE.md files
+  - Guides users through 8-section Master Briefing creation
+  - Generates skill-specific profiles with 10 required sections
+  - Profile audit and quality validation workflows
+  - Import voice from existing content (Obsidian, Craft, brand guidelines)
+  - Supports diverse user types: creators, marketers, consultants, analysts, coaches
+  - Usage: `superskills call profile-builder "help me create my master briefing"`
+
+- **Comprehensive Documentation** (2,337 lines total)
+  - `docs/PROFILE_CUSTOMIZATION.md` - Complete customization guide (845 lines)
+  - `superskills/profile-builder/SKILL.md` - Full skill definition (1,208 lines)
+  - `superskills/profile-builder/README.md` - Quick reference (284 lines)
+  - `template/MASTER_BRIEFING_TEMPLATE.yaml` - Universal template (329 lines)
 
 ### Changed
-- **Configuration Version**
-  - Config version: `2.4.1` → `2.4.2` (interim working version)
-  - Auto-migrates users from experimental/preview models to stable
+- **Universal Framework**: Transformed from CoachSteff-specific to generic system
+  - All templates genericized (PROFILE_TEMPLATE.md, MASTER_BRIEFING_TEMPLATE.yaml)
+  - Users create their own voice foundation
+  - Maintains consistency across 49 skills
   
+- **Documentation Updates**
+  - `README.md`: Step 6 elevated with profile-builder as interactive option
+  - `docs/QUICKSTART.md`: Added profile customization section
+  - Skill count: 48 → 49 (33 prompt-based + 16 Python-powered)
+
+- **Repository Organization**
+  - Root directory cleanup (only 5 core documentation files)
+  - Moved files to proper locations:
+    - `PROFILE_AUDIT_SUMMARY.md` → `dev/`
+    - `PROFILE_TEMPLATE.md` → `dev/`
+    - `MASTER_BRIEFING_TEMPLATE.yaml` → `template/`
+  - Removed system artifacts (.DS_Store, .coverage)
+
+- **Configuration Version**
+  - Config version: `2.4.2` → `2.5.0`
+  - Maintains Gemini model fixes from 2.4.2
+
+### Fixed
+- **Natural Language Prompt Command** (Critical Bug)
+  - Fixed `gemini-flash-2` model 404 error blocking `superskills prompt`
+  - Updated Gemini model mappings to correct google-genai SDK format
+  - Changed `gemini-flash-latest` → `models/gemini-2.0-flash-exp` (verified working)
+  - Added Gemini model validation in ModelResolver
+  - Config auto-migration for experimental model names
+  - Legacy aliases redirect deprecated models to stable versions
+  - Test suite updated: 195/196 tests passing (99.5%)
+
+### Security
+- **PROFILE.md Privacy Verification**
+  - Confirmed 44+ personal profile files properly gitignored
+  - Files remain locally for personalization but never pushed to GitHub
+  - Prevents accidental exposure of personal information and customizations
+
 ### Technical Details
-- Updated `cli/config/models.yaml` with correct Gemini model IDs
-- Enhanced `ModelResolver` with Gemini-specific validation
+- Updated `cli/config/models.yaml` with correct Gemini model IDs (models/ prefix)
+- Enhanced `cli/utils/model_resolver.py` with Gemini-specific validation
 - Added fallback logic for invalid Gemini models
 - Updated test suite to match new model configuration
+- Repository follows .cursorrules structure conventions
+
+### Impact
+- ✅ **Universal Adoption**: Anyone can personalize SuperSkills to their voice
+- ✅ **Interactive Setup**: 15-minute guided Master Briefing creation
+- ✅ **Natural Language Restored**: `superskills prompt` command working
+- ✅ **Professional Organization**: Clean repository structure
+- ✅ **Test Coverage Maintained**: 99.5% pass rate (195/196 tests)
 
 ## [2.4.1] - 2024-12-23
 

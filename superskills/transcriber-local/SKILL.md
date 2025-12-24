@@ -1,9 +1,14 @@
 ---
 name: transcriber-local
 description: Privacy-focused offline transcription using local Whisper models. Use when data privacy is critical, offline operation is needed, or avoiding API costs. Runs entirely on your machine.
+version: 1.0.0
 ---
 
 # Transcriber Local
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific model preferences, output formatting, and privacy settings.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Privacy-first offline transcription using local Whisper models. Perfect for sensitive content, offline workflows, and cost-conscious projects.
 

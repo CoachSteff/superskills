@@ -4,7 +4,8 @@ Search functionality for Obsidian vault.
 import re
 from pathlib import Path
 from typing import List, Literal
-from .ObsidianParser import parse_frontmatter, extract_tags_from_frontmatter
+
+from .ObsidianParser import extract_tags_from_frontmatter, parse_frontmatter
 
 
 def text_search(
@@ -28,25 +29,25 @@ def text_search(
     matches = []
     flags = 0 if case_sensitive else re.IGNORECASE
     pattern = re.compile(re.escape(query), flags)
-    
+
     for md_file in vault_path.rglob("*.md"):
         try:
             content = md_file.read_text(encoding='utf-8')
-            
+
             if search_in in ("title", "both"):
                 frontmatter, _ = parse_frontmatter(content)
                 title = frontmatter.get('title', md_file.stem)
                 if pattern.search(str(title)):
                     matches.append(md_file)
                     continue
-            
+
             if search_in in ("content", "both"):
                 if pattern.search(content):
                     matches.append(md_file)
-        
+
         except Exception:
             continue
-    
+
     return matches
 
 
@@ -68,16 +69,16 @@ def tag_search(
     """
     matches = []
     tag_lower = tag.lower()
-    
+
     for md_file in vault_path.rglob("*.md"):
         try:
             content = md_file.read_text(encoding='utf-8')
             frontmatter, _ = parse_frontmatter(content)
             note_tags = extract_tags_from_frontmatter(frontmatter)
-            
+
             for note_tag in note_tags:
                 note_tag_lower = note_tag.lower()
-                
+
                 if exact_match:
                     if note_tag_lower == tag_lower:
                         matches.append(md_file)
@@ -86,10 +87,10 @@ def tag_search(
                     if note_tag_lower == tag_lower or note_tag_lower.startswith(tag_lower + '/'):
                         matches.append(md_file)
                         break
-        
+
         except Exception:
             continue
-    
+
     return matches
 
 
@@ -110,10 +111,10 @@ def filter_notes_by_folder(
         List of note paths
     """
     folder_path = vault_path / folder
-    
+
     if not folder_path.exists() or not folder_path.is_dir():
         return []
-    
+
     if recursive:
         return list(folder_path.rglob("*.md"))
     else:

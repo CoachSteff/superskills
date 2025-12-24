@@ -1,11 +1,14 @@
 ---
 name: compliance-manager
 description: Ensure regulatory compliance across business operations. Use when assessing compliance requirements, conducting gap analyses, preparing for audits, or implementing compliance programs.
+version: 1.0.0
 ---
 
 # Compliance Manager
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific regulatory requirements, business context, and compliance priorities.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific regulatory requirements, business context, and compliance priorities.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Assess regulatory requirements, identify compliance gaps, develop remediation plans, and maintain ongoing compliance across applicable regulations.
 

@@ -2,13 +2,11 @@
 CLI command: export - Export skill metadata for IDE AI consumption
 """
 import json
-import sys
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
+
 from cli.core.skill_loader import SkillLoader
-from cli.core.workflow_engine import WorkflowEngine
-from cli.utils.config import CLIConfig
-from cli.utils.paths import get_workflows_dir, get_project_root
+from cli.utils.paths import get_project_root
 
 
 def _get_version() -> str:
@@ -25,8 +23,8 @@ def _get_version() -> str:
     return "unknown"
 
 
-def export_command(output_file: str = None, format_type: str = 'json', 
-                   skill_type: str = None, has_api: bool = None, 
+def export_command(output_file: str = None, format_type: str = 'json',
+                   skill_type: str = None, has_api: bool = None,
                    markdown: bool = False):
     """
     Export skill metadata for IDE AI consumption.
@@ -40,30 +38,30 @@ def export_command(output_file: str = None, format_type: str = 'json',
     """
     loader = SkillLoader()
     skills = loader.discover_skills()
-    
+
     if skill_type:
         skills = [s for s in skills if s.skill_type == skill_type]
-    
+
     if has_api is not None:
         api_skills = set(loader.PYTHON_SKILLS.keys())
         if has_api:
             skills = [s for s in skills if s.name in api_skills]
         else:
             skills = [s for s in skills if s.name not in api_skills]
-    
+
     if markdown or format_type == 'markdown':
         output = _generate_markdown(skills)
     else:
         metadata = _generate_metadata(skills, loader)
         output = json.dumps(metadata, indent=2)
-    
+
     if output_file:
         output_path = Path(output_file)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(output)
-        
+
         print(f"Metadata exported to: {output_file}")
         return 0
     else:
@@ -74,7 +72,7 @@ def export_command(output_file: str = None, format_type: str = 'json',
 def _generate_metadata(skills: List, loader: SkillLoader) -> Dict[str, Any]:
     """Generate JSON metadata structure."""
     skills_data = []
-    
+
     for skill in skills:
         skill_data = {
             'name': skill.name,
@@ -85,17 +83,17 @@ def _generate_metadata(skills: List, loader: SkillLoader) -> Dict[str, Any]:
             'capabilities': _extract_capabilities(skill),
             'examples': _extract_examples(skill)
         }
-        
+
         if skill.skill_type == 'python':
             skill_data['python_module'] = skill.python_module
             skill_data['apis'] = _get_api_requirements(skill.name)
         else:
             skill_data['apis'] = ['anthropic']
-        
+
         skills_data.append(skill_data)
-    
+
     workflows_data = _get_workflows_metadata()
-    
+
     return {
         'version': _get_version(),
         'total_skills': len(skills_data),
@@ -137,7 +135,7 @@ def _extract_capabilities(skill) -> List[str]:
         'knowledgebase': ['knowledge-management', 'documentation', 'search', 'wiki'],
         'videoeditor': ['video-editing', 'ffmpeg', 'media-production', 'automation'],
     }
-    
+
     return capability_keywords.get(skill.name, [skill.skill_type])
 
 
@@ -156,7 +154,7 @@ def _extract_examples(skill) -> List[str]:
         'marketer': ['Schedule social media posts', 'Publish to multiple platforms'],
         'craft': ['Export Craft document', 'Manage document library'],
     }
-    
+
     return examples.get(skill.name, [f'Use {skill.name} for {skill.description.lower()}'])
 
 
@@ -172,14 +170,14 @@ def _get_api_requirements(skill_name: str) -> List[str]:
         'presenter': ['anthropic'],
         'videoeditor': ['ffmpeg'],
     }
-    
+
     return api_map.get(skill_name, ['anthropic'])
 
 
 def _get_workflows_metadata() -> List[Dict[str, Any]]:
     """Get metadata about available workflows."""
     workflows = []
-    
+
     workflow_definitions = {
         'content-creation': {
             'description': 'End-to-end content production pipeline',
@@ -210,7 +208,7 @@ def _get_workflows_metadata() -> List[Dict[str, Any]]:
             'use_cases': ['Lead generation', 'Sales outreach', 'Client research']
         }
     }
-    
+
     for name, data in workflow_definitions.items():
         workflows.append({
             'name': name,
@@ -221,7 +219,7 @@ def _get_workflows_metadata() -> List[Dict[str, Any]]:
             'outputs': data['outputs'],
             'use_cases': data['use_cases']
         })
-    
+
     return workflows
 
 
@@ -235,18 +233,18 @@ def _generate_markdown(skills: List) -> str:
         "| Skill | Type | Description | Profile | APIs |",
         "|-------|------|-------------|---------|------|"
     ]
-    
+
     loader = SkillLoader()
-    
+
     for skill in sorted(skills, key=lambda s: s.name):
         skill_type = skill.skill_type.capitalize()
         profile_marker = "✓" if skill.has_profile else "-"
         apis = ", ".join(_get_api_requirements(skill.name)) if skill.name in loader.PYTHON_SKILLS else "Anthropic"
-        
+
         lines.append(
             f"| **{skill.name}** | {skill_type} | {skill.description} | {profile_marker} | {apis} |"
         )
-    
+
     lines.extend([
         "",
         "## Categorization",
@@ -264,5 +262,5 @@ def _generate_markdown(skills: List) -> str:
         "developer, scraper, craft, webmaster",
         ""
     ])
-    
+
     return "\n".join(lines)

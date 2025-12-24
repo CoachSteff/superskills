@@ -1,17 +1,16 @@
 """
 LocalTranscriber.py - Privacy-focused offline transcription using local Whisper models.
 """
-import os
-from typing import Dict, List, Optional, Literal
-from pathlib import Path
-from datetime import datetime
 import json
-from dataclasses import dataclass, asdict
 import warnings
+from dataclasses import asdict, dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Literal, Optional
 
 try:
-    import whisper
     import torch
+    import whisper
     WHISPER_AVAILABLE = True
 except ImportError:
     WHISPER_AVAILABLE = False
@@ -38,11 +37,11 @@ class TranscriptionResult:
     timestamp: str = None
     model_size: str = "small"
     device: str = "cpu"
-    
+
     def __post_init__(self):
         if not self.timestamp:
             self.timestamp = datetime.now().isoformat()
-    
+
     def to_dict(self) -> Dict:
         """Convert to dictionary for JSON serialization."""
         return asdict(self)
@@ -50,7 +49,7 @@ class TranscriptionResult:
 
 class LocalTranscriber:
     """Privacy-focused offline transcription using local Whisper models."""
-    
+
     def __init__(
         self,
         output_dir: str = "transcripts",
@@ -74,12 +73,12 @@ class LocalTranscriber:
                 "  pip install openai-whisper[cuda]  # NVIDIA\n"
                 "  pip install openai-whisper[metal] # Apple Silicon"
             )
-        
+
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.model_size = model_size
         self.verbose = verbose
-        
+
         # Auto-detect best device if not specified
         if device is None:
             if torch.cuda.is_available():
@@ -90,16 +89,16 @@ class LocalTranscriber:
                 self.device = "cpu"
         else:
             self.device = device
-        
+
         # Load model (will download on first use, then cache)
         if self.verbose:
             print(f"Loading Whisper {model_size} model on {self.device}...")
-        
+
         self.model = whisper.load_model(model_size, device=self.device)
-        
+
         if self.verbose:
             print(f"✓ Model loaded: {model_size} on {self.device}")
-    
+
     def transcribe(
         self,
         file_path: str,
@@ -121,10 +120,10 @@ class LocalTranscriber:
         file_path = Path(file_path)
         if not file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
-        
+
         if self.verbose:
             print(f"Transcribing: {file_path.name}")
-        
+
         # Transcribe with Whisper
         options = {
             "verbose": self.verbose,
@@ -132,9 +131,9 @@ class LocalTranscriber:
         }
         if language:
             options["language"] = language
-        
+
         result = self.model.transcribe(str(file_path), **options)
-        
+
         # Extract timestamps if requested
         timestamps_data = None
         if include_timestamps and "segments" in result:
@@ -154,24 +153,24 @@ class LocalTranscriber:
                         "start": segment.get("start", 0.0),
                         "end": segment.get("end", 0.0)
                     })
-        
+
         # Calculate metadata
         transcript_text = result["text"].strip()
         word_count = len(transcript_text.split())
         detected_language = result.get("language", language or "unknown")
-        
+
         # Estimate duration (Whisper doesn't always provide it)
         try:
             import librosa
             audio, sr = librosa.load(str(file_path), sr=None)
             duration = len(audio) / sr
-        except:
-            # Fallback: estimate from segments
+        except (ImportError, IOError, OSError, Exception):
+            # Fallback: estimate from segments if librosa unavailable or audio load fails
             if "segments" in result and result["segments"]:
                 duration = result["segments"][-1].get("end", 0.0)
             else:
                 duration = 0.0
-        
+
         # Create result
         transcription_result = TranscriptionResult(
             source_file=str(file_path),
@@ -184,17 +183,17 @@ class LocalTranscriber:
             model_size=self.model_size,
             device=self.device
         )
-        
+
         # Save output
         output_file = self._save_output(transcription_result, output_format)
         transcription_result.output_file = output_file
-        
+
         if self.verbose:
             print(f"✓ Transcribed {word_count} words in {detected_language}")
             print(f"  Saved to: {output_file}")
-        
+
         return transcription_result
-    
+
     def transcribe_batch(
         self,
         file_paths: List[str],
@@ -215,11 +214,11 @@ class LocalTranscriber:
         """
         results = []
         total = len(file_paths)
-        
+
         for idx, file_path in enumerate(file_paths, 1):
             if self.verbose:
                 print(f"\n[{idx}/{total}] Processing: {Path(file_path).name}")
-            
+
             try:
                 result = self.transcribe(
                     file_path,
@@ -233,12 +232,12 @@ class LocalTranscriber:
                     print(f"✗ Error: {e}")
                 # Continue with next file
                 continue
-        
+
         if self.verbose:
             print(f"\n✓ Completed {len(results)}/{total} transcriptions")
-        
+
         return results
-    
+
     def _save_output(
         self,
         result: TranscriptionResult,
@@ -255,66 +254,66 @@ class LocalTranscriber:
         """
         base_name = Path(result.source_file).stem
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        
+
         if format == "txt":
             output_file = self.output_dir / f"{base_name}_{timestamp}.txt"
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(result.transcript)
-        
+
         elif format == "json":
             output_file = self.output_dir / f"{base_name}_{timestamp}.json"
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(result.to_dict(), f, indent=2, ensure_ascii=False)
-        
+
         elif format == "srt":
             output_file = self.output_dir / f"{base_name}_{timestamp}.srt"
             srt_content = self._to_srt(result.timestamps or [])
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(srt_content)
-        
+
         elif format == "vtt":
             output_file = self.output_dir / f"{base_name}_{timestamp}.vtt"
             vtt_content = self._to_vtt(result.timestamps or [])
             with open(output_file, 'w', encoding='utf-8') as f:
                 f.write(vtt_content)
-        
+
         return str(output_file)
-    
+
     def _to_srt(self, timestamps: List[Dict]) -> str:
         """Convert timestamps to SRT format."""
         if not timestamps:
             return ""
-        
+
         srt_lines = []
         for idx, ts in enumerate(timestamps, 1):
             start = self._format_timestamp_srt(ts.get("start", 0))
             end = self._format_timestamp_srt(ts.get("end", 0))
             text = ts.get("word") or ts.get("text", "")
-            
+
             srt_lines.append(f"{idx}")
             srt_lines.append(f"{start} --> {end}")
             srt_lines.append(text)
             srt_lines.append("")  # Blank line
-        
+
         return "\n".join(srt_lines)
-    
+
     def _to_vtt(self, timestamps: List[Dict]) -> str:
         """Convert timestamps to WebVTT format."""
         if not timestamps:
             return "WEBVTT\n\n"
-        
+
         vtt_lines = ["WEBVTT", ""]
         for ts in timestamps:
             start = self._format_timestamp_vtt(ts.get("start", 0))
             end = self._format_timestamp_vtt(ts.get("end", 0))
             text = ts.get("word") or ts.get("text", "")
-            
+
             vtt_lines.append(f"{start} --> {end}")
             vtt_lines.append(text)
             vtt_lines.append("")  # Blank line
-        
+
         return "\n".join(vtt_lines)
-    
+
     @staticmethod
     def _format_timestamp_srt(seconds: float) -> str:
         """Format seconds as SRT timestamp (HH:MM:SS,mmm)."""
@@ -323,7 +322,7 @@ class LocalTranscriber:
         secs = int(seconds % 60)
         millis = int((seconds % 1) * 1000)
         return f"{hours:02d}:{minutes:02d}:{secs:02d},{millis:03d}"
-    
+
     @staticmethod
     def _format_timestamp_vtt(seconds: float) -> str:
         """Format seconds as WebVTT timestamp (HH:MM:SS.mmm)."""

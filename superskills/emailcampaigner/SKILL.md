@@ -1,9 +1,14 @@
 ---
 name: emailcampaigner
 description: Email campaign management using SendGrid. Use when sending marketing emails, creating campaigns, or managing audience communication at scale.
+version: 1.0.0
 ---
 
 # Email Campaigner
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific email templates, branding, and campaign preferences.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Manage and execute email campaigns with professional templates, personalization, and delivery tracking using SendGrid.
 

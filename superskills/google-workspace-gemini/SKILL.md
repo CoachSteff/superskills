@@ -1,12 +1,15 @@
 ---
 name: google-workspace-gemini
 description: Design Google Workspace Gemini implementations and optimize productivity workflows. Use when planning Gemini adoption, creating prompts, integrating AI into Workspace, or comparing with alternatives.
+version: 1.0.0
 license: MIT
 ---
 
 # Google Workspace Gemini Specialist
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific use cases, optimization strategies, and comparison frameworks.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific use cases, optimization strategies, and comparison frameworks.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Implement and optimize Google Workspace with Gemini AI to boost personal and team productivity through intelligent document creation, data analysis, and workflow automation.
 

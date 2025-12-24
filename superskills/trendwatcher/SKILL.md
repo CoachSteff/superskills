@@ -1,12 +1,15 @@
 ---
 name: trendwatcher
 description: Monitor trends, analyze signals, and identify opportunities/threats. Use when tracking industry changes, competitor moves, emerging technologies, or market shifts.
+version: 1.0.0
 license: MIT
 ---
 
 # Trendwatcher
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific industries, sources, and monitoring priorities.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific industries, sources, and monitoring priorities.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Systematically monitor, analyze, and report on trends to identify opportunities, threats, and strategic insights.
 

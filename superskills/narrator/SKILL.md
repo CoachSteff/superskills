@@ -1,11 +1,14 @@
 ---
 name: narrator
 description: Generate professional voiceovers in the user's voice using ElevenLabs AI. Use when creating audio for videos, podcasts, courses, or any content requiring spoken narration.
+version: 1.0.0
 ---
 
 # Narrator
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific voice settings, content type preferences, and script optimization guidelines.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific voice settings, content type preferences, and script optimization guidelines.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Generate professional voiceovers in the user's authentic voice using ElevenLabs AI voice cloning, optimizing scripts for natural delivery.
 

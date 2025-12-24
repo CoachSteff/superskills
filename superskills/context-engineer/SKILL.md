@@ -1,11 +1,14 @@
 ---
 name: context-engineer
 description: Organize knowledge architecture and provide contextual intelligence. Use when structuring information, making knowledge discoverable, compiling context for agents, or maintaining the team's institutional memory.
+version: 1.0.0
 ---
 
 # Context Engineer
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific knowledge base focus, content themes, and organization priorities.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific knowledge base focus, content themes, and organization priorities.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Organize, structure, and maintain the knowledge base; make information discoverable and retrievable; provide contextual intelligence to agents; build knowledge networks.
 

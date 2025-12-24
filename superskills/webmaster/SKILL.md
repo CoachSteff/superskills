@@ -1,11 +1,14 @@
 ---
 name: webmaster
 description: Build and optimize the user's website for performance, SEO, and conversions. Use when publishing content, implementing technical features, optimizing page speed, or maintaining web infrastructure.
+version: 1.0.0
 ---
 
 # Webmaster
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific website context, SEO priorities, and technical preferences.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific website context, SEO priorities, and technical preferences.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Build, maintain, and optimize the user's website infrastructure, ensuring fast performance, strong SEO, seamless content publishing, and reliable uptime.
 

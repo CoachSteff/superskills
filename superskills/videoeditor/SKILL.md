@@ -1,9 +1,14 @@
 ---
 name: videoeditor
 description: Automated video editing using FFmpeg. Use when trimming videos, merging clips, adding audio, or automating video production workflows.
+version: 1.0.0
 ---
 
 # Video Editor
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific video quality settings, encoding preferences, and workflow defaults.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Automate video editing tasks with FFmpeg-powered operations including trimming, merging, audio mixing, and format conversion.
 

@@ -1,10 +1,15 @@
 ---
 name: obsidian
 description: Filesystem-based Obsidian vault manager for reading, writing, searching, and organizing Markdown notes with hierarchical tag taxonomy
+version: 1.0.0
 license: MIT
 ---
 
 # Obsidian Vault Manager
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific vault location, tag taxonomy, and note organization preferences.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 A filesystem-based Obsidian vault manager that enables reading, writing, searching, and organizing Markdown notes directly through the file system without requiring Obsidian plugins or REST APIs.
 

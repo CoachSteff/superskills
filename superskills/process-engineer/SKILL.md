@@ -1,11 +1,14 @@
 ---
 name: process-engineer
 description: Optimize business processes and workflows for efficiency. Use when mapping processes, identifying bottlenecks, designing improvements, or implementing automation.
+version: 1.0.0
 ---
 
 # Process Engineer
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific workflows, automation priorities, and optimization goals.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific workflows, automation priorities, and optimization goals.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Map, analyze, and optimize business processes to eliminate waste, reduce cycle time, and improve quality through systematic process engineering.
 

@@ -1,11 +1,14 @@
 ---
 name: author
 description: Ghostwrite in the user's authentic voice across formats. Use when creating blog posts, social content, emails, scripts, or educational content requiring their signature tone and style.
+version: 1.0.0
 ---
 
 # Author
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific voice characteristics, language patterns, and example content to personalize all writing.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific voice characteristics, language patterns, and example content to personalize all writing.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Write high-quality content in the user's authentic voice, transforming research and strategy into engaging, actionable narratives across formats.
 

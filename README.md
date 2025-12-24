@@ -6,13 +6,13 @@ Custom skill library for Claude Desktop that automates coaching, training, and c
 
 ## Overview
 
-SuperSkills is a comprehensive AI automation toolkit with **49 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
+SuperSkills is a comprehensive AI automation toolkit with **49 skills** (46 base skills + 5 specialized narrator variants) that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
 
 **What You Get:**
-- 33 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
-- 16 Python-Powered Skills - Full API integrations with advanced automation
-- Hierarchical skill families (e.g., narrator-podcast, narrator-meditation, narrator-educational)
-- Comprehensive test suite (196 unit tests)
+- 33 prompt-based skills - Claude Skills using SKILL.md definitions
+- 16 Python-powered skills - Full API integrations with advanced automation
+- 5 narrator variants - Specialized voiceover skills (podcast, meditation, educational, marketing, social)
+- Comprehensive test suite (233 unit tests, 1 skipped)
 - Credential management system (hybrid env vars + .env files)
 - Production-ready patterns and templates
 
@@ -477,7 +477,7 @@ cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
 
 ```
 superskills/
-├── superskills/          # 49 skill directories (33 prompt-based + 16 Python-powered)
+├── superskills/          # 51 skill directories (46 base + 5 narrator variants)
 │   ├── author/           # Claude Skill: SKILL.md + PROFILE.md.template
 │   ├── craft/            # Python skill with API integration
 │   ├── narrator/         # Python skill family: ElevenLabs voice generation
@@ -491,7 +491,7 @@ superskills/
 │   ├── developer/        # Claude Skill: SKILL.md + PROFILE.md.template
 │   └── ...
 ├── docs/                 # Documentation
-├── tests/                # 90+ unit tests
+├── tests/                # 233 unit tests (1 skipped)
 ├── scripts/              # Utility scripts
 ├── template/             # Skill creation template
 └── archive/              # Legacy/incomplete code

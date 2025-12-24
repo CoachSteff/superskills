@@ -1,11 +1,14 @@
 ---
 name: translator
 description: Translate documents accurately while preserving tone and cultural context. Use when converting content to Dutch (informal), French (formal), German (formal), or British English, ensuring culturally-appropriate communication.
+version: 1.0.0
 ---
 
 # Translator
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific language preferences, formality defaults, and content themes for translation.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific language preferences, formality defaults, and content themes for translation.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Translate documents accurately across languages while preserving tone-of-voice, cultural context, and strategic intent, applying language-specific formality conventions.
 

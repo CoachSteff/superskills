@@ -1,9 +1,14 @@
 ---
 name: helper
 description: SuperSkills expert assistant for usage guidance, setup, profile creation, workflow design, and troubleshooting. Use when users need help understanding commands, configuring SuperSkills, creating profiles, or solving problems.
+version: 1.0.0
 ---
 
 # SuperSkills Helper
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific preferences and context.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Your expert guide for everything SuperSkills - from first setup to advanced workflow design.
 

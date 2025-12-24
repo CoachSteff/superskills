@@ -1,12 +1,15 @@
 ---
 name: developer-tester
 description: Design and execute comprehensive testing strategies for software quality. Use when creating test plans, writing test cases, performing testing, or ensuring production readiness.
+version: 1.0.0
 license: MIT
 ---
 
 # Developer Tester
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific testing scope, tech stack, and quality standards.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific testing scope, tech stack, and quality standards.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Plan, design, and execute testing to ensure software quality, reliability, and user satisfaction before production deployment.
 

@@ -1,21 +1,28 @@
 """
 CoursePackager.py - Course packaging and workbook generation.
 """
-import os
-from typing import Dict, List, Optional, Literal
-from pathlib import Path
-from datetime import datetime
-from dataclasses import dataclass
-import zipfile
 import json
+import zipfile
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
 
 try:
-    from reportlab.lib.pagesizes import letter, A4
-    from reportlab.lib.units import inch
     from reportlab.lib import colors
-    from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, Image
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
     from reportlab.lib.enums import TA_CENTER, TA_LEFT
+    from reportlab.lib.pagesizes import A4, letter
+    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+    from reportlab.lib.units import inch
+    from reportlab.platypus import (
+        Image,
+        PageBreak,
+        Paragraph,
+        SimpleDocTemplate,
+        Spacer,
+        Table,
+        TableStyle,
+    )
     REPORTLAB_AVAILABLE = True
 except ImportError:
     REPORTLAB_AVAILABLE = False
@@ -31,7 +38,7 @@ class CoursePackageResult:
     file_count: int
     file_size_mb: float
     timestamp: str = None
-    
+
     def __post_init__(self):
         if not self.timestamp:
             self.timestamp = datetime.now().isoformat()
@@ -39,7 +46,7 @@ class CoursePackageResult:
 
 class CoursePackager:
     """Course packaging and workbook generation using reportlab."""
-    
+
     def __init__(
         self,
         output_dir: str = "output/courses",
@@ -54,13 +61,13 @@ class CoursePackager:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.verbose = verbose
-        
+
         if not REPORTLAB_AVAILABLE:
             raise ImportError("reportlab is required. Install with: pip install reportlab")
-        
+
         self.styles = getSampleStyleSheet()
         self._setup_custom_styles()
-    
+
     def _setup_custom_styles(self):
         """Setup custom PDF styles."""
         self.styles.add(ParagraphStyle(
@@ -71,7 +78,7 @@ class CoursePackager:
             spaceAfter=30,
             alignment=TA_CENTER
         ))
-        
+
         self.styles.add(ParagraphStyle(
             name='CustomHeading',
             parent=self.styles['Heading2'],
@@ -80,7 +87,7 @@ class CoursePackager:
             spaceAfter=12,
             spaceBefore=12
         ))
-        
+
         self.styles.add(ParagraphStyle(
             name='CustomBody',
             parent=self.styles['BodyText'],
@@ -88,7 +95,7 @@ class CoursePackager:
             spaceAfter=12,
             alignment=TA_LEFT
         ))
-    
+
     def create_workbook(
         self,
         title: str,
@@ -109,9 +116,9 @@ class CoursePackager:
         """
         if self.verbose:
             print(f"Creating workbook: {title}")
-        
+
         output_file = self.output_dir / (output_name or f"{title.replace(' ', '_')}.pdf")
-        
+
         # Create PDF document
         doc = SimpleDocTemplate(
             str(output_file),
@@ -121,10 +128,10 @@ class CoursePackager:
             topMargin=72,
             bottomMargin=18
         )
-        
+
         # Build content
         story = []
-        
+
         # Title page
         story.append(Spacer(1, 2 * inch))
         story.append(Paragraph(title, self.styles['CustomTitle']))
@@ -134,19 +141,19 @@ class CoursePackager:
             self.styles['Normal']
         ))
         story.append(PageBreak())
-        
+
         # Table of contents
         if include_toc:
             story.append(Paragraph("Table of Contents", self.styles['CustomTitle']))
             story.append(Spacer(1, 0.3 * inch))
-            
+
             for i, section in enumerate(sections, 1):
                 toc_entry = f"{i}. {section['title']}"
                 story.append(Paragraph(toc_entry, self.styles['Normal']))
                 story.append(Spacer(1, 0.1 * inch))
-            
+
             story.append(PageBreak())
-        
+
         # Add sections
         for i, section in enumerate(sections, 1):
             # Section title
@@ -155,32 +162,32 @@ class CoursePackager:
                 self.styles['CustomTitle']
             ))
             story.append(Spacer(1, 0.3 * inch))
-            
+
             # Section content
             if 'content' in section:
                 for paragraph in section['content']:
                     story.append(Paragraph(paragraph, self.styles['CustomBody']))
                     story.append(Spacer(1, 0.1 * inch))
-            
+
             # Exercises
             if 'exercises' in section:
                 story.append(Spacer(1, 0.3 * inch))
                 story.append(Paragraph("Exercises", self.styles['CustomHeading']))
-                
+
                 for j, exercise in enumerate(section['exercises'], 1):
                     story.append(Paragraph(
                         f"{j}. {exercise}",
                         self.styles['CustomBody']
                     ))
                     story.append(Spacer(1, 0.5 * inch))
-            
+
             story.append(PageBreak())
-        
+
         # Build PDF
         doc.build(story)
-        
+
         file_size_mb = output_file.stat().st_size / (1024 * 1024)
-        
+
         result = CoursePackageResult(
             package_name=title,
             output_file=str(output_file),
@@ -188,13 +195,13 @@ class CoursePackager:
             file_count=1,
             file_size_mb=file_size_mb
         )
-        
+
         if self.verbose:
             print(f"✓ Workbook created: {len(sections)} sections")
             print(f"✓ Saved to: {output_file}")
-        
+
         return result
-    
+
     def generate_certificate(
         self,
         student_name: str,
@@ -217,65 +224,65 @@ class CoursePackager:
         """
         if self.verbose:
             print(f"Generating certificate for: {student_name}")
-        
+
         completion_date = completion_date or datetime.now()
         output_file = self.output_dir / (output_name or f"certificate_{student_name.replace(' ', '_')}.pdf")
-        
+
         # Create PDF
         doc = SimpleDocTemplate(
             str(output_file),
             pagesize=letter
         )
-        
+
         story = []
-        
+
         # Certificate border/header
         story.append(Spacer(1, 1.5 * inch))
-        
+
         # Title
         story.append(Paragraph(
             "Certificate of Completion",
             self.styles['CustomTitle']
         ))
         story.append(Spacer(1, 0.5 * inch))
-        
+
         # Recipient
         story.append(Paragraph(
             "This is to certify that",
             self.styles['Normal']
         ))
         story.append(Spacer(1, 0.2 * inch))
-        
+
         story.append(Paragraph(
             student_name,
             self.styles['CustomTitle']
         ))
         story.append(Spacer(1, 0.3 * inch))
-        
+
         # Course info
         story.append(Paragraph(
             "has successfully completed",
             self.styles['Normal']
         ))
         story.append(Spacer(1, 0.2 * inch))
-        
+
         story.append(Paragraph(
             course_name,
             self.styles['CustomHeading']
         ))
         story.append(Spacer(1, 0.5 * inch))
-        
+
         # Date
         story.append(Paragraph(
             f"Completion Date: {completion_date.strftime('%B %d, %Y')}",
             self.styles['Normal']
         ))
         story.append(Spacer(1, 1 * inch))
-        
+
         # Instructor signature
         if instructor_name:
             story.append(Paragraph(
-                f"_________________________",
+                "_________________________",
                 self.styles['Normal']
             ))
             story.append(Paragraph(
@@ -286,11 +293,11 @@ class CoursePackager:
                 "Instructor",
                 self.styles['Normal']
             ))
-        
+
         doc.build(story)
-        
+
         file_size_mb = output_file.stat().st_size / (1024 * 1024)
-        
+
         result = CoursePackageResult(
             package_name=f"Certificate - {student_name}",
             output_file=str(output_file),
@@ -298,13 +305,13 @@ class CoursePackager:
             file_count=1,
             file_size_mb=file_size_mb
         )
-        
+
         if self.verbose:
-            print(f"✓ Certificate generated")
+            print("✓ Certificate generated")
             print(f"✓ Saved to: {output_file}")
-        
+
         return result
-    
+
     def bundle_resources(
         self,
         resource_paths: List[str],
@@ -323,17 +330,17 @@ class CoursePackager:
         """
         if self.verbose:
             print(f"Bundling {len(resource_paths)} resources...")
-        
+
         output_file = self.output_dir / f"{bundle_name}.zip"
-        
+
         # Create ZIP file
         file_count = 0
         with zipfile.ZipFile(output_file, 'w', zipfile.ZIP_DEFLATED) as zipf:
             manifest = []
-            
+
             for resource_path in resource_paths:
                 resource = Path(resource_path)
-                
+
                 if resource.is_file():
                     zipf.write(resource, resource.name)
                     file_count += 1
@@ -342,7 +349,7 @@ class CoursePackager:
                         "type": "file",
                         "size": resource.stat().st_size
                     })
-                    
+
                 elif resource.is_dir():
                     for file_path in resource.rglob('*'):
                         if file_path.is_file():
@@ -354,7 +361,7 @@ class CoursePackager:
                                 "type": "file",
                                 "size": file_path.stat().st_size
                             })
-            
+
             # Add manifest
             if include_manifest:
                 manifest_data = {
@@ -363,15 +370,15 @@ class CoursePackager:
                     "file_count": file_count,
                     "files": manifest
                 }
-                
+
                 zipf.writestr(
                     "manifest.json",
                     json.dumps(manifest_data, indent=2)
                 )
                 file_count += 1
-        
+
         file_size_mb = output_file.stat().st_size / (1024 * 1024)
-        
+
         result = CoursePackageResult(
             package_name=bundle_name,
             output_file=str(output_file),
@@ -379,13 +386,13 @@ class CoursePackager:
             file_count=file_count,
             file_size_mb=file_size_mb
         )
-        
+
         if self.verbose:
             print(f"✓ Bundle created: {file_count} files")
             print(f"✓ Saved to: {output_file}")
-        
+
         return result
-    
+
     def create_course_package(
         self,
         course_name: str,
@@ -406,12 +413,12 @@ class CoursePackager:
         """
         if self.verbose:
             print(f"Creating complete course package: {course_name}")
-        
+
         package_dir = self.output_dir / course_name.replace(' ', '_')
         package_dir.mkdir(parents=True, exist_ok=True)
-        
+
         files_created = []
-        
+
         # Create workbook
         workbook_result = self.create_workbook(
             title=f"{course_name} - Workbook",
@@ -419,7 +426,7 @@ class CoursePackager:
             output_name=str(package_dir / "workbook.pdf")
         )
         files_created.append(workbook_result.output_file)
-        
+
         # Create certificate template
         if include_certificate_template:
             cert_result = self.generate_certificate(
@@ -429,12 +436,12 @@ class CoursePackager:
                 output_name=str(package_dir / "certificate_template.pdf")
             )
             files_created.append(cert_result.output_file)
-        
+
         # Copy additional resources
         if resource_paths:
             resources_dir = package_dir / "resources"
             resources_dir.mkdir(exist_ok=True)
-            
+
             for resource_path in resource_paths:
                 resource = Path(resource_path)
                 if resource.exists():
@@ -443,18 +450,18 @@ class CoursePackager:
                         dest = resources_dir / resource.name
                         shutil.copy2(resource, dest)
                         files_created.append(str(dest))
-        
+
         # Bundle everything into ZIP
         bundle_result = self.bundle_resources(
             resource_paths=[str(package_dir)],
             bundle_name=f"{course_name}_package",
             include_manifest=True
         )
-        
+
         if self.verbose:
             print(f"✓ Complete package created: {len(files_created)} files")
             print(f"✓ Package saved to: {bundle_result.output_file}")
-        
+
         return bundle_result
 
 

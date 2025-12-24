@@ -1,11 +1,14 @@
 ---
 name: researcher
 description: Gather, validate, and organize information to support content production. Use when need to find recent data, verify claims, gather sources, or compile research findings for content projects.
+version: 1.0.0
 ---
 
 # Researcher
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific research focus areas, source preferences, and content context.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific research focus areas, source preferences, and content context.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Find relevant, high-quality sources and organize findings in structured format for content production workflows.
 

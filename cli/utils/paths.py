@@ -18,14 +18,14 @@ def get_project_root() -> Path:
         Path object pointing to project root
     """
     current = Path(__file__).resolve()
-    
+
     for parent in [current] + list(current.parents):
         if (parent / "pyproject.toml").exists():
             return parent
-        
+
         if (parent / ".git").exists():
             return parent
-    
+
     fallback = Path(__file__).parent.parent.parent.parent
     return fallback.resolve()
 
@@ -42,10 +42,10 @@ def get_workflows_dir(subdirectory: Optional[str] = None) -> Path:
     """
     root = get_project_root()
     workflows = root / "workflows"
-    
+
     if subdirectory:
         return workflows / subdirectory
-    
+
     return workflows
 
 

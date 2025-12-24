@@ -1,11 +1,6 @@
 """Craft skill - Craft Docs API integration."""
 
-from .CraftClient import (
-    CraftClient,
-    CraftDocument,
-    CraftBlock,
-    CraftOperationResult
-)
+from .CraftClient import CraftBlock, CraftClient, CraftDocument, CraftOperationResult
 
 __all__ = [
     'CraftClient',

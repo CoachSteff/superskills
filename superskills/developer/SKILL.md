@@ -1,11 +1,14 @@
 ---
 name: developer
 description: Build clean, functional code for web apps, API integrations, and automation. Use when creating production-ready software, debugging issues, or implementing technical features requiring custom development.
+version: 1.0.0
 ---
 
 # Developer
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific tech stack preferences, project types, and code quality standards.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific tech stack preferences, project types, and code quality standards.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Write production-ready code for web applications, API integrations, and automation scripts while maintaining security, performance, and maintainability standards.
 

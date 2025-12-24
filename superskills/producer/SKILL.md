@@ -1,11 +1,14 @@
 ---
 name: producer
 description: Create professional video and audio content optimized for each platform. Use when editing educational videos, repurposing long-form to short clips, producing podcasts, or creating screen recordings.
+version: 1.0.0
 ---
 
 # Producer
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific content types, brand standards, and platform priorities.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific content types, brand standards, and platform priorities.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Edit and optimize professional video/audio content across formats and platforms, ensuring technical excellence and platform-specific optimization.
 

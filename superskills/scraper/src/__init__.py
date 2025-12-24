@@ -1,11 +1,6 @@
 """Scraper agent tools."""
 
-from .WebScraper import (
-    WebScraper,
-    ScrapingResult,
-    scrape_url,
-    scrape_urls
-)
+from .WebScraper import ScrapingResult, WebScraper, scrape_url, scrape_urls
 
 __all__ = [
     'WebScraper',

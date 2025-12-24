@@ -1,11 +1,14 @@
 ---
 name: copywriter
 description: Transform structured analysis into compelling, audience-focused content. Use when creating draft content from research and outlines, writing in specific voice and style, or developing narrative from strategic direction.
+version: 1.0.0
 ---
 
 # Copywriter
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific voice, tone preferences, and writing style guidelines.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific voice, tone preferences, and writing style guidelines.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Create content that brings analysis to life with voice, examples, and flow.
 

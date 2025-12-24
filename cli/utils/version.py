@@ -13,10 +13,10 @@ def get_version() -> str:
         Version string (e.g., "2.4.0") or "unknown" if not found
     """
     pyproject_path = Path(__file__).parent.parent.parent / 'pyproject.toml'
-    
+
     if not pyproject_path.exists():
         return 'unknown'
-    
+
     try:
         # For Python 3.11+, use built-in tomllib
         if sys.version_info >= (3, 11):
@@ -24,7 +24,7 @@ def get_version() -> str:
             with open(pyproject_path, 'rb') as f:
                 data = tomllib.load(f)
             return data.get('project', {}).get('version', 'unknown')
-        
+
         # For Python 3.9-3.10, try tomli or fall back to simple parsing
         try:
             import tomli
@@ -40,6 +40,6 @@ def get_version() -> str:
                         version = line.split('=')[1].strip().strip('"').strip("'")
                         return version
             return 'unknown'
-    
+
     except Exception:
         return 'unknown'

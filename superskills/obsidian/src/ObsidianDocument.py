@@ -4,7 +4,7 @@ Data models for Obsidian vault operations.
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Literal, Tuple
+from typing import Dict, List, Literal, Optional, Tuple
 
 
 @dataclass
@@ -22,7 +22,7 @@ class ObsidianNote:
     created_at: str
     updated_at: str
     backlinks: List[str] = field(default_factory=list)
-    
+
     def dict(self) -> Dict:
         """Convert to dictionary for JSON serialization."""
         return {
@@ -50,11 +50,11 @@ class ObsidianOperationResult:
     note_path: Optional[str] = None
     affected_files: Optional[List[str]] = None
     timestamp: str = None
-    
+
     def __post_init__(self):
         if not self.timestamp:
             self.timestamp = datetime.now().isoformat()
-    
+
     def dict(self) -> Dict:
         """Convert to dictionary for JSON serialization."""
         return {
@@ -74,7 +74,7 @@ class PlannedOperation:
     target_path: str
     details: str
     changes: Optional[Dict] = None
-    
+
     def dict(self) -> Dict:
         """Convert to dictionary for JSON serialization."""
         return {
@@ -90,7 +90,7 @@ class ObsidianChangesPlan:
     """A plan describing changes to be made to the vault."""
     operations: List[PlannedOperation]
     summary: str
-    
+
     def dict(self) -> Dict:
         """Convert to dictionary for JSON serialization."""
         return {

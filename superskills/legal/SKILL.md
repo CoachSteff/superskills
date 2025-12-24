@@ -1,11 +1,14 @@
 ---
 name: legal
 description: Provide legal expertise and guidance for business operations. Use when reviewing contracts, assessing legal risks, researching regulations, or ensuring legal compliance in business decisions.
+version: 1.0.0
 ---
 
 # Legal
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific jurisdiction, areas of expertise, and legal context.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific jurisdiction, areas of expertise, and legal context.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Provide expert legal analysis and guidance for business operations, contracts, and compliance while maintaining awareness of jurisdictional requirements.
 

@@ -1,25 +1,31 @@
 """
 SuperSkills CLI - Main entry point
 """
-import sys
 import argparse
+import sys
 from pathlib import Path
+
 from dotenv import load_dotenv
+
+from .commands.call import call_command
+from .commands.config import (
+    config_edit_command,
+    config_get_command,
+    config_list_command,
+    config_path_command,
+    config_reset_command,
+    config_set_command,
+)
+from .commands.discover import discover_command
+from .commands.export import export_command
 from .commands.init import init_command
 from .commands.list_skills import list_command
-from .commands.show import show_command
-from .commands.call import call_command
 from .commands.run import run_command
+from .commands.show import show_command
 from .commands.status import status_command
 from .commands.test import test_command
-from .commands.workflow import workflow_list_command, workflow_validate_command
-from .commands.export import export_command
-from .commands.discover import discover_command
 from .commands.validate import validate_command
-from .commands.config import (
-    config_get_command, config_set_command, config_list_command,
-    config_reset_command, config_edit_command, config_path_command
-)
+from .commands.workflow import workflow_list_command, workflow_validate_command
 from .utils.logger import get_logger
 from .utils.paths import get_project_root
 from .utils.version import get_version as _get_version
@@ -43,7 +49,7 @@ def load_environment():
     user_env = Path.home() / '.superskills' / '.env'
     if user_env.exists():
         load_dotenv(user_env, override=False)
-    
+
     # Try project root .env (will be overridden by skill-specific)
     project_env = get_project_root() / '.env'
     if project_env.exists():
@@ -60,46 +66,47 @@ def _handle_natural_language(user_input: str, args) -> int:
     """Handle natural language input by parsing intent and routing"""
     import json
     import os
-    from .utils.config import CLIConfig
+
     from .core.intent_parser import IntentParser
     from .core.intent_router import IntentRouter
-    
+    from .utils.config import CLIConfig
+
     config = CLIConfig()
     logger = get_logger()
-    
+
     # Check if intent parsing is enabled
     if not config.get('intent.enabled', True):
         print("Intent parsing disabled. Use exact command syntax.")
         print("Run 'superskills --help' to see available commands.")
         return 1
-    
+
     # Override config with CLI flags if provided
     if hasattr(args, 'intent_model') and args.intent_model:
         os.environ['SUPERSKILLS_INTENT_MODEL'] = args.intent_model
     if hasattr(args, 'intent_provider') and args.intent_provider:
         os.environ['SUPERSKILLS_INTENT_PROVIDER'] = args.intent_provider
-    
+
     try:
         # Parse intent
         parser = IntentParser(config)
         intent = parser.parse(user_input, context={})
-        
+
         logger.debug(f"Parsed intent: {intent.action} (confidence: {intent.confidence})")
-        
+
         # Handle by confidence level
         confidence_threshold = config.get('intent.confidence_threshold', 0.5)
         always_confirm_medium = config.get('intent.always_confirm_medium', True)
-        
+
         if intent.confidence >= 0.8:
             # High confidence: execute with feedback
             print(f"→ {intent.reasoning}")
             router = IntentRouter(config)
             return router.route(intent)
-        
+
         elif intent.confidence >= confidence_threshold:
             # Medium confidence: confirm first (if configured)
             if always_confirm_medium:
-                print(f"I interpret this as:")
+                print("I interpret this as:")
                 print(f"  {intent.reasoning}\n")
                 print(f"Action: {intent.action}")
                 if intent.target:
@@ -108,7 +115,7 @@ def _handle_natural_language(user_input: str, args) -> int:
                     param_str = json.dumps(intent.parameters, indent=2)
                     if len(param_str) < 200:
                         print(f"Parameters: {param_str}")
-                
+
                 try:
                     response = input("\nProceed? [Y/n] ")
                     if response.lower() in ['', 'y', 'yes']:
@@ -125,17 +132,17 @@ def _handle_natural_language(user_input: str, args) -> int:
                 print(f"→ {intent.reasoning}")
                 router = IntentRouter(config)
                 return router.route(intent)
-        
+
         else:
             # Low confidence: suggest alternatives
-            print(f"I'm not sure what you meant. Here are some suggestions:\n")
+            print("I'm not sure what you meant. Here are some suggestions:\n")
             suggestions = parser.suggest_alternatives(intent)
             for i, suggestion in enumerate(suggestions, 1):
                 print(f"  {i}. {suggestion}")
             print("\nPlease rephrase or use exact command syntax.")
             print("Run 'superskills --help' for available commands.")
             return 1
-    
+
     except Exception as e:
         logger.error(f"Natural language processing failed: {e}")
         print(f"✗ Error processing request: {e}")
@@ -147,32 +154,32 @@ def _handle_natural_language(user_input: str, args) -> int:
 def main():
     # Load environment variables from .env files
     load_environment()
-    
+
     parser = argparse.ArgumentParser(
         prog='superskills',
         description='SuperSkills CLI - AI-powered automation skills'
     )
-    
+
     parser.add_argument('--version', action='version', version=get_version())
-    parser.add_argument('--verbose', '-v', action='store_true', 
+    parser.add_argument('--verbose', '-v', action='store_true',
                        help='Enable verbose logging (DEBUG level)')
     parser.add_argument('--intent-model', help='Override LLM model for intent parsing')
     parser.add_argument('--intent-provider', choices=['gemini', 'anthropic', 'openai'],
                        help='Override LLM provider for intent parsing')
     parser.add_argument('--no-intent', action='store_true',
                        help='Disable intent parsing (force exact syntax)')
-    
+
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
-    
+
     subparsers.add_parser('init', help='Initialize the CLI')
-    
+
     list_parser = subparsers.add_parser('list', help='List all available skills')
     list_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                             default='markdown', help='Output format (default: markdown)')
-    
+
     show_parser = subparsers.add_parser('show', help='Show detailed information about a skill')
     show_parser.add_argument('skill', help='Skill name')
-    
+
     call_parser = subparsers.add_parser('call', help='Execute a single skill')
     call_parser.add_argument('skill', help='Skill name')
     call_parser.add_argument('input', nargs='?', help='Input text')
@@ -180,19 +187,19 @@ def main():
     call_parser.add_argument('--output', help='Output file path')
     call_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                             default='markdown', help='Output format (default: markdown)')
-    call_parser.add_argument('--content-type', 
+    call_parser.add_argument('--content-type',
                             choices=['podcast', 'educational', 'marketing', 'social', 'meditation'],
                             help='Content type for narrator skill (podcast/educational/marketing/social/meditation)')
     call_parser.add_argument('--profile-type',
                             choices=['podcast', 'narration', 'meditation'],
                             help='Voice profile for narrator skill (podcast/narration/meditation)')
-    
+
     run_parser = subparsers.add_parser('run', help='Execute a workflow')
     run_parser.add_argument('workflow', help='Workflow name')
     run_parser.add_argument('--input', help='Input file or text')
     run_parser.add_argument('--output', help='Output file path')
     run_parser.add_argument('--topic', help='Topic (for workflows that need it)')
-    run_parser.add_argument('--dry-run', action='store_true', 
+    run_parser.add_argument('--dry-run', action='store_true',
                            help='Show what would happen without executing')
     run_parser.add_argument('--watch', action='store_true',
                            help='Watch workflow input folder and auto-process new files')
@@ -202,124 +209,124 @@ def main():
                            help='Watch interval in seconds (default: 1)')
     run_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                            default='markdown', help='Output format (default: markdown)')
-    
+
     subparsers.add_parser('status', help='Show CLI status')
-    
+
     subparsers.add_parser('validate', help='Validate skill integrity and completeness')
-    
+
     test_parser = subparsers.add_parser('test', help='Run the test suite')
     test_parser.add_argument('--quick', action='store_true', help='Run fast tests only (skip slow integration tests)')
     test_parser.add_argument('--file', help='Run specific test file (e.g., test_narrator.py)')
     test_parser.add_argument('--coverage', action='store_true', help='Generate coverage report')
-    
+
     workflow_parser = subparsers.add_parser('workflow', help='Manage workflows')
     workflow_subparsers = workflow_parser.add_subparsers(dest='workflow_command')
-    
+
     workflow_list_parser = workflow_subparsers.add_parser('list', help='List all workflows')
     workflow_list_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                                      default='markdown', help='Output format (default: markdown)')
-    
+
     validate_parser = workflow_subparsers.add_parser('validate', help='Validate a workflow definition')
     validate_parser.add_argument('workflow', help='Workflow name')
-    
+
     export_parser = subparsers.add_parser('export', help='Export skill metadata for IDE AI')
     export_parser.add_argument('--output', help='Output file path (default: stdout)')
-    export_parser.add_argument('--format', dest='format_type', choices=['json', 'markdown'], 
+    export_parser.add_argument('--format', dest='format_type', choices=['json', 'markdown'],
                               default='json', help='Output format')
-    export_parser.add_argument('--type', dest='skill_type', choices=['prompt', 'python'], 
+    export_parser.add_argument('--type', dest='skill_type', choices=['prompt', 'python'],
                               help='Filter by skill type')
-    export_parser.add_argument('--has-api', action='store_true', 
+    export_parser.add_argument('--has-api', action='store_true',
                               help='Only skills requiring API keys')
-    export_parser.add_argument('--markdown', action='store_true', 
+    export_parser.add_argument('--markdown', action='store_true',
                               help='Output as markdown table')
-    
+
     config_parser = subparsers.add_parser('config', help='Manage configuration')
     config_subparsers = config_parser.add_subparsers(dest='config_command')
-    
+
     config_get_parser = config_subparsers.add_parser('get', help='Get configuration value')
     config_get_parser.add_argument('key', nargs='?', help='Configuration key (dot-notation) or empty for all')
     config_get_parser.add_argument('--format', choices=['json', 'yaml', 'plain'],
                                    default='plain', help='Output format')
-    
+
     config_set_parser = config_subparsers.add_parser('set', help='Set configuration value')
     config_set_parser.add_argument('key', help='Configuration key (dot-notation)')
     config_set_parser.add_argument('value', help='Value to set')
-    
+
     config_list_parser = config_subparsers.add_parser('list', help='List all configuration')
     config_list_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                                     default='markdown', help='Output format')
-    
+
     config_show_parser = config_subparsers.add_parser('show', help='Show all configuration (alias for list)')
     config_show_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                                     default='markdown', help='Output format')
-    
+
     config_reset_parser = config_subparsers.add_parser('reset', help='Reset configuration to defaults')
     config_reset_parser.add_argument('--confirm', action='store_true',
                                      help='Confirm reset operation')
-    
+
     config_edit_parser = config_subparsers.add_parser('edit', help='Edit configuration in editor')
     config_edit_parser.add_argument('--editor', help='Editor to use (default: $EDITOR)')
-    
+
     config_subparsers.add_parser('path', help='Show configuration file path')
-    
+
     discover_parser = subparsers.add_parser('discover', help='Discover skills by capability')
     discover_parser.add_argument('--query', help='Search query for skill capabilities')
     discover_parser.add_argument('--task', help='Task description to find matching workflow')
-    discover_parser.add_argument('--json', dest='json_output', action='store_true', 
+    discover_parser.add_argument('--json', dest='json_output', action='store_true',
                                 help='Output in JSON format')
-    
+
     # Add explicit 'prompt' subcommand for natural language queries
-    prompt_parser = subparsers.add_parser('prompt', 
+    prompt_parser = subparsers.add_parser('prompt',
         help='Natural language query (explicit)')
-    prompt_parser.add_argument('query', nargs='+', 
+    prompt_parser.add_argument('query', nargs='+',
         help='Natural language query text')
-    
+
     args = parser.parse_args()
-    
+
     logger = get_logger(verbose=args.verbose)
-    
+
     # Define known commands for auto-detection
     KNOWN_COMMANDS = {
-        'init', 'list', 'show', 'call', 'run', 
-        'status', 'validate', 'workflow', 'export', 
+        'init', 'list', 'show', 'call', 'run',
+        'status', 'validate', 'workflow', 'export',
         'config', 'discover', 'prompt'
     }
-    
+
     # Auto-detect natural language: unknown command + not a flag + intent enabled
     raw_args = sys.argv[1:]
-    if (not args.command and 
-        len(raw_args) > 0 and 
+    if (not args.command and
+        len(raw_args) > 0 and
         not raw_args[0].startswith('-') and
         raw_args[0] not in KNOWN_COMMANDS and
         not getattr(args, 'no_intent', False)):
-        
+
         # Unknown command - treat as natural language
         user_input = ' '.join(raw_args)
         logger.debug(f"Auto-detected natural language query: {user_input}")
         return _handle_natural_language(user_input, args)
-    
+
     if not args.command:
         print("No command specified. Try:\n")
         print("  superskills list              # List all skills")
         print("  superskills prompt find files # Natural language query")
         print("  superskills --help            # Show all commands")
         return 1
-    
+
     logger.info(f"Executing command: {args.command}")
-    
+
     try:
         if args.command == 'init':
             return init_command()
-        
+
         elif args.command == 'list':
             kwargs = {}
             if hasattr(args, 'format') and args.format:
                 kwargs['format'] = args.format
             return list_command(**kwargs)
-        
+
         elif args.command == 'show':
             return show_command(args.skill)
-        
+
         elif args.command == 'call':
             kwargs = {}
             if hasattr(args, 'input_file') and args.input_file:
@@ -332,9 +339,9 @@ def main():
                 kwargs['content_type'] = args.content_type
             if hasattr(args, 'profile_type') and args.profile_type:
                 kwargs['profile_type'] = args.profile_type
-            
+
             return call_command(args.skill, args.input, **kwargs)
-        
+
         elif args.command == 'run':
             kwargs = {}
             if args.input:
@@ -353,15 +360,15 @@ def main():
                 kwargs['interval'] = args.interval
             if hasattr(args, 'format') and args.format:
                 kwargs['format'] = args.format
-            
+
             return run_command(args.workflow, **kwargs)
-        
+
         elif args.command == 'status':
             return status_command()
-        
+
         elif args.command == 'validate':
             return validate_command()
-        
+
         elif args.command == 'test':
             kwargs = {
                 'quick': args.quick,
@@ -370,7 +377,7 @@ def main():
                 'verbose': args.verbose
             }
             return test_command(**kwargs)
-        
+
         elif args.command == 'workflow':
             if args.workflow_command == 'list':
                 kwargs = {}
@@ -382,7 +389,7 @@ def main():
             else:
                 workflow_parser.print_help()
                 return 0
-        
+
         elif args.command == 'export':
             kwargs = {}
             if hasattr(args, 'output') and args.output:
@@ -395,9 +402,9 @@ def main():
                 kwargs['has_api'] = True
             if hasattr(args, 'markdown') and args.markdown:
                 kwargs['markdown'] = True
-            
+
             return export_command(**kwargs)
-        
+
         elif args.command == 'config':
             if args.config_command == 'get':
                 kwargs = {}
@@ -426,7 +433,7 @@ def main():
             else:
                 config_parser.print_help()
                 return 0
-        
+
         elif args.command == 'discover':
             kwargs = {}
             if hasattr(args, 'query') and args.query:
@@ -435,24 +442,24 @@ def main():
                 kwargs['task'] = args.task
             if hasattr(args, 'json_output') and args.json_output:
                 kwargs['json_output'] = True
-            
+
             return discover_command(**kwargs)
-        
+
         elif args.command == 'prompt':
             # Explicit natural language query
             user_input = ' '.join(args.query)
             logger.debug(f"Explicit prompt command: {user_input}")
             return _handle_natural_language(user_input, args)
-        
+
         else:
             parser.print_help()
             return 0
-    
+
     except KeyboardInterrupt:
         logger.warning("Operation interrupted by user")
         print("\n\nInterrupted by user.")
         return 130
-    
+
     except Exception as e:
         logger.error(f"Command failed: {e}", exc_info=True)
         print(f"Error: {e}")

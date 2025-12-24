@@ -1,9 +1,14 @@
 ---
 name: presenter
 description: Slide deck generation from markdown using python-pptx. Use when creating presentations, transforming content to slides, or automating PowerPoint creation.
+version: 1.0.0
 ---
 
 # Presenter
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific presentation themes, branding, and slide design preferences.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Transform markdown content into professional PowerPoint presentations with customizable themes and automated slide generation.
 

@@ -1,9 +1,14 @@
 ---
 name: knowledgebase
 description: Knowledge management and documentation organization system. Use when building internal wikis, organizing documentation, or managing institutional knowledge.
+version: 1.0.0
 ---
 
 # Knowledge Base
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific knowledge organization structure and documentation standards.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Organize, search, and manage institutional knowledge with a structured documentation system for FAQs, guides, and reference materials.
 

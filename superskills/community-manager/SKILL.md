@@ -1,12 +1,15 @@
 ---
 name: community-manager
 description: Build and nurture engaged online communities. Use when developing community strategy, moderating discussions, supporting members, or growing community engagement.
+version: 1.0.0
 license: MIT
 ---
 
 # Community Manager
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific platforms, community focus, and engagement strategy.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific platforms, community focus, and engagement strategy.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Build, engage, and grow thriving online communities that align with brand values and support business objectives.
 

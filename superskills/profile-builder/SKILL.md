@@ -1,9 +1,13 @@
 ---
 name: profile-builder
 description: Interactive assistant for creating personalized PROFILE.md files and Master Briefing documents. Use when users want to customize Superskills to their brand voice, or need help creating skill profiles.
+version: 1.0.0
 ---
 
 # Profile Builder
+
+> **Note**: This skill helps you create PROFILE.md and Master Briefing files for other skills.
+
 
 Your interactive guide for personalizing Superskills to match your unique brand, voice, and business needs.
 

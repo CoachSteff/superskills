@@ -1,10 +1,6 @@
 """Transcriber skill - AI-powered audio/video transcription."""
 
-from .Transcriber import (
-    Transcriber,
-    TranscriptionResult,
-    transcribe_file
-)
+from .Transcriber import Transcriber, TranscriptionResult, transcribe_file
 
 __all__ = [
     'Transcriber',

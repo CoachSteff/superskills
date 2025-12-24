@@ -1,11 +1,14 @@
 ---
 name: builder
 description: Design and build AI-powered automation workflows. Use when creating integrations between systems, automating repetitive tasks, connecting APIs, or building workflows with Verdent, n8n, Make, or Zapier.
+version: 1.0.0
 ---
 
 # Builder
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific automation priorities, platform preferences, and common use cases.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific automation priorities, platform preferences, and common use cases.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Design, build, and optimize AI-powered automation workflows using Verdent, n8n, and other platforms; connect systems via APIs to eliminate manual tasks.
 

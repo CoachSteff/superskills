@@ -1,11 +1,14 @@
 ---
 name: quality-control
 description: Review content for brand consistency and quality before publication. Use when validating deliverables against strategic objectives, ensuring production-ready quality, or providing constructive feedback.
+version: 1.0.0
 ---
 
 # Quality Control
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific brand voice standards, quality requirements, and red flags to watch for.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific brand voice standards, quality requirements, and red flags to watch for.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Review all deliverables before publication, providing actionable feedback to ensure brand consistency, accuracy, and production-ready quality.
 

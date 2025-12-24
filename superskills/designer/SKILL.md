@@ -1,11 +1,14 @@
 ---
 name: designer
 description: Create professional visual content using AI image generation. Use when designing social graphics, infographics, presentation slides, or learning materials that transform complex concepts into clear visuals.
+version: 1.0.0
 ---
 
 # Designer
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific brand identity, design style, and accessibility requirements.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific brand identity, design style, and accessibility requirements.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Create professional, accessible visual content using AI-powered image generation while maintaining brand consistency across platforms.
 

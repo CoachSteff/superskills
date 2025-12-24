@@ -1,11 +1,14 @@
 ---
 name: editor
 description: Refine content for clarity, accuracy, brand voice, and audience impact. Use when polishing draft content, ensuring voice consistency, improving flow, or preparing content for publication.
+version: 1.0.0
 ---
 
 # Editor
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific voice requirements, jargon to eliminate, and editorial standards.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific voice requirements, jargon to eliminate, and editorial standards.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Refine and polish content into publication-ready material while preserving voice and structure.
 

@@ -1,12 +1,11 @@
 """
 VideoEditor.py - Automated video editing using FFmpeg.
 """
-import os
 import subprocess
-from typing import Dict, List, Optional, Literal, Tuple
-from pathlib import Path
-from datetime import datetime
 from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import List, Optional, Tuple
 
 
 @dataclass
@@ -20,7 +19,7 @@ class VideoEditResult:
     resolution: str
     processing_time_seconds: float
     timestamp: str = None
-    
+
     def __post_init__(self):
         if not self.timestamp:
             self.timestamp = datetime.now().isoformat()
@@ -28,7 +27,7 @@ class VideoEditResult:
 
 class VideoEditor:
     """Automated video editing using FFmpeg."""
-    
+
     # Platform presets
     PLATFORM_PRESETS = {
         "youtube_short": {"width": 1080, "height": 1920, "max_duration": 60},
@@ -37,7 +36,7 @@ class VideoEditor:
         "twitter": {"width": 1280, "height": 720, "max_duration": 140},
         "facebook": {"width": 1280, "height": 720, "max_duration": 240},
     }
-    
+
     def __init__(
         self,
         output_dir: str = "output/videos",
@@ -52,11 +51,11 @@ class VideoEditor:
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.verbose = verbose
-        
+
         # Check if ffmpeg is available
         if not self._check_ffmpeg():
             raise RuntimeError("FFmpeg not found. Please install: brew install ffmpeg")
-    
+
     def _check_ffmpeg(self) -> bool:
         """Check if FFmpeg is installed."""
         try:
@@ -68,7 +67,7 @@ class VideoEditor:
             return True
         except (subprocess.CalledProcessError, FileNotFoundError):
             return False
-    
+
     def clip_highlights(
         self,
         video_path: str,
@@ -88,16 +87,16 @@ class VideoEditor:
         video_path = Path(video_path)
         if not video_path.exists():
             raise FileNotFoundError(f"Video not found: {video_path}")
-        
+
         if self.verbose:
             print(f"Extracting {len(timestamps)} clips from {video_path.name}")
-        
+
         results = []
         base_name = output_name or video_path.stem
-        
+
         for i, (start, end) in enumerate(timestamps, 1):
             output_file = self.output_dir / f"{base_name}_clip{i:02d}.mp4"
-            
+
             start_time = datetime.now()
             self._run_ffmpeg([
                 "-i", str(video_path),
@@ -106,12 +105,12 @@ class VideoEditor:
                 "-c", "copy",
                 str(output_file)
             ])
-            
+
             processing_time = (datetime.now() - start_time).total_seconds()
             duration = end - start
             file_size_mb = output_file.stat().st_size / (1024 * 1024)
             resolution = self._get_resolution(str(output_file))
-            
+
             results.append(VideoEditResult(
                 input_file=str(video_path),
                 output_file=str(output_file),
@@ -121,12 +120,12 @@ class VideoEditor:
                 resolution=resolution,
                 processing_time_seconds=processing_time
             ))
-            
+
             if self.verbose:
                 print(f"  ✓ Clip {i}: {duration:.1f}s → {output_file.name}")
-        
+
         return results
-    
+
     def add_intro_outro(
         self,
         video_path: str,
@@ -147,7 +146,7 @@ class VideoEditor:
         """
         video_path = Path(video_path)
         output_file = self.output_dir / (output_name or f"{video_path.stem}_branded.mp4")
-        
+
         # Create concat file
         concat_file = self.output_dir / "concat_list.txt"
         with open(concat_file, 'w') as f:
@@ -156,7 +155,7 @@ class VideoEditor:
             f.write(f"file '{video_path.absolute()}'\n")
             if outro_path:
                 f.write(f"file '{Path(outro_path).absolute()}'\n")
-        
+
         start_time = datetime.now()
         self._run_ffmpeg([
             "-f", "concat",
@@ -165,12 +164,12 @@ class VideoEditor:
             "-c", "copy",
             str(output_file)
         ])
-        
+
         processing_time = (datetime.now() - start_time).total_seconds()
-        
+
         # Clean up
         concat_file.unlink()
-        
+
         return VideoEditResult(
             input_file=str(video_path),
             output_file=str(output_file),
@@ -180,7 +179,7 @@ class VideoEditor:
             resolution=self._get_resolution(str(output_file)),
             processing_time_seconds=processing_time
         )
-    
+
     def generate_preview(
         self,
         video_path: str,
@@ -201,10 +200,10 @@ class VideoEditor:
         """
         video_path = Path(video_path)
         output_file = self.output_dir / (output_name or f"{video_path.stem}_preview.mp4")
-        
+
         total_duration = self._get_duration(str(video_path))
         start_time_offset = 0 if from_start else max(0, (total_duration - duration) / 2)
-        
+
         start_time = datetime.now()
         self._run_ffmpeg([
             "-i", str(video_path),
@@ -213,9 +212,9 @@ class VideoEditor:
             "-c", "copy",
             str(output_file)
         ])
-        
+
         processing_time = (datetime.now() - start_time).total_seconds()
-        
+
         return VideoEditResult(
             input_file=str(video_path),
             output_file=str(output_file),
@@ -225,7 +224,7 @@ class VideoEditor:
             resolution=self._get_resolution(str(output_file)),
             processing_time_seconds=processing_time
         )
-    
+
     def resize_for_platform(
         self,
         video_path: str,
@@ -244,13 +243,13 @@ class VideoEditor:
         """
         if platform not in self.PLATFORM_PRESETS:
             raise ValueError(f"Unknown platform: {platform}. Choose from: {list(self.PLATFORM_PRESETS.keys())}")
-        
+
         video_path = Path(video_path)
         preset = self.PLATFORM_PRESETS[platform]
         output_file = self.output_dir / (output_name or f"{video_path.stem}_{platform}.mp4")
-        
+
         resolution = f"{preset['width']}x{preset['height']}"
-        
+
         start_time = datetime.now()
         self._run_ffmpeg([
             "-i", str(video_path),
@@ -258,9 +257,9 @@ class VideoEditor:
             "-c:a", "copy",
             str(output_file)
         ])
-        
+
         processing_time = (datetime.now() - start_time).total_seconds()
-        
+
         return VideoEditResult(
             input_file=str(video_path),
             output_file=str(output_file),
@@ -270,7 +269,7 @@ class VideoEditor:
             resolution=resolution,
             processing_time_seconds=processing_time
         )
-    
+
     def add_captions(
         self,
         video_path: str,
@@ -290,16 +289,16 @@ class VideoEditor:
         video_path = Path(video_path)
         srt_file = Path(srt_file)
         output_file = self.output_dir / (output_name or f"{video_path.stem}_captioned.mp4")
-        
+
         start_time = datetime.now()
         self._run_ffmpeg([
             "-i", str(video_path),
             "-vf", f"subtitles={srt_file}",
             str(output_file)
         ])
-        
+
         processing_time = (datetime.now() - start_time).total_seconds()
-        
+
         return VideoEditResult(
             input_file=str(video_path),
             output_file=str(output_file),
@@ -309,19 +308,19 @@ class VideoEditor:
             resolution=self._get_resolution(str(output_file)),
             processing_time_seconds=processing_time
         )
-    
+
     def _run_ffmpeg(self, args: List[str]):
         """Run FFmpeg command."""
         cmd = ["ffmpeg", "-y"] + args
-        
+
         if not self.verbose:
             cmd.extend(["-loglevel", "error"])
-        
+
         result = subprocess.run(cmd, capture_output=True, text=True)
-        
+
         if result.returncode != 0:
             raise RuntimeError(f"FFmpeg error: {result.stderr}")
-    
+
     def _get_duration(self, video_path: str) -> float:
         """Get video duration in seconds."""
         result = subprocess.run(
@@ -336,7 +335,7 @@ class VideoEditor:
             text=True
         )
         return float(result.stdout.strip())
-    
+
     def _get_resolution(self, video_path: str) -> str:
         """Get video resolution."""
         result = subprocess.run(

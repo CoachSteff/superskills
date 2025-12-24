@@ -1,11 +1,14 @@
 ---
 name: publisher
 description: Format polished content and prepare final deliverables for distribution. Use when creating platform-specific versions, formatting for publication, or preparing multi-format content packages.
+version: 1.0.0
 ---
 
 # Publisher
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific brand standards, platform requirements, and file management preferences.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific brand standards, platform requirements, and file management preferences.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Format edited content and prepare deliverables for final delivery.
 

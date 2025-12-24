@@ -1,12 +1,15 @@
 ---
 name: microsoft-365-copilot
 description: Design Microsoft 365 Copilot implementations and training programs. Use when planning Copilot adoption, creating training content, optimizing prompts, or measuring ROI.
+version: 1.0.0
 license: MIT
 ---
 
 # Microsoft 365 Copilot Specialist
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific training approaches, use cases, and adoption strategies.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific training approaches, use cases, and adoption strategies.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Design and deliver Microsoft 365 Copilot training and adoption programs that drive productivity gains and successful enterprise AI integration.
 

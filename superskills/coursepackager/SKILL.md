@@ -1,9 +1,14 @@
 ---
 name: coursepackager
 description: Course packaging and workbook generation using ReportLab. Use when creating professional PDF workbooks, packaging course materials, or generating training documents.
+version: 1.0.0
 ---
 
 # Course Packager
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific branding, course style preferences, and formatting standards.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Transform course content into professional PDF workbooks and packaged learning materials ready for distribution.
 

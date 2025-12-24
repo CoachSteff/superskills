@@ -1,9 +1,14 @@
 ---
 name: scraper
 description: AI-friendly web scraping and data extraction using Crawl4AI. Use when you need to extract clean content from websites, scrape multiple pages, or gather research data from the web.
+version: 1.0.0
 ---
 
 # Scraper
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific scraping preferences, extraction strategies, and output formatting.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Extract clean, AI-ready content from websites using intelligent web scraping. Optimized for LLM consumption with markdown output.
 

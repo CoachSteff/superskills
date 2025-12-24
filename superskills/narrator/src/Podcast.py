@@ -1,13 +1,14 @@
 """
 Podcast.py - Multi-segment podcast generation for CoachSteff AI voice.
 """
+import json
 import os
-from typing import List, Dict, Optional
 from dataclasses import dataclass
 from pathlib import Path
-import json
+from typing import Dict, List, Optional
 
 from elevenlabs.client import ElevenLabs
+
 from .VoiceConfig import VoiceConfig
 
 try:
@@ -24,7 +25,7 @@ class PodcastSegment:
     profile_type: Optional[str] = None
     voice_name: str = "CoachSteff"
     output_filename: Optional[str] = None
-    
+
     def __post_init__(self):
         if not self.output_filename:
             self.output_filename = f"segment_{id(self)}.mp3"
@@ -36,46 +37,46 @@ class PodcastGenerator:
         "podcast": "podcast",
         "meditation": "meditation",
     }
-    
+
     def __init__(self, api_key: Optional[str] = None, output_dir: str = "output", profile_type: Optional[str] = None):
         self.api_key = api_key or os.getenv("ELEVENLABS_API_KEY")
         if not self.api_key:
             raise ValueError("ELEVENLABS_API_KEY not found")
-        
+
         self.voice_config = VoiceConfig()
         self.profile_type = profile_type or "podcast"
-        
+
         self.client = ElevenLabs(api_key=self.api_key)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
     def generate_segment(self, segment: PodcastSegment) -> str:
         profile_to_use = segment.profile_type or self.CONTENT_TYPE_TO_PROFILE.get(segment.content_type, self.profile_type)
-        
+
         profile = self.voice_config.get_profile(profile_to_use)
         voice_settings = self.voice_config.get_voice_settings(profile_to_use)
         model = profile["model"]
         voice_id = profile["voice_id"]
-        
+
         audio_generator = self.client.text_to_speech.convert(
             voice_id=voice_id,
             text=segment.text,
             model_id=model,
             voice_settings=voice_settings
         )
-        
+
         output_path = self.output_dir / segment.output_filename
-        
+
         with open(output_path, 'wb') as f:
             for chunk in audio_generator:
                 f.write(chunk)
-        
+
         return str(output_path)
-    
+
     def stitch_segments(self, audio_files: List[str], output_filename: str, transition_ms: int = 500) -> str:
         if not PYDUB_AVAILABLE:
             raise ImportError("pydub is required for audio stitching. Segments saved individually.")
-        
+
         combined = AudioSegment.empty()
         silence = AudioSegment.silent(duration=transition_ms)
         for audio_file in audio_files:
@@ -84,7 +85,7 @@ class PodcastGenerator:
         output_path = self.output_dir / output_filename
         combined.export(output_path, format="mp3", bitrate="320k")
         return str(output_path)
-    
+
     def generate_podcast(self, segments: List[PodcastSegment], output_filename: str = "podcast.mp3", transition_ms: int = 500) -> Dict:
         print(f"Generating {len(segments)} segments...")
         segment_files = []

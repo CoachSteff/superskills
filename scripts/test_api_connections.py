@@ -98,19 +98,19 @@ def test_openai(verbose=False):
     try:
         import openai
         api_key = os.getenv("OPENAI_API_KEY")
-        
+
         if not api_key:
             return False, "Credential not set"
-        
+
         client = openai.OpenAI(api_key=api_key)
         # Simple API call - list models
         models = client.models.list()
-        
+
         if verbose:
             model_count = len(list(models))
             return True, f"API key valid, {model_count} models available"
         return True, "API key valid"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
@@ -119,17 +119,17 @@ def test_anthropic(verbose=False):
     try:
         import anthropic
         api_key = os.getenv("ANTHROPIC_API_KEY")
-        
+
         if not api_key:
             return False, "Credential not set"
-        
+
         client = anthropic.Anthropic(api_key=api_key)
         # Simple API info check
         # Note: Anthropic doesn't have a simple health check, so we'll just validate format
         if api_key.startswith("sk-ant-"):
             return True, "API key format valid"
         return False, "Invalid API key format"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
@@ -139,17 +139,17 @@ def test_elevenlabs(verbose=False):
         import requests
         api_key = os.getenv("ELEVENLABS_API_KEY")
         voice_id = os.getenv("ELEVENLABS_VOICE_ID")
-        
+
         if not api_key:
             return False, "API key not set"
-        
+
         # Test with user info endpoint
         response = requests.get(
             "https://api.elevenlabs.io/v1/user",
             headers={"xi-api-key": api_key},
             timeout=10
         )
-        
+
         if response.status_code == 200:
             data = response.json()
             if verbose and voice_id:
@@ -159,7 +159,7 @@ def test_elevenlabs(verbose=False):
             return False, "Invalid API key"
         else:
             return False, f"API error: {response.status_code}"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
@@ -168,10 +168,10 @@ def test_gemini(verbose=False):
     try:
         from google import genai
         api_key = os.getenv("GEMINI_API_KEY")
-        
+
         if not api_key:
             return False, "Credential not set"
-        
+
         client = genai.Client(api_key=api_key)
         # Test simple generation to verify API key
         response = client.models.generate_content(
@@ -179,13 +179,13 @@ def test_gemini(verbose=False):
             contents="Test",
             config={"max_output_tokens": 10}
         )
-        
+
         if response.text:
             if verbose:
                 return True, "API valid, connection successful"
             return True, "API key valid"
         return False, "No response from API"
-    
+
     except Exception as e:
         error_msg = str(e)
         if "API key not valid" in error_msg or "authentication" in error_msg.lower():
@@ -197,19 +197,19 @@ def test_craft(verbose=False):
     try:
         import requests
         endpoint = os.getenv("CRAFT_API_ENDPOINT")
-        
+
         if not endpoint:
             return False, "Endpoint not set"
-        
+
         # Try a simple GET request
         response = requests.get(endpoint, timeout=10)
-        
+
         if response.status_code in [200, 401, 403]:
             # Even 401/403 means the endpoint exists
             return True, "Endpoint accessible"
         else:
             return False, f"HTTP {response.status_code}"
-    
+
     except requests.exceptions.Timeout:
         return False, "Request timeout"
     except Exception as e:
@@ -220,10 +220,10 @@ def test_notion(verbose=False):
     try:
         import requests
         api_key = os.getenv("NOTION_API_KEY")
-        
+
         if not api_key:
             return False, "Credential not set"
-        
+
         # Test with search endpoint
         response = requests.post(
             "https://api.notion.com/v1/search",
@@ -235,14 +235,14 @@ def test_notion(verbose=False):
             json={"page_size": 1},
             timeout=10
         )
-        
+
         if response.status_code == 200:
             return True, "API key valid"
         elif response.status_code == 401:
             return False, "Invalid API key"
         else:
             return False, f"API error: {response.status_code}"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
@@ -252,61 +252,59 @@ def test_postiz(verbose=False):
         import requests
         api_key = os.getenv("POSTIZ_API_KEY")
         workspace_id = os.getenv("POSTIZ_WORKSPACE_ID")
-        
+
         if not api_key:
             return False, "API key not set"
-        
+
         if not workspace_id:
             return False, "Workspace ID not set"
-        
+
         # Note: Adjust endpoint based on actual Postiz API docs
         response = requests.get(
             f"https://api.postiz.com/workspaces/{workspace_id}",
             headers={"Authorization": f"Bearer {api_key}"},
             timeout=10
         )
-        
+
         if response.status_code == 200:
             return True, "API key valid"
         elif response.status_code == 401:
             return False, "Invalid API key"
         else:
             return False, f"API error: {response.status_code}"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
 def test_microsoft_graph(verbose=False):
     """Test Microsoft Graph API connection."""
     try:
-        import requests
         client_id = os.getenv("MICROSOFT_CLIENT_ID")
         client_secret = os.getenv("MICROSOFT_CLIENT_SECRET")
         tenant_id = os.getenv("MICROSOFT_TENANT_ID")
-        
+
         if not all([client_id, client_secret, tenant_id]):
             return False, "Missing credentials"
-        
+
         # Note: Full OAuth flow requires more setup
         # This is a simplified check
         return True, "Credentials configured (OAuth flow required)"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
 def test_pinecone(verbose=False):
     """Test Pinecone API connection."""
     try:
-        import requests
         api_key = os.getenv("PINECONE_API_KEY")
-        
+
         if not api_key:
             return False, "Credential not set"
-        
+
         # Note: Pinecone API endpoint varies by environment
         # This is a basic check
         return True, "API key configured (environment setup required)"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
@@ -315,24 +313,24 @@ def test_perplexity(verbose=False):
     try:
         import requests
         api_key = os.getenv("PERPLEXITY_API_KEY")
-        
+
         if not api_key:
             return False, "Credential not set"
-        
+
         # Test with models endpoint
         response = requests.get(
             "https://api.perplexity.ai/models",
             headers={"Authorization": f"Bearer {api_key}"},
             timeout=10
         )
-        
+
         if response.status_code == 200:
             return True, "API key valid"
         elif response.status_code == 401:
             return False, "Invalid API key"
         else:
             return False, f"API error: {response.status_code}"
-    
+
     except Exception as e:
         return False, str(e)[:50]
 
@@ -341,14 +339,14 @@ def run_api_test(api_name, test_def, verbose=False):
     # Check if credential is set
     credential_key = test_def["credential"]
     credential_value = os.getenv(credential_key)
-    
+
     if not credential_value:
         return "skipped", "Credential not configured"
-    
+
     # Check if required module is available
     if not check_import(test_def["import_check"]):
         return "skipped", f"Module '{test_def['import_check']}' not installed"
-    
+
     # Run the test
     test_func = globals()[test_def["test_func"]]
     try:
@@ -370,21 +368,21 @@ def main():
         action="store_true",
         help="Show detailed test results"
     )
-    
+
     args = parser.parse_args()
-    
+
     print("=" * 70)
     print(" SuperSkills API Connection Test")
     print("=" * 70)
     print()
-    
+
     # Load environment
     if load_env():
         print("✓ Loaded root .env file")
     else:
         print("⚠️  No root .env file found")
     print()
-    
+
     # Determine which APIs to test
     if args.api:
         if args.api not in API_TESTS:
@@ -394,17 +392,17 @@ def main():
         apis_to_test = {args.api: API_TESTS[args.api]}
     else:
         apis_to_test = API_TESTS
-    
+
     # Run tests
     results = {
         "success": 0,
         "failed": 0,
         "skipped": 0
     }
-    
+
     for api_name, test_def in apis_to_test.items():
         status, message = run_api_test(api_name, test_def, args.verbose)
-        
+
         # Format output
         if status == "success":
             symbol = "✓"
@@ -415,22 +413,22 @@ def main():
         else:  # skipped
             symbol = "⊘"
             results["skipped"] += 1
-        
+
         print(f"{symbol} {api_name:20} {message}")
-    
+
     print()
     print("=" * 70)
-    
+
     total_configured = results["success"] + results["failed"]
     total_tested = len(apis_to_test)
-    
+
     print(f"Summary: {results['success']}/{total_configured} configured APIs working")
     if results["skipped"] > 0:
         print(f"         {results['skipped']} APIs not configured (optional)")
-    
+
     print("=" * 70)
     print()
-    
+
     if results["failed"] > 0:
         print("⚠️  Some API tests failed. Check your credentials in .env")
         print()

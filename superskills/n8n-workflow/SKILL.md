@@ -1,12 +1,15 @@
 ---
 name: n8n-workflow
 description: Design and build n8n automation workflows. Use when creating automations, connecting APIs, optimizing workflows, or troubleshooting n8n implementations.
+version: 1.0.0
 license: MIT
 ---
 
 # n8n Workflow Specialist
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific use cases, common workflows, and integration preferences.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific use cases, common workflows, and integration preferences.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Design, build, and optimize n8n automation workflows that connect tools, automate processes, and eliminate repetitive tasks.
 

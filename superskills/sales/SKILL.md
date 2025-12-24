@@ -1,11 +1,14 @@
 ---
 name: sales
 description: Create value-driven commercial proposals and close deals. Use when developing proposals, pricing strategy, ROI calculations, or handling objections for the user's services.
+version: 1.0.0
 ---
 
 # Sales
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific service portfolio, pricing structure, positioning, and ROI frameworks.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific service portfolio, pricing structure, positioning, and ROI frameworks.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Create compelling commercial proposals, frame services as valuable investments, develop pricing strategy, and close deals through persuasive, value-driven communication.
 

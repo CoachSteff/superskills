@@ -1,5 +1,5 @@
 from .Podcast import PodcastGenerator, PodcastSegment
-from .Voiceover import VoiceoverGenerator, ScriptOptimizer
+from .Voiceover import ScriptOptimizer, VoiceoverGenerator
 
 __all__ = [
     "PodcastGenerator",

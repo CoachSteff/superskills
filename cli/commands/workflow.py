@@ -1,48 +1,47 @@
 """
 CLI command: workflow - Manage workflows
 """
-from pathlib import Path
 from cli.core.workflow_engine import WorkflowEngine
 from cli.utils.config import CLIConfig
-from cli.utils.validation import WorkflowValidator
-from cli.utils.paths import get_workflows_dir
 from cli.utils.formatters import WorkflowListFormatter
+from cli.utils.paths import get_workflows_dir
+from cli.utils.validation import WorkflowValidator
 
 
 def workflow_list_command(**kwargs):
     output_format = kwargs.get('format', 'markdown')
-    
+
     config = CLIConfig()
     engine = WorkflowEngine(config, show_progress=False)
-    
+
     workflows = engine.list_workflows()
-    
+
     if not workflows:
         print("No workflows found.\n")
         print("To set up example workflows:")
         print("  • Run: superskills init (interactive setup)")
         print("  • Or manually copy from: workflows_templates/\n")
-        
+
         # Show available templates
         from cli.utils.paths import get_project_root
         templates_dir = get_project_root() / 'workflows_templates'
-        
+
         if templates_dir.exists():
-            templates = [d for d in templates_dir.iterdir() 
-                        if d.is_dir() and not d.name.startswith('.') 
+            templates = [d for d in templates_dir.iterdir()
+                        if d.is_dir() and not d.name.startswith('.')
                         and (d / 'workflow.yaml').exists()]
-            
+
             if templates:
                 print("Available templates:")
                 for template in sorted(templates, key=lambda x: x.name):
                     print(f"  • {template.name}")
-        
+
         return 0
-    
+
     output = WorkflowListFormatter.format(workflows, output_format)
-    
+
     print(output)
-    
+
     return 0
 
 
@@ -63,18 +62,18 @@ def workflow_validate_command(workflow_name: str):
         if path.exists():
             workflow_file = path
             break
-    
+
     if not workflow_file:
         print(f"Error: Workflow '{workflow_name}' not found")
         print("\nRun 'superskills workflow list' to see available workflows")
         return 1
-    
+
     print(f"Validating workflow: {workflow_name}")
     print(f"File: {workflow_file}\n")
-    
+
     validator = WorkflowValidator()
     is_valid, errors = validator.validate_workflow(workflow_file)
-    
+
     if is_valid:
         print("✓ Workflow is valid!")
         print("\nValidation checks passed:")

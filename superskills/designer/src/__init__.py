@@ -1,5 +1,5 @@
 """Designer agent tools."""
 
-from .ImageGenerator import ImageGenerator, ImageGenerationResult
+from .ImageGenerator import ImageGenerationResult, ImageGenerator
 
 __all__ = ['ImageGenerator', 'ImageGenerationResult']

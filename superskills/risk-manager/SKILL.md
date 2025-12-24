@@ -1,11 +1,14 @@
 ---
 name: risk-manager
 description: Identify, assess, and manage business risks using ISO 31000 framework. Use when conducting risk assessments, developing mitigation plans, or establishing risk management processes.
+version: 1.0.0
 ---
 
 # Risk Manager
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific risk context, business operations, and risk appetite.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific risk context, business operations, and risk appetite.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Apply ISO 31000 risk management principles to identify, assess, treat, and monitor risks across business operations.
 

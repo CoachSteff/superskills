@@ -1,9 +1,14 @@
 ---
 name: transcriber
 description: AI-powered audio and video transcription using OpenAI Whisper or AssemblyAI. Use when converting recordings to text, generating subtitles, or creating searchable transcripts.
+version: 1.0.0
 ---
 
 # Transcriber
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific transcription preferences, provider settings, and formatting options.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Convert audio and video to accurate text transcripts with timestamps, perfect for creating course materials, show notes, and searchable content.
 

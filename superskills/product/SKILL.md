@@ -1,11 +1,14 @@
 ---
 name: product
 description: Drive product strategy and development from concept to launch. Use when defining product vision, prioritizing features, planning roadmaps, or analyzing user needs.
+version: 1.0.0
 ---
 
 # Product
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific product portfolio, target market, and product philosophy.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific product portfolio, target market, and product philosophy.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Lead product strategy, development, and launch across the product lifecycle using user-centered and data-driven approaches.
 

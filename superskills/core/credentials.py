@@ -37,11 +37,11 @@ def load_credentials(skill_name: Optional[str] = None, verbose: bool = False):
             logger.warning("python-dotenv not installed. Using environment variables only.")
             logger.info("Install with: pip install python-dotenv")
         return
-    
+
     # Find repo root (where .env should be)
     current = Path(__file__).parent
     repo_root = current.parent.parent
-    
+
     # Load global .env if it exists
     global_env = repo_root / ".env"
     if global_env.exists():
@@ -50,7 +50,7 @@ def load_credentials(skill_name: Optional[str] = None, verbose: bool = False):
             logger.info(f"Loaded global credentials from {global_env}")
     elif verbose:
         logger.info(f"No global .env found at {global_env}")
-    
+
     # Load per-skill .env if skill_name provided
     if skill_name:
         skill_env = repo_root / "superskills" / skill_name / ".env"
@@ -81,7 +81,7 @@ def get_credential(
         ValueError: If credential not found, no default, and required=True
     """
     value = os.getenv(key, default)
-    
+
     if value is None and required:
         error_msg = (
             f"\n{'='*60}\n"
@@ -101,7 +101,7 @@ def get_credential(
             f"{'='*60}\n"
         )
         raise ValueError(error_msg)
-    
+
     return value
 
 
@@ -128,21 +128,21 @@ def get_credential_status(required_keys: list[str]) -> str:
     """
     status = check_credentials(required_keys)
     lines = ["Credential Status:", "-" * 50]
-    
+
     for key, is_set in status.items():
         symbol = "✓" if is_set else "✗"
         value = os.getenv(key, "")
         masked = value[:8] + "..." if len(value) > 8 else "***" if is_set else "NOT SET"
         lines.append(f"{symbol} {key:30} {masked}")
-    
+
     found = sum(status.values())
     total = len(required_keys)
     lines.append("-" * 50)
     lines.append(f"Found {found}/{total} required credentials")
-    
+
     if found < total:
         lines.append("\n⚠️ Some credentials are missing!")
         lines.append("Run: cp .env.template .env")
         lines.append("Then edit .env and add your API keys.")
-    
+
     return "\n".join(lines)

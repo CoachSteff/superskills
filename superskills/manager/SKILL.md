@@ -1,11 +1,14 @@
 ---
 name: manager
 description: Orchestrate multi-agent content production workflow from research to publication. Use when coordinating team of specialized agents (researcher, copywriter, editor, publisher) to produce content deliverables requiring multiple stages of work.
+version: 1.0.0
 ---
 
 # Team Manager
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific project context, workflow preferences, and quality standards.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific project context, workflow preferences, and quality standards.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Coordinate specialized content production agents through sequential workflow stages, ensuring quality handoffs and maintaining project alignment from initial request through final delivery.
 

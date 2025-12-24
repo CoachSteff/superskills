@@ -1,17 +1,16 @@
 """
 WebScraper.py - AI-friendly web scraping using Crawl4AI.
 """
-import os
 import asyncio
-from typing import Dict, List, Optional, Literal
-from pathlib import Path
-from datetime import datetime
 import json
 from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Literal, Optional
 
 try:
     from crawl4ai import AsyncWebCrawler
-    from crawl4ai.extraction_strategy import LLMExtractionStrategy, CosineStrategy
+    from crawl4ai.extraction_strategy import CosineStrategy, LLMExtractionStrategy
     CRAWL4AI_AVAILABLE = True
 except ImportError:
     CRAWL4AI_AVAILABLE = False
@@ -31,7 +30,7 @@ class ScrapingResult:
     metadata: Dict
     extracted_data: Optional[Dict] = None
     timestamp: str = None
-    
+
     def __post_init__(self):
         if not self.timestamp:
             self.timestamp = datetime.now().isoformat()
@@ -39,7 +38,7 @@ class ScrapingResult:
 
 class WebScraper:
     """AI-friendly web scraper using Crawl4AI."""
-    
+
     # Default extraction strategies
     EXTRACTION_STRATEGIES = {
         "article": {
@@ -55,7 +54,7 @@ class WebScraper:
             "description": "Extract contact information"
         }
     }
-    
+
     def __init__(
         self,
         output_dir: str = "scraped_data",
@@ -75,15 +74,15 @@ class WebScraper:
         """
         if not CRAWL4AI_AVAILABLE:
             raise ImportError("crawl4ai is required. Install with: pip install crawl4ai")
-        
+
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         self.extraction_mode = extraction_mode
         self.verbose = verbose
         self.headless = headless
         self.user_agent = user_agent or "Mozilla/5.0 (compatible; SuperSkillsBot/1.0)"
-        
+
     async def scrape(
         self,
         url: str,
@@ -108,27 +107,27 @@ class WebScraper:
         """
         if self.verbose:
             print(f"Scraping: {url}")
-        
+
         async with AsyncWebCrawler(verbose=self.verbose, headless=self.headless) as crawler:
             # Build crawler configuration
             config = {
                 "wait_for": wait_for_selector,
                 "delay_before_return_html": wait_for_timeout / 1000.0 if wait_for_timeout else 5.0
             }
-            
+
             # Add extraction strategy if specified
             if extraction_strategy and extraction_strategy in self.EXTRACTION_STRATEGIES:
                 strategy_config = self.EXTRACTION_STRATEGIES[extraction_strategy]
                 if self.verbose:
                     print(f"Using extraction strategy: {extraction_strategy}")
-            
+
             # Perform the crawl
             result = await crawler.arun(url=url, **config)
-            
+
             # Extract content based on mode
             content = ""
             extracted_data = None
-            
+
             if self.extraction_mode == "markdown":
                 content = result.markdown if hasattr(result, 'markdown') else result.cleaned_html
             elif self.extraction_mode == "html":
@@ -138,7 +137,7 @@ class WebScraper:
                 # Extract using CSS selector if provided
                 if css_selector and hasattr(result, 'fit_markdown'):
                     content = result.fit_markdown
-            
+
             # Get metadata
             metadata = {
                 "url": url,
@@ -147,10 +146,10 @@ class WebScraper:
                 "extraction_mode": self.extraction_mode,
                 "timestamp": datetime.now().isoformat()
             }
-            
+
             # Get title
             title = getattr(result, 'title', url.split('/')[-1] or 'Untitled')
-            
+
             # Create result object
             scraping_result = ScrapingResult(
                 url=url,
@@ -159,16 +158,16 @@ class WebScraper:
                 metadata=metadata,
                 extracted_data=extracted_data
             )
-            
+
             # Save to file if requested
             if output_filename:
                 self._save_result(scraping_result, output_filename)
-            
+
             if self.verbose:
                 print(f"✓ Scraped successfully: {len(content)} characters")
-            
+
             return scraping_result
-    
+
     async def scrape_multiple(
         self,
         urls: List[str],
@@ -187,10 +186,10 @@ class WebScraper:
         """
         if self.verbose:
             print(f"Scraping {len(urls)} URLs (max {max_concurrent} concurrent)...")
-        
+
         results = []
         semaphore = asyncio.Semaphore(max_concurrent)
-        
+
         async def scrape_with_limit(url):
             async with semaphore:
                 try:
@@ -203,16 +202,16 @@ class WebScraper:
                         content="",
                         metadata={"error": str(e), "success": False}
                     )
-        
+
         tasks = [scrape_with_limit(url) for url in urls]
         results = await asyncio.gather(*tasks)
-        
+
         successful = sum(1 for r in results if r.metadata.get('success', True))
         if self.verbose:
             print(f"✓ Completed: {successful}/{len(urls)} successful")
-        
+
         return results
-    
+
     def _save_result(
         self,
         result: ScrapingResult,
@@ -227,7 +226,7 @@ class WebScraper:
             format: Output format (json, markdown, text)
         """
         output_path = self.output_dir / filename
-        
+
         if format == "json":
             data = {
                 "url": result.url,
@@ -239,7 +238,7 @@ class WebScraper:
             }
             with open(output_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
-        
+
         elif format == "markdown":
             with open(output_path, 'w', encoding='utf-8') as f:
                 f.write(f"# {result.title}\n\n")
@@ -247,14 +246,14 @@ class WebScraper:
                 f.write(f"**Scraped:** {result.timestamp}\n\n")
                 f.write("---\n\n")
                 f.write(result.content)
-        
+
         elif format == "text":
             with open(output_path, 'w', encoding='utf-8') as f:
                 f.write(result.content)
-        
+
         if self.verbose:
             print(f"✓ Saved to: {output_path}")
-    
+
     def save_batch(
         self,
         results: List[ScrapingResult],
@@ -267,7 +266,7 @@ class WebScraper:
             filename: Output filename
         """
         output_path = self.output_dir / filename
-        
+
         data = {
             "total_results": len(results),
             "timestamp": datetime.now().isoformat(),
@@ -282,10 +281,10 @@ class WebScraper:
                 for r in results
             ]
         }
-        
+
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
-        
+
         if self.verbose:
             print(f"✓ Batch saved to: {output_path}")
 

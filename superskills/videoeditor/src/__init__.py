@@ -1,9 +1,6 @@
 """VideoEditor skill - Automated video editing."""
 
-from .VideoEditor import (
-    VideoEditor,
-    VideoEditResult
-)
+from .VideoEditor import VideoEditor, VideoEditResult
 
 __all__ = [
     'VideoEditor',

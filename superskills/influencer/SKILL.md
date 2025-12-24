@@ -1,12 +1,15 @@
 ---
 name: influencer
 description: Build thought leadership and authority through strategic content positioning. Use when developing influencer strategy, creating authority-building content, or establishing domain expertise.
+version: 1.0.0
 license: MIT
 ---
 
 # Influencer
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific topic focus, platform strategy, and differentiation approach.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific topic focus, platform strategy, and differentiation approach.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Strategically build thought leadership, authority, and influence through consistent, valuable content that positions you as a trusted expert.
 

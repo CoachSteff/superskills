@@ -1,11 +1,14 @@
 ---
 name: strategist
 description: Define vision, objectives, and creative approaches for initiatives. Use when planning projects, analyzing audiences, brainstorming campaign strategies, or aligning work with business goals before execution begins.
+version: 1.0.0
 ---
 
 # Strategist
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific brand positioning, target audiences, differentiators, and strategic frameworks.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific brand positioning, target audiences, differentiators, and strategic frameworks.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Define project vision, objectives, and success criteria; conduct strategic analysis; brainstorm creative approaches; align initiatives with user's brand and business goals.
 

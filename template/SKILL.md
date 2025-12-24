@@ -1,12 +1,20 @@
 ---
 name: template-skill
 description: Replace with clear description of what the skill does and when Claude should use it. Be specific about the skill's purpose, capabilities, and ideal use cases.
+version: 1.0.0
 license: MIT
 ---
 
 # [Skill Name]
 
 [Brief introduction explaining what this skill does and why it's useful]
+
+## Supporting Resources
+
+- **[PROFILE.md](PROFILE.md)** - User-specific customization (voice, style, brand context)
+- **Master Briefing** - Global brand voice at `~/.superskills/master-briefing.yaml`
+
+> **Note**: If PROFILE.md doesn't exist, copy `PROFILE.md.template` to `PROFILE.md` and customize it.
 
 ## Purpose
 
@@ -90,12 +98,25 @@ SKILL_ENDPOINT=https://api.example.com
 
 ## User Profile Integration
 
-This skill loads your personal profile from `PROFILE.md` in the same directory.
+This skill integrates with two levels of personalization:
+
+### 1. Master Briefing (Global)
+Your Master Briefing at `~/.superskills/master-briefing.yaml` provides global brand voice, audience, and frameworks shared across all skills.
+
+**Create one:**
+```bash
+superskills call profile-builder "help me create my master briefing"
+```
+
+### 2. Skill Profile (Specific)
+The [PROFILE.md](PROFILE.md) file in this directory provides skill-specific customization that overrides Master Briefing when conflicts exist.
 
 **Setup:**
 1. Copy `PROFILE.md.template` to `PROFILE.md`
 2. Fill in your information (name, role, voice characteristics, expertise)
 3. The skill will automatically match your brand voice and context
+
+**Priority:** PROFILE.md (highest) > Master Briefing (global) > SKILL.md (baseline)
 
 **What the skill uses from your profile:**
 - [Element 1 - e.g., "Voice characteristics to match your writing style"]

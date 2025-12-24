@@ -1,11 +1,14 @@
 ---
 name: marketer
 description: Distribute content across social platforms using Notion+n8n for scheduling and automation. Use when optimizing posts for each platform, managing content calendar, or building community engagement.
+version: 1.0.0
 ---
 
 # Marketer
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific platform strategy, brand voice, target audiences, and best posting times.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific platform strategy, brand voice, target audiences, and best posting times.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Distribute content across social media, optimize for engagement, manage content calendar, analyze performance, and build community.
 

@@ -1,12 +1,15 @@
 ---
 name: business-consultant
 description: Provide strategic business consulting and problem-solving. Use when analyzing business challenges, developing strategies, optimizing operations, or planning growth initiatives.
+version: 1.0.0
 license: MIT
 ---
 
 # Business Consultant
 
-> **Note**: Review `PROFILE.md` in this skill folder for user-specific consulting specialties, methodologies, and industry focus.
+> **Note**: Review [PROFILE.md](PROFILE.md) in this skill folder for user-specific consulting specialties, methodologies, and industry focus.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Deliver strategic business consulting that solves problems, optimizes operations, and drives growth through analytical thinking and proven frameworks.
 

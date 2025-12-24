@@ -4,14 +4,15 @@ Intent parser: Convert natural language to structured intent JSON
 import json
 import os
 from dataclasses import dataclass
-from typing import Dict, Any, Optional, List
-from pathlib import Path
 from functools import lru_cache
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
 import jsonschema
 
-from cli.utils.llm_client import LLMProvider
-from cli.utils.config import CLIConfig
 from cli.core.skill_loader import SkillLoader
+from cli.utils.config import CLIConfig
+from cli.utils.llm_client import LLMProvider
 from cli.utils.logger import get_logger
 
 
@@ -23,7 +24,7 @@ class IntentResult:
     parameters: Dict[str, Any]
     confidence: float
     reasoning: str
-    
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             'action': self.action,
@@ -36,23 +37,23 @@ class IntentResult:
 
 class IntentParser:
     """Parse natural language into structured intent"""
-    
+
     def __init__(self, config: CLIConfig):
         self.config = config
         self.logger = get_logger()
         self.skill_loader = SkillLoader()
-        
+
         # Load intent schema
         schema_path = Path(__file__).parent.parent / 'schemas' / 'intent_schema.json'
         with open(schema_path, 'r') as f:
             self.schema = json.load(f)
-        
+
         # Initialize LLM provider with model resolution
         from cli.utils.model_resolver import ModelResolver
-        
+
         provider_name = os.getenv('SUPERSKILLS_INTENT_PROVIDER') or config.get('intent.provider', 'gemini')
         model_alias = os.getenv('SUPERSKILLS_INTENT_MODEL') or config.get('intent.model', 'gemini-flash-latest')
-        
+
         # Resolve model alias to concrete ID
         resolved_model = model_alias
         try:
@@ -63,7 +64,7 @@ class IntentParser:
                 self.logger.info(f"Resolved model: {model_alias} → {resolved_model}")
         except Exception as e:
             self.logger.warning(f"Model resolution failed, using alias directly: {e}")
-        
+
         try:
             self.llm_provider = LLMProvider.create(
                 provider=provider_name,
@@ -74,7 +75,7 @@ class IntentParser:
         except ValueError as e:
             self.logger.error(f"Failed to initialize LLM provider: {e}")
             raise
-    
+
     @lru_cache(maxsize=128)
     def _get_skill_context(self) -> str:
         """Get cached skill metadata for context"""
@@ -87,27 +88,27 @@ class IntentParser:
         except Exception as e:
             self.logger.warning(f"Could not load skills for context: {e}")
             return ""
-    
+
     def parse(self, user_input: str, context: Optional[Dict[str, Any]] = None) -> IntentResult:
         """Parse natural language input into structured intent"""
         context = context or {}
-        
+
         # Build system prompt
         system_prompt = self._build_system_prompt()
-        
+
         # Call LLM
         try:
             response = self.llm_provider.call(
                 system_prompt=system_prompt,
                 user_prompt=user_input
             )
-            
+
             # Parse JSON response
             intent_json = self._extract_json(response)
-            
+
             # Validate against schema
             jsonschema.validate(intent_json, self.schema)
-            
+
             # Convert to IntentResult
             result = IntentResult(
                 action=intent_json['action'],
@@ -116,22 +117,22 @@ class IntentParser:
                 confidence=intent_json['confidence'],
                 reasoning=intent_json['reasoning']
             )
-            
+
             self.logger.debug(f"Parsed intent: {result.action} (confidence: {result.confidence})")
             return result
-            
+
         except jsonschema.ValidationError as e:
             self.logger.error(f"Intent JSON validation failed: {e}")
             raise ValueError(f"Invalid intent structure: {e.message}")
-        
+
         except Exception as e:
             self.logger.error(f"Intent parsing failed: {e}")
             raise ValueError(f"Failed to parse intent: {e}")
-    
+
     def _build_system_prompt(self) -> str:
         """Build system prompt with context"""
         skill_context = self._get_skill_context()
-        
+
         prompt = f"""You are an intent parser for the Superskills CLI, a tool that provides AI-powered automation skills.
 
 Available Skills:
@@ -194,7 +195,7 @@ Important:
 - For ambiguous requests, use lower confidence scores
 """
         return prompt
-    
+
     def _extract_json(self, response: str) -> Dict[str, Any]:
         """Extract JSON from LLM response"""
         # Remove markdown code blocks if present
@@ -207,22 +208,22 @@ Important:
             if lines and lines[-1].startswith('```'):
                 lines = lines[:-1]
             response = '\n'.join(lines)
-        
+
         # Remove 'json' language identifier if present
         response = response.strip()
         if response.lower().startswith('json'):
             response = response[4:].strip()
-        
+
         try:
             return json.loads(response)
         except json.JSONDecodeError as e:
             self.logger.error(f"Failed to parse JSON response: {response}")
             raise ValueError(f"Invalid JSON response from LLM: {e}")
-    
+
     def suggest_alternatives(self, intent: IntentResult) -> List[str]:
         """Suggest alternative interpretations for low-confidence intents"""
         suggestions = []
-        
+
         # Generic suggestions based on action
         if intent.action == 'search':
             suggestions.append("List all available skills (superskills list)")
@@ -234,5 +235,5 @@ Important:
             suggestions.append("List all available skills (superskills list)")
             suggestions.append("Show CLI status (superskills status)")
             suggestions.append("Describe what you want to do more specifically")
-        
+
         return suggestions[:3]

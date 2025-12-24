@@ -1,9 +1,14 @@
 ---
 name: craft
 description: Craft Docs API integration for document management, collaboration, and knowledge organization. Use when managing documentation, syncing content, or organizing knowledge bases.
+version: 1.0.0
 ---
 
 # Craft
+
+> **Note**: Review [PROFILE.md](PROFILE.md) for user-specific Craft workspace configuration and content organization preferences.
+> 
+> **Master Briefing**: Global brand voice at `~/.superskills/master-briefing.yaml` applies automatically. Skill profile overrides when conflicts exist.
 
 Seamlessly integrate with Craft Docs for document management, content collaboration, and knowledge base organization.
 

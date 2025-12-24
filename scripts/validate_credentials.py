@@ -24,7 +24,7 @@ if DOTENV_AVAILABLE and env_file.exists():
     print(f"✓ Loaded {env_file}\n")
 elif not env_file.exists():
     print(f"ℹ No .env file found at {env_file}")
-    print(f"  Create one by running: cp .env.template .env\n")
+    print("  Create one by running: cp .env.template .env\n")
 
 # Define all possible credentials by skill
 CREDENTIALS = {
@@ -90,21 +90,21 @@ total_credentials = 0
 for skill, creds in CREDENTIALS.items():
     print(f"📦 {skill}")
     print("-" * 70)
-    
+
     # Special handling for workflow-based skills
     if not creds:
-        print(f"  ℹ️  This skill uses workflow-based integration (no API keys required)")
+        print("  ℹ️  This skill uses workflow-based integration (no API keys required)")
         if skill == "Marketer":
-            print(f"  📖 Uses Notion+n8n workflow - see superskills/marketer/SKILL.md")
-            print(f"  🔗 Requires: Notion API Key (see 'Notion' section)")
+            print("  📖 Uses Notion+n8n workflow - see superskills/marketer/SKILL.md")
+            print("  🔗 Requires: Notion API Key (see 'Notion' section)")
         print()
         continue
-    
+
     skill_found = 0
     for key, description in creds.items():
         total_credentials += 1
         value = os.getenv(key)
-        
+
         if value:
             # Mask the value for security
             if len(value) > 12:
@@ -113,20 +113,20 @@ for skill, creds in CREDENTIALS.items():
                 masked = value[:8] + "..."
             else:
                 masked = "***"
-            
+
             print(f"  ✓ {key:30} {masked:20} {description}")
             skill_found += 1
             total_found += 1
         else:
             print(f"  ✗ {key:30} {'NOT SET':20} {description}")
-    
+
     if skill_found == len(creds):
         print(f"  🎉 All {skill} credentials configured!")
     elif skill_found > 0:
         print(f"  ⚠️  {len(creds) - skill_found}/{len(creds)} credentials missing")
     else:
-        print(f"  ℹ️  No credentials configured (skill not in use)")
-    
+        print("  ℹ️  No credentials configured (skill not in use)")
+
     print()
 
 print("=" * 70)

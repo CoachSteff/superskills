@@ -1,9 +1,9 @@
 """Pytest configuration and shared fixtures."""
-import pytest
-import os
 import sys
 from pathlib import Path
-from unittest.mock import Mock, MagicMock
+from unittest.mock import MagicMock, Mock
+
+import pytest
 from dotenv import load_dotenv
 
 # Add superskills directory to path

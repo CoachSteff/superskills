@@ -1,0 +1,329 @@
+# Master Briefing Template
+# Your brand voice and business context for Superskills
+# 
+# This document is the foundation for all your skill profiles. Complete each section
+# with specific, authentic information about your business, voice, and approach.
+# The more detailed and authentic this is, the better your AI outputs will match your brand.
+
+# ==============================================================================
+# 1. IDENTITY & CONTEXT
+# ==============================================================================
+# Who you are and what you do
+
+identity:
+  name: "[Your Name or Business Name]"
+  # Examples: "Jane Smith", "Acme Consulting", "The Marketing Lab"
+  
+  role: "[Your Professional Role]"
+  # Examples: "Marketing Consultant", "Content Creator", "Financial Analyst", "Product Designer"
+  
+  business: "[Business/Organization Description - one sentence]"
+  # Examples: "B2B SaaS marketing agency specializing in conversion optimization"
+  # Examples: "Independent consultant helping mid-market companies adopt AI"
+  
+  domain: "[Primary Expertise Area]"
+  # Examples: "B2B SaaS Marketing", "Educational Technology", "Financial Planning for Entrepreneurs"
+  
+  experience: "[Years of experience and key background]"
+  # Examples: "15 years in B2B marketing, former CMO at two SaaS companies"
+
+# ==============================================================================
+# 2. AUDIENCE
+# ==============================================================================
+# Who you serve and what they need
+
+audience:
+  primary: "[Your primary target audience - be specific]"
+  # Examples: "Marketing directors at mid-market B2B SaaS companies (50-500 employees)"
+  # Examples: "Solo entrepreneurs and small business owners building personal brands"
+  
+  secondary: "[Secondary audiences, if applicable - or write 'None']"
+  # Examples: "Content creators, freelance marketers"
+  
+  pain_points:
+    - "[Key challenge your audience faces that you help solve]"
+    - "[Another challenge]"
+    - "[Another challenge]"
+  # Examples: 
+  # - "Struggling to prove marketing ROI to executives"
+  # - "Don't have time or budget for full-service agency"
+  # - "Need to do more with smaller teams"
+  
+  desired_feeling: "[How you want your audience to feel when engaging with your content]"
+  # Examples: "Empowered and capable", "Informed and confident", "Inspired to take action", "Reassured and supported"
+
+# ==============================================================================
+# 3. VOICE & TONE
+# ==============================================================================
+# How you communicate and your distinctive style
+# THIS IS THE MOST CRITICAL SECTION - be specific and authentic
+
+voice:
+  style: "[Overall communication style - 2-3 descriptive phrases]"
+  # GOOD Examples: "Warm and conversational, data-driven with storytelling", "Direct and analytical, authoritative yet approachable"
+  # BAD Examples: "Professional and friendly" (too generic - applies to everyone)
+  
+  characteristics:
+    - "[Trait 1 - be specific, not generic]"
+    - "[Trait 2 - be specific, not generic]"
+    - "[Trait 3 - be specific, not generic]"
+    - "[Trait 4 - optional]"
+    - "[Trait 5 - optional]"
+  # GOOD Examples:
+  # - "Evidence-based; always backs claims with data or research"
+  # - "Practical and actionable; every insight includes implementation steps"
+  # - "Empathetic; acknowledges real constraints and challenges"
+  # - "Slightly rebellious; questions conventional wisdom"
+  # BAD Examples:
+  # - "Professional" (too vague)
+  # - "High-quality" (not a voice characteristic)
+  # - "Expert" (describes credibility, not voice)
+  
+  language_patterns:
+    - "[Pattern 1 - how you structure communication]"
+    - "[Pattern 2 - how you structure communication]"
+    - "[Pattern 3 - how you structure communication]"
+    - "[Pattern 4 - optional]"
+  # Examples:
+  # - "Active voice with short, punchy sentences"
+  # - "Concrete examples before abstract concepts"
+  # - "Second-person 'you' to directly engage reader"
+  # - "Questions to provoke thinking, not rhetorical fluff"
+  # - "Analogies and metaphors to explain complex ideas"
+  
+  signature_elements:
+    - "[Distinctive element 1 - what makes your style recognizable]"
+    - "[Distinctive element 2 - what makes your style recognizable]"
+  # Examples:
+  # - "Opens with a provocative question or contrarian statement"
+  # - "Uses specific numbers and data points, not ranges"
+  # - "Includes mini case studies or real examples"
+  # - "Ends with 2-3 concrete next steps"
+  
+  avoid:
+    - "[Word or phrase you don't use]"
+    - "[Corporate buzzword or jargon to skip]"
+    - "[Overused industry term]"
+    - "[Add more as needed]"
+  # Examples:
+  # - "delve, robust, leverage, synergy"
+  # - "game-changer, revolutionary, cutting-edge"
+  # - "think outside the box, move the needle"
+  # - "circle back, touch base, reach out"
+
+# ==============================================================================
+# 4. PERSPECTIVE & POSITIONING
+# ==============================================================================
+# Your unique lens and how you frame your work
+
+perspective:
+  lens: "[Your unique perspective or approach - ideally two intersecting domains]"
+  # Examples: "Data × Storytelling", "Technology × Psychology", "Finance × Human Behavior"
+  # Examples: "Strategic thinking with tactical execution", "Systems thinking applied to marketing"
+  
+  goal: "[What you're fundamentally helping people achieve - be specific]"
+  # Examples: "Help marketing teams prove ROI and secure executive buy-in"
+  # Examples: "Enable non-technical entrepreneurs to harness AI without coding"
+  
+  reader_positioning: "[How you frame your audience's journey - are they the hero?]"
+  # Examples: "They're the capable strategist; I'm the guide removing obstacles"
+  # Examples: "They have the vision; I provide the frameworks and tools"
+  # Examples: "They're building something valuable; I'm accelerating their progress"
+  
+  guiding_principle: "[Core belief or principle that guides all your work]"
+  # Examples: "AI should augment human capability, not replace it"
+  # Examples: "Strategy without execution is hallucination"
+  # Examples: "The best marketing feels like service, not selling"
+
+# ==============================================================================
+# 5. FRAMEWORKS & METHODOLOGIES
+# ==============================================================================
+# Your proprietary frameworks or preferred approaches
+# If you don't have formal frameworks, describe your structured approach to problems
+
+frameworks:
+  - name: "[Framework Name]"
+    description: "[What it is and why it matters - 2-3 sentences]"
+    when_to_use: "[Context for application]"
+    components:
+      - "[Component or stage 1]"
+      - "[Component or stage 2]"
+      - "[Component or stage 3]"
+  
+  # Examples:
+  # - name: "Value Ladder Framework"
+  #   description: "A structured approach to creating offers at different price points and value levels, from free content to premium consulting. Ensures product-market fit at each level."
+  #   when_to_use: "When designing service offerings or pricing strategy"
+  #   components:
+  #     - "Free Value: Educational content and resources"
+  #     - "Entry Offer: Low-ticket digital product ($50-500)"
+  #     - "Core Offer: Mid-ticket program or service ($1k-10k)"
+  #     - "Premium Offer: High-ticket consulting or done-for-you ($10k+)"
+  
+  # If you don't have formal frameworks, describe your approach:
+  # - name: "My Client Onboarding Process"
+  #   description: "A structured 4-step approach to understanding client needs and setting clear expectations"
+  #   when_to_use: "Every new client engagement"
+  #   components:
+  #     - "Discovery: Deep-dive interviews to understand context"
+  #     - "Diagnosis: Identify root causes, not just symptoms"
+  #     - "Design: Co-create solution roadmap"
+  #     - "Delivery: Execute with regular checkpoints"
+
+# ==============================================================================
+# 6. EXPERTISE
+# ==============================================================================
+# Your credibility markers and areas of deep knowledge
+
+expertise:
+  areas:
+    - "[Core competency 1]"
+    - "[Core competency 2]"
+    - "[Core competency 3]"
+    - "[Add more as relevant]"
+  # Examples:
+  # - "Conversion rate optimization for SaaS landing pages"
+  # - "Email marketing automation and segmentation"
+  # - "Content marketing strategy and execution"
+  
+  credentials:
+    - "[Certification, degree, or credential]"
+    - "[Professional designation]"
+  # Examples:
+  # - "Certified Marketing Strategist (CMS)"
+  # - "MBA, Marketing - Northwestern Kellogg"
+  # - "Google Analytics Certified"
+  # Note: If no formal credentials, list relevant training, courses, or self-taught expertise
+  
+  proof_points:
+    - "[Achievement, result, or notable work]"
+    - "[Publication, portfolio item, or case study]"
+    - "[Recognition or award]"
+  # Examples:
+  # - "Grew SaaS startup from $0 to $5M ARR as founding CMO"
+  # - "Published author: 'Marketing Metrics That Matter' (2023)"
+  # - "Managed $10M+ in ad spend across 50+ campaigns"
+  # - "Spoken at 20+ marketing conferences"
+  
+  industries:
+    - "[Industry or vertical where you have deep knowledge]"
+    - "[Another industry]"
+  # Examples:
+  # - "B2B SaaS"
+  # - "E-commerce"
+  # - "Professional services"
+  # - "Healthcare technology"
+
+# ==============================================================================
+# 7. EXAMPLES & VOICE SAMPLES
+# ==============================================================================
+# CRITICAL: Real examples of your voice and work
+# This section dramatically improves AI output quality
+
+examples:
+  signature_stories:
+    - "[A story, case study, or metaphor you use frequently - brief description]"
+    - "[Another recurring narrative or teaching example]"
+  # Examples:
+  # - "The leaky bucket story: why fixing retention beats acquiring more customers"
+  # - "My failed product launch that taught me to validate before building"
+  # - "The spreadsheet vs. story comparison: data needs narrative to drive decisions"
+  
+  sample_voice: |
+    [PASTE 150-300 words of your actual writing here. Use a real email, blog post excerpt, 
+    LinkedIn post, or article you've written. This is the MOST IMPORTANT field for voice matching.
+    The AI will learn your rhythm, tone, and style from this sample.]
+    
+    Examples of what to paste:
+    - A recent email you sent to a client or audience
+    - Opening paragraphs of a blog post
+    - A LinkedIn post that got good engagement
+    - A section from a proposal or case study
+    
+    DON'T make up sample text. Use something you actually wrote.
+  
+  typical_hooks:
+    - "[Example opening line or hook you'd use]"
+    - "[Another example opening]"
+  # Examples:
+  # - "Here's what no one tells you about [topic]..."
+  # - "I analyzed 50 [thing] and found a surprising pattern..."
+  # - "Most [audience] get this wrong: [contrarian insight]"
+  
+  before_after:
+    - scenario: "[What situation or problem]"
+      before: "[State before your work or intervention]"
+      after: "[State after your work or intervention]"
+  # Examples:
+  # - scenario: "SaaS company struggling with high churn"
+  #   before: "45% annual churn, no systematic customer success process"
+  #   after: "18% annual churn, automated onboarding playbook, dedicated CS team"
+
+# ==============================================================================
+# 8. GUARDRAILS & COMPLIANCE
+# ==============================================================================
+# Boundaries, constraints, and requirements
+
+guardrails:
+  privacy:
+    - "[Privacy requirement or data handling rule]"
+    - "[Another privacy constraint]"
+  # Examples:
+  # - "GDPR compliance required for all EU client work"
+  # - "Never share client names or results without written permission"
+  # - "Anonymize all case studies and examples"
+  # - "No personal data in AI prompts"
+  
+  ethics:
+    - "[Ethical boundary or sensitive topic to avoid]"
+    - "[Another ethical guideline]"
+  # Examples:
+  # - "No medical, legal, or financial advice - recommend qualified professionals"
+  # - "Avoid politics and controversial social issues"
+  # - "Don't promise specific outcomes (e.g., 'you'll make $100k')"
+  # - "Acknowledge limitations honestly"
+  
+  compliance:
+    - "[Regulatory requirement]"
+    - "[Industry standard or requirement]"
+  # Examples:
+  # - "Follow CAN-SPAM Act for email marketing"
+  # - "Adhere to FTC disclosure requirements for sponsored content"
+  # - "Respect copyright and fair use guidelines"
+  # - "Follow industry-specific regulations (HIPAA, FINRA, etc.)"
+  
+  human_judgment_required:
+    - "[Scenario that requires human review, not AI alone]"
+    - "[Decision that must stay with human]"
+  # Examples:
+  # - "Client contract terms and pricing"
+  # - "Publishing anything with client-identifying information"
+  # - "Making strategic pivots or major business decisions"
+  # - "Handling customer complaints or sensitive feedback"
+  # - "Any legal or financial advice"
+
+# ==============================================================================
+# METADATA
+# ==============================================================================
+# Version tracking and update history
+
+version: "1.0"
+created: "2024-12-24"
+last_updated: "2024-12-24"
+
+# Update this version and date when you make significant changes to your Master Briefing
+# This helps track how your voice and positioning evolve over time
+
+# ==============================================================================
+# NOTES
+# ==============================================================================
+# Optional: Add any additional notes, context, or reminders for yourself
+
+notes: |
+  [Optional: Add any notes about your brand evolution, upcoming changes, 
+  or context that doesn't fit in the sections above]
+  
+  Examples:
+  - "Planning to add sustainability focus in Q2 2025"
+  - "Expanding into European markets - will need localized voice guidance"
+  - "Currently rebranding from 'consultant' to 'strategic advisor' positioning"

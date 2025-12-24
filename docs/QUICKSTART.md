@@ -17,6 +17,44 @@ See [Troubleshooting](#troubleshooting).
 
 ## Common Tasks
 
+### Personalize Your Skills (5-15 Minutes)
+
+**Why?** Profiles transform generic AI output into content that sounds like YOU.
+
+**Quick Setup (Interactive):**
+```bash
+# Create your Master Briefing (brand voice foundation)
+superskills call profile-builder "help me create my master briefing"
+
+# Generate profiles for your most-used skills
+superskills call profile-builder "generate a profile for copywriter"
+superskills call profile-builder "generate a profile for researcher"
+```
+
+**Manual Setup:**
+```bash
+# Copy and edit Master Briefing template
+cp MASTER_BRIEFING_TEMPLATE.yaml ~/.superskills/master-briefing.yaml
+nano ~/.superskills/master-briefing.yaml  # Fill in your brand voice
+
+# Copy and edit skill profiles
+cp superskills/copywriter/PROFILE.md.template superskills/copywriter/PROFILE.md
+nano superskills/copywriter/PROFILE.md  # Customize for your voice
+```
+
+**Test Your Profile:**
+```bash
+# Before profile: generic AI output
+superskills call copywriter "Write a LinkedIn post about AI adoption"
+
+# After profile: sounds like YOU
+# (Same command, personalized output matching your brand voice)
+```
+
+**See full guide:** [PROFILE_CUSTOMIZATION.md](PROFILE_CUSTOMIZATION.md)
+
+---
+
 ### Generate Podcast from Markdown
 
 **Setup (one-time):**

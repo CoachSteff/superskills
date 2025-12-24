@@ -85,11 +85,28 @@ pip install --user -e .
    superskills run content-creation --topic "Future of AI coaching"
    ```
 
-6. **Set up personalized profiles (optional but recommended):**
+6. **Personalize your skills (recommended for best results):**
+   
+   **Option A - Interactive (Fastest):**
    ```bash
-   cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
-   # Edit PROFILE.md with your brand voice, expertise, and style
+   # Let profile-builder guide you through setup (15 minutes)
+   superskills call profile-builder "help me create my master briefing"
+   # Then generate profiles for your most-used skills
+   superskills call profile-builder "generate a profile for copywriter"
    ```
+   
+   **Option B - Manual:**
+   ```bash
+   # Copy and edit the Master Briefing template
+   cp MASTER_BRIEFING_TEMPLATE.yaml ~/.superskills/master-briefing.yaml
+   # Edit with your brand voice and business context
+   
+   # Then create skill profiles
+   cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
+   # Edit PROFILE.md with your voice, expertise, and style
+   ```
+   
+   **Why personalize?** Profiles transform generic AI output into content that sounds like YOU. See the impact in [PROFILE_CUSTOMIZATION.md](docs/PROFILE_CUSTOMIZATION.md)
 
 7. **Set up workflows (optional):**
    ```bash
@@ -197,6 +214,7 @@ These are pure prompt-based skills that work immediately with Claude Desktop. Ea
 | **developer** | Code generation and debugging |
 | **editor** | Content editing and quality control |
 | **helper** | SuperSkills usage, setup, and troubleshooting assistant |
+| **profile-builder** | Create personalized Master Briefing and skill profiles |
 | **manager** | Project and team coordination |
 | **researcher** | Research and analysis |
 | **sales** | Sales messaging and outreach |

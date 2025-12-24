@@ -38,7 +38,8 @@ def call_command(skill_name: str, input_text: str = None, **kwargs):
         # Silent mode for plain output
         pass
     else:
-        print(f"Calling skill: {skill_name}")
+        # Print informational message to stderr to keep stdout clean for JSON/structured output
+        print(f"Calling skill: {skill_name}", file=sys.stderr)
     
     try:
         result = executor.execute(skill_name, input_text, **kwargs)
@@ -55,7 +56,7 @@ def call_command(skill_name: str, input_text: str = None, **kwargs):
                 f.write(formatted)
             
             if output_format != 'plain':
-                print(f"\n✓ Output saved to: {output_file}")
+                print(f"\n✓ Output saved to: {output_file}", file=sys.stderr)
         else:
             print(formatted)
         

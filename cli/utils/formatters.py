@@ -36,6 +36,11 @@ class OutputFormatter:
     @staticmethod
     def to_json(data: Dict[str, Any], pretty: bool = True) -> str:
         """Format as JSON."""
+        # Add status if not present (for IDE integration compatibility)
+        if 'status' not in data:
+            # Infer status from presence of output
+            data['status'] = 'success' if 'output' in data or 'final_output' in data else 'error'
+        
         # Add timestamp if not present
         if 'timestamp' not in data:
             data['timestamp'] = datetime.utcnow().isoformat() + 'Z'
@@ -132,10 +137,17 @@ class WorkflowListFormatter:
             
             builtin = [w for w in workflows if w.get('type') == 'built-in']
             custom = [w for w in workflows if w.get('type') == 'custom']
+            user = [w for w in workflows if w.get('type') == 'user']
             
             if builtin:
                 lines.append("## Built-in Workflows\n")
                 for w in builtin:
+                    lines.append(f"- **{w['name']}**: {w.get('description', 'No description')}")
+                lines.append("")
+            
+            if user:
+                lines.append("## User Workflows\n")
+                for w in user:
                     lines.append(f"- **{w['name']}**: {w.get('description', 'No description')}")
                 lines.append("")
             

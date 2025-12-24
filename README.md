@@ -6,10 +6,10 @@ Custom skill library for Claude Desktop that automates coaching, training, and c
 
 ## Overview
 
-SuperSkills is a comprehensive AI automation toolkit with **48 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
+SuperSkills is a comprehensive AI automation toolkit with **49 skills** that transform repetitive business tasks into automated workflows. Designed for freelance coaches, trainers, and content creators who want to scale their operations without proportional effort increases.
 
 **What You Get:**
-- 32 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
+- 33 Claude Skills (folder-based) - Prompt-based AI specialists, no Python required
 - 16 Python-Powered Skills - Full API integrations with advanced automation
 - Hierarchical skill families (e.g., narrator-podcast, narrator-meditation, narrator-educational)
 - Comprehensive test suite (196 unit tests)
@@ -200,7 +200,7 @@ See [CLI_SETUP.md](dev/CLI_SETUP.md) for detailed CLI installation and usage.
 ## Skill Categories
 
 ### 1. Claude Skills (Prompt-Based)
-**30 skill folders** in `/superskills/` - No Python dependencies required
+**33 skill folders** in `/superskills/` - No Python dependencies required
 
 These are pure prompt-based skills that work immediately with Claude Desktop. Each folder contains a `SKILL.md` file with the skill definition:
 
@@ -477,7 +477,7 @@ cp superskills/author/PROFILE.md.template superskills/author/PROFILE.md
 
 ```
 superskills/
-├── superskills/          # 45 skill directories (30 Claude Skills + 15 Python skills)
+├── superskills/          # 49 skill directories (33 prompt-based + 16 Python-powered)
 │   ├── author/           # Claude Skill: SKILL.md + PROFILE.md.template
 │   ├── craft/            # Python skill with API integration
 │   ├── narrator/         # Python skill family: ElevenLabs voice generation

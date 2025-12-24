@@ -111,7 +111,7 @@ def test_config_integration():
     default_config = config._get_default_config()
     
     # Test new config structure
-    assert default_config.get('version') == '2.4.1', "Version should be 2.4.1"
+    assert default_config.get('version') == '2.5.0', "Version should be 2.5.0"
     print(f"  ✓ Config version: {default_config['version']}")
     
     provider = default_config.get('api', {}).get('provider')

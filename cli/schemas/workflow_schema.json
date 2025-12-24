@@ -21,6 +21,21 @@
         "type": "string"
       }
     },
+    "io": {
+      "type": "object",
+      "description": "Input/output directory configuration",
+      "properties": {
+        "input_dir": {
+          "type": "string",
+          "description": "Input directory path"
+        },
+        "output_dir": {
+          "type": "string",
+          "description": "Output directory path"
+        }
+      },
+      "additionalProperties": false
+    },
     "steps": {
       "type": "array",
       "description": "Workflow steps",

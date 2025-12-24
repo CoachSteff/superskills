@@ -60,6 +60,8 @@ Major feature release: Introduces Profile Builder meta-skill for universal perso
   - Config auto-migration for experimental model names
   - Legacy aliases redirect deprecated models to stable versions
   - Test suite updated: 195/196 tests passing (99.5%)
+  
+  **Note on Gemini Models:** The CLI uses model aliases that resolve to the latest stable Gemini model. While config migration messages may reference "Gemini 1.5 Flash" for clarity, the actual model ID used is `models/gemini-2.0-flash-exp`. The Model Resolution System (v2.0.2) handles automatic fallback to stable versions when experimental models become unavailable.
 
 ### Security
 - **PROFILE.md Privacy Verification**

@@ -68,7 +68,8 @@ Successfully created comprehensive test suite for all 3 Python-based Claude Skil
 
 **Install dependencies:**
 ```bash
-cd /Users/steffvanhaverbeke/Development/01_projects/superskills/tests
+# From project root
+cd tests/
 pip3 install -r requirements.txt
 ```
 
@@ -115,7 +116,7 @@ pytest --cov=../superskills --cov-report=html
 
 ### Files Location
 
-All test files in: `/Users/steffvanhaverbeke/Development/01_projects/superskills/tests/`
+All test files in: `tests/` (relative to project root)
 
 - conftest.py
 - requirements.txt

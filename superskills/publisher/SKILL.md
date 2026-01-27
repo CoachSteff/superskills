@@ -41,9 +41,9 @@ Format edited content and prepare deliverables for final delivery.
 - Add supporting materials
 
 ### 5. Move to Outputs
-- **CRITICAL:** Copy all files to `/mnt/user-data/outputs`
+- **CRITICAL:** Copy all files to `~/Documents/Outputs` (or your configured output directory via $OUTPUT_DIR)
 - Verify files accessible
-- Prepare `computer://` links
+- Prepare `file://` links
 
 ### 6. Document
 - List deliverables with descriptions
@@ -66,7 +66,7 @@ Format edited content and prepare deliverables for final delivery.
 
 ### 1. [Deliverable Name]
 - **File:** `[filename.ext]`
-- **Location:** `/mnt/user-data/outputs/[filename]`
+- **Location:** `~/Documents/Outputs/[filename]`
 - **Format:** [Description]
 - **Purpose:** [How to use]
 - **Notes:** [Platform details]
@@ -118,7 +118,7 @@ Format edited content and prepare deliverables for final delivery.
 
 ## Quality Checks
 
-- All files in `/mnt/user-data/outputs`?
+- All files in `~/Documents/Outputs` (or your configured output directory)?
 - File names make sense?
 - Formatting clean and professional?
 - Content renders correctly?

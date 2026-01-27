@@ -19,20 +19,24 @@ def call_command(skill_name: str, input_text: str = None, **kwargs):
     input_file = kwargs.get('input_file')
     output_file = kwargs.get('output_file')
 
-    # Read input
-    if not sys.stdin.isatty():
-        input_text = sys.stdin.read()
+    # Read input - priority order: CLI argument > file > stdin > error
+    if input_text:
+        pass
     elif input_file:
         input_path = Path(input_file)
         if not input_path.exists():
             print(f"Error: Input file not found: {input_file}")
             return 1
-
         with open(input_path, 'r', encoding='utf-8') as f:
             input_text = f.read()
+    elif not sys.stdin.isatty():
+        input_text = sys.stdin.read()
+    else:
+        print("Error: Provide input via argument, --input-file flag, or stdin")
+        return 1
 
     if not input_text:
-        print("Error: Provide input via argument, --input flag, or stdin")
+        print("Error: Provide input via argument, --input-file flag, or stdin")
         return 1
 
     if output_format == 'plain':

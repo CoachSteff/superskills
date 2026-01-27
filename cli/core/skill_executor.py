@@ -233,8 +233,61 @@ class SkillExecutor:
                 }
 
             else:
-                self.logger.error(f"Python skill execution not implemented for: {skill_info.name}")
-                raise NotImplementedError(f"Python skill execution not implemented for: {skill_info.name}")
+                # GENERIC PYTHON SKILL HANDLER
+                self.logger.info(f"Executing generic Python skill: {skill_info.name}")
+                
+                try:
+                    # Instantiate the skill class with common kwargs
+                    init_kwargs = {}
+                    if 'output_dir' in kwargs:
+                        init_kwargs['output_dir'] = kwargs['output_dir']
+                    
+                    skill_instance = skill_class(**init_kwargs)
+                    
+                    # Try common execution method names in priority order
+                    execution_methods = ['execute', 'run', 'process', 'generate', '__call__']
+                    
+                    for method_name in execution_methods:
+                        if hasattr(skill_instance, method_name) and callable(getattr(skill_instance, method_name)):
+                            self.logger.debug(f"Found execution method: {method_name}")
+                            method = getattr(skill_instance, method_name)
+                            
+                            # Execute the skill
+                            result = method(input_text, **kwargs)
+                            
+                            # Normalize response format
+                            if isinstance(result, dict):
+                                output = result
+                            elif isinstance(result, str):
+                                output = {'output': result}
+                            else:
+                                output = {'output': str(result)}
+                            
+                            # Add metadata
+                            if 'metadata' not in output:
+                                output['metadata'] = {}
+                            output['metadata']['skill'] = skill_info.name
+                            output['metadata']['type'] = 'python'
+                            output['metadata']['provider'] = skill_info.python_module
+                            
+                            self.logger.info(f"Successfully executed {skill_info.name} via {method_name}()")
+                            return output
+                    
+                    # No recognized execution method found
+                    raise NotImplementedError(
+                        f"Skill '{skill_info.name}' class has no recognized execution method. "
+                        f"Tried: {', '.join(execution_methods)}"
+                    )
+                    
+                except ImportError as e:
+                    self.logger.error(f"Failed to import dependencies for {skill_info.name}: {e}")
+                    raise RuntimeError(
+                        f"Skill '{skill_info.name}' has missing dependencies. "
+                        f"Check the skill's README.md for installation instructions. Error: {e}"
+                    )
+                except Exception as e:
+                    self.logger.error(f"Error executing generic Python skill {skill_info.name}: {e}")
+                    raise
 
         except Exception as e:
             self.logger.error(f"Failed to execute Python skill {skill_info.name}: {e}", exc_info=True)

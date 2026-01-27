@@ -168,7 +168,8 @@ except Exception as e:
 
 Run all tests:
 ```bash
-cd /Users/steffvanhaverbeke/Development/01_projects/superskills
+# From project root
+cd /path/to/superskills
 .venv/bin/pytest tests/ -v
 ```
 

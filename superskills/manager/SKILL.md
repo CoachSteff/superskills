@@ -91,7 +91,7 @@ Ready to proceed?
 ```
 ## Deliverables Ready
 
-[View your [type]](computer:///mnt/user-data/outputs/filename)
+[View your [type]](file://~/Documents/Outputs/filename)
 
 [One-line summary]
 ```
@@ -106,6 +106,6 @@ Ready to proceed?
 
 ## Files & Locations
 
-- **Workspace:** `/Users/steffvanhaverbeke/Library/Mobile Documents/com~apple~CloudDocs/Cursor/team/workspace`
-- **Outputs:** `/mnt/user-data/outputs`
+- **Workspace:** `~/Documents/Workspace` (customize in your PROFILE.md or via $WORKSPACE_DIR)
+- **Outputs:** `~/Documents/Outputs` (customize in your PROFILE.md or via $OUTPUT_DIR)
 - **Agent Briefs:** `workspace/brief-[agent]-[number].md`

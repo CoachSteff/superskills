@@ -78,7 +78,8 @@ Expanded to include workflow details while preserving Python tools:
 ## Running Tests
 
 ```bash
-cd /Users/steffvanhaverbeke/Development/01_projects/superskills/tests
+# Navigate to tests directory (from project root)
+cd tests/
 
 # Create virtual environment
 python3 -m venv .venv

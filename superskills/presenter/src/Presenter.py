@@ -42,25 +42,6 @@ class PresentationResult:
 class Presenter:
     """Slide deck generation from markdown using python-pptx."""
 
-    # Presentation themes
-    THEMES = {
-        "default": {
-            "background": RGBColor(255, 255, 255),
-            "title_color": RGBColor(31, 78, 121),
-            "text_color": RGBColor(0, 0, 0)
-        },
-        "dark": {
-            "background": RGBColor(30, 30, 30),
-            "title_color": RGBColor(255, 200, 87),
-            "text_color": RGBColor(255, 255, 255)
-        },
-        "professional": {
-            "background": RGBColor(245, 245, 245),
-            "title_color": RGBColor(0, 51, 102),
-            "text_color": RGBColor(51, 51, 51)
-        }
-    }
-
     def __init__(
         self,
         output_dir: str = "output/presentations",
@@ -74,15 +55,39 @@ class Presenter:
             theme: Presentation theme (default, dark, professional)
             verbose: Enable verbose logging
         """
+        if not PPTX_AVAILABLE or not MARKDOWN_AVAILABLE:
+            missing = []
+            if not PPTX_AVAILABLE:
+                missing.append("python-pptx")
+            if not MARKDOWN_AVAILABLE:
+                missing.append("markdown")
+            raise ImportError(
+                f"Required dependencies not available: {', '.join(missing)}. "
+                f"Install with: pip install {' '.join(missing)}"
+            )
+        
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.verbose = verbose
-
-        if not PPTX_AVAILABLE:
-            raise ImportError("python-pptx is required. Install with: pip install python-pptx")
-
-        if not MARKDOWN_AVAILABLE:
-            raise ImportError("markdown is required. Install with: pip install markdown")
+        
+        # Presentation themes - defined here to avoid RGBColor import errors
+        self.THEMES = {
+            "default": {
+                "background": RGBColor(255, 255, 255),
+                "title_color": RGBColor(31, 78, 121),
+                "text_color": RGBColor(0, 0, 0)
+            },
+            "dark": {
+                "background": RGBColor(30, 30, 30),
+                "title_color": RGBColor(255, 200, 87),
+                "text_color": RGBColor(255, 255, 255)
+            },
+            "professional": {
+                "background": RGBColor(245, 245, 245),
+                "title_color": RGBColor(0, 51, 102),
+                "text_color": RGBColor(51, 51, 51)
+            }
+        }
 
         if theme not in self.THEMES:
             raise ValueError(f"Unknown theme: {theme}. Choose from: {list(self.THEMES.keys())}")

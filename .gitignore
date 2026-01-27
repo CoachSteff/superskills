@@ -103,3 +103,6 @@ dev/
 
 # Config backups from audit
 *.backup
+
+# Audit/analysis folders (keep local only)
+superskills-audit/

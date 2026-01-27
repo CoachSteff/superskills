@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.5.4] - 2026-01-27
+
+### Summary
+Housekeeping release: Cleans up repository root per project conventions, removes local-only audit files from tracking, and improves portability.
+
+### Changed
+- **Repository Root Cleanup** (per `.cursorrules` §1)
+  - Moved `IMPLEMENTATION_SUMMARY_v2.5.0_fixes.md` → `dev/`
+  - Root now contains only canonical files: README, CHANGELOG, ROADMAP, WARP, CONTRIBUTING, LICENSE, pyproject.toml, requirements.txt, setup.sh
+
+### Removed
+- **Audit Files from Git Tracking**
+  - Removed `superskills-audit/` from version control (kept locally for reference)
+  - Added to `.gitignore` to prevent future commits
+  - Audit data preserved in local workspace only
+
+### Technical Notes
+- No functional changes to skills or CLI
+- Follows `.cursorrules` root directory maintenance guidelines
+- Local audit files (`superskills-audit/`) remain accessible but won't pollute repo
+
 ## [2.5.3] - 2026-01-27
 
 ### Summary

@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-01-27
+
+### Summary
+New skill release: Adds offer-builder for professional training/coaching proposal generation.
+
+### Added
+- **offer-builder skill**: Professional proposal generator for L&D services
+  - Creates structured offers for training, coaching, workshops, and facilitation
+  - Language-agnostic design (output language configured via PROFILE.md)
+  - Follows CRAFTER methodology (Context, Role, Action, Format, Target, Examples, Refining)
+  - Proven structure: situation analysis, approach, program, budget, references
+  - Supports multiple languages: English, Dutch, French, German
+  - Includes PROFILE.md.template for personalization
+
+### Technical Notes
+- Skill count: 45 → 46
+- Personal data (PROFILE.md) remains gitignored per existing patterns
+- No CLI changes required (prompt-based skill)
+
 ## [2.5.4] - 2026-01-27
 
 ### Summary

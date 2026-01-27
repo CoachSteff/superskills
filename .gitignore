@@ -100,3 +100,6 @@ site/
 
 # Development documentation and notes
 dev/
+
+# Config backups from audit
+*.backup

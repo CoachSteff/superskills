@@ -15,6 +15,7 @@ def run_command(workflow_name: str, **kwargs):
     dry_run = kwargs.get('dry_run', False)
     watch = kwargs.get('watch', False)
     batch = kwargs.get('batch', False)
+    no_save = kwargs.get('no_save', False)
     silent = output_format == 'plain'
     show_progress = not dry_run and not silent
 
@@ -79,8 +80,12 @@ def run_command(workflow_name: str, **kwargs):
             }
         }
 
+        # Determine where to save output
+        auto_save = config.get('output.auto_save', True) and not no_save
+        
         # Save to file if requested
         if 'output' in kwargs and kwargs['output']:
+            # Explicit output file specified
             output_file = Path(kwargs['output'])
             output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -90,8 +95,23 @@ def run_command(workflow_name: str, **kwargs):
             if not silent:
                 print(f"\n✓ Workflow completed: {workflow_name}")
                 print(f"✓ Output saved to: {output_file}")
+        elif auto_save and output_format != 'plain':
+            # Auto-save to output directory
+            from cli.utils.paths import generate_output_filename
+            
+            output_dir = config.get_output_dir()
+            output_filename = generate_output_filename(workflow_name, output_format)
+            output_path = output_dir / output_filename
+            
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(str(result.get('final_output', '')))
+            
+            # Print formatted output to terminal
+            formatted_output = OutputFormatter.format(result_data, output_format)
+            print(formatted_output)
+            print(f"\n✓ Output saved to: {output_path}")
         else:
-            # Print formatted output
+            # Print formatted output only (no save)
             formatted_output = OutputFormatter.format(result_data, output_format)
             print(formatted_output)
 

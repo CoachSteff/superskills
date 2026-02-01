@@ -41,8 +41,7 @@ class SkillLoader:
         'coursepackager': 'superskills.coursepackager.src.CoursePackager:CoursePackager',
         'emailcampaigner': 'superskills.emailcampaigner.src.EmailCampaigner:EmailCampaigner',
         'obsidian': 'superskills.obsidian.src.ObsidianClient:ObsidianClient',
-        'video-recorder': 'superskills.video_recorder.src:VideoRecorder',
-        'vision': 'superskills.vision.src.VisionAnalyzer:VisionAnalyzer',
+        'audiobook': 'superskills.audiobook.src.AudiobookGenerator:AudiobookGenerator',
     }
 
     def __init__(self):

@@ -1,0 +1,43 @@
+# User Profile: Outlook Email Manager
+
+## Communication Style
+**Tone**: Professional
+<!-- Options: Professional, Casual, Concise, Friendly -->
+
+**Signature**:
+```
+Best regards,
+[Your Name]
+[Your Title]
+[Company]
+```
+
+## Mailbox Management
+
+**Prioritization Rules**:
+- Flag emails from: `boss@company.com, client@domain.com`
+- Auto-archive: Newsletters after 7 days
+- Urgent keywords: `urgent, asap, deadline, critical`
+
+**Auto-Actions**:
+- Mark as read: Newsletters after categorization
+- Move to archive: Emails older than 30 days (except flagged)
+
+## Drafting Preferences
+
+**Draft Location**: Always save to 'Drafts' folder
+**Review Required**: Yes (never auto-send)
+**Default Greeting**: Hi [FirstName],
+**Default Closing**: Best regards,
+
+## Response Templates
+
+**Quick Reply - Acknowledgment**:
+```
+Thanks for your email. I've received it and will get back to you by [date].
+```
+
+**Quick Reply - Out of Office**:
+```
+I'm currently out of office until [date]. For urgent matters, please contact [alternate email].
+```

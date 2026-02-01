@@ -20,6 +20,7 @@ from .commands.discover import discover_command
 from .commands.export import export_command
 from .commands.init import init_command
 from .commands.list_skills import list_command
+from .commands.migrate import migrate_command
 from .commands.run import run_command
 from .commands.show import show_command
 from .commands.status import status_command
@@ -66,6 +67,7 @@ def _handle_natural_language(user_input: str, args) -> int:
     """Handle natural language input by parsing intent and routing"""
     import json
     import os
+    import sys
 
     from .core.intent_parser import IntentParser
     from .core.intent_router import IntentRouter
@@ -86,12 +88,24 @@ def _handle_natural_language(user_input: str, args) -> int:
     if hasattr(args, 'intent_provider') and args.intent_provider:
         os.environ['SUPERSKILLS_INTENT_PROVIDER'] = args.intent_provider
 
+    # Check for stdin content BEFORE parsing (before any input() calls)
+    stdin_content = None
+    if not sys.stdin.isatty():
+        stdin_content = sys.stdin.read()
+        logger.debug(f"Read stdin content: {len(stdin_content)} characters")
+
     try:
         # Parse intent
         parser = IntentParser(config)
         intent = parser.parse(user_input, context={})
 
         logger.debug(f"Parsed intent: {intent.action} (confidence: {intent.confidence})")
+        
+        # Inject stdin content into intent parameters if available
+        if stdin_content and stdin_content.strip():
+            if 'input' not in intent.parameters:
+                intent.parameters['input'] = stdin_content
+                logger.debug("Added stdin content to intent parameters")
 
         # Handle by confidence level
         confidence_threshold = config.get('intent.confidence_threshold', 0.5)
@@ -193,6 +207,26 @@ def main():
     call_parser.add_argument('--profile-type',
                             choices=['podcast', 'narration', 'meditation'],
                             help='Voice profile for narrator skill (podcast/narration/meditation)')
+    call_parser.add_argument('--output-prefix',
+                            help='Output filename prefix for audiobook skill')
+    call_parser.add_argument('--chapter-strategy',
+                            choices=['auto', 'markdown', 'numbered', 'pagebreak', 'custom'],
+                            help='Chapter detection strategy for audiobook skill (auto/markdown/numbered/pagebreak/custom)')
+    call_parser.add_argument('--chapter-range',
+                            help='Chapter range to process for audiobook skill (e.g., "1", "1-3", "5-10")')
+    call_parser.add_argument('--tts-provider',
+                            choices=['elevenlabs', 'gemini', 'openai'],
+                            help='TTS provider for audiobook skill (elevenlabs/gemini/openai)')
+    call_parser.add_argument('--tts-model',
+                            help='TTS model for audiobook skill (e.g., eleven_turbo_v2_5)')
+    call_parser.add_argument('--tts-voice',
+                            help='Voice ID for audiobook skill')
+    call_parser.add_argument('--skip-quota-check',
+                            action='store_true',
+                            help='Skip pre-flight quota validation for audiobook skill')
+    call_parser.add_argument('--no-save',
+                            action='store_true',
+                            help='Print output only without saving to file')
 
     run_parser = subparsers.add_parser('run', help='Execute a workflow')
     run_parser.add_argument('workflow', help='Workflow name')
@@ -209,6 +243,9 @@ def main():
                            help='Watch interval in seconds (default: 1)')
     run_parser.add_argument('--format', choices=['json', 'yaml', 'markdown', 'plain'],
                            default='markdown', help='Output format (default: markdown)')
+    run_parser.add_argument('--no-save',
+                           action='store_true',
+                           help='Print output only without saving to file')
 
     subparsers.add_parser('status', help='Show CLI status')
 
@@ -269,6 +306,26 @@ def main():
 
     config_subparsers.add_parser('path', help='Show configuration file path')
 
+    # Migrate command
+    migrate_parser = subparsers.add_parser('migrate', help='Export/import profiles and settings')
+    migrate_subparsers = migrate_parser.add_subparsers(dest='migrate_action')
+    
+    export_migrate_parser = migrate_subparsers.add_parser('export', help='Export migration package')
+    export_migrate_parser.add_argument('--output', '-o', help='Output file path')
+    export_migrate_parser.add_argument('--include-api-keys', action='store_true',
+                                       help='Include API keys in export (use with caution)')
+    
+    import_migrate_parser = migrate_subparsers.add_parser('import', help='Import migration package')
+    import_migrate_parser.add_argument('input', help='Migration ZIP file path')
+    import_migrate_parser.add_argument('--dry-run', action='store_true',
+                                       help='Preview changes without applying')
+    import_migrate_parser.add_argument('--yes', '-y', action='store_true',
+                                       help='Skip confirmation prompts')
+    import_migrate_parser.add_argument('--overwrite', action='store_true',
+                                       help='Overwrite all existing files')
+    import_migrate_parser.add_argument('--merge', action='store_true',
+                                       help='Merge configurations (default for API keys)')
+
     discover_parser = subparsers.add_parser('discover', help='Discover skills by capability')
     discover_parser.add_argument('--query', help='Search query for skill capabilities')
     discover_parser.add_argument('--task', help='Task description to find matching workflow')
@@ -289,7 +346,7 @@ def main():
     KNOWN_COMMANDS = {
         'init', 'list', 'show', 'call', 'run',
         'status', 'validate', 'workflow', 'export',
-        'config', 'discover', 'prompt'
+        'config', 'discover', 'prompt', 'migrate'
     }
 
     # Auto-detect natural language: unknown command + not a flag + intent enabled
@@ -339,6 +396,22 @@ def main():
                 kwargs['content_type'] = args.content_type
             if hasattr(args, 'profile_type') and args.profile_type:
                 kwargs['profile_type'] = args.profile_type
+            if hasattr(args, 'output_prefix') and args.output_prefix:
+                kwargs['output_prefix'] = args.output_prefix
+            if hasattr(args, 'chapter_strategy') and args.chapter_strategy:
+                kwargs['chapter_strategy'] = args.chapter_strategy
+            if hasattr(args, 'chapter_range') and args.chapter_range:
+                kwargs['chapter_range'] = args.chapter_range
+            if hasattr(args, 'tts_provider') and args.tts_provider:
+                kwargs['tts_provider'] = args.tts_provider
+            if hasattr(args, 'tts_model') and args.tts_model:
+                kwargs['tts_model'] = args.tts_model
+            if hasattr(args, 'tts_voice') and args.tts_voice:
+                kwargs['tts_voice'] = args.tts_voice
+            if hasattr(args, 'skip_quota_check') and args.skip_quota_check:
+                kwargs['skip_quota_check'] = True
+            if hasattr(args, 'no_save') and args.no_save:
+                kwargs['no_save'] = True
 
             return call_command(args.skill, args.input, **kwargs)
 
@@ -360,6 +433,8 @@ def main():
                 kwargs['interval'] = args.interval
             if hasattr(args, 'format') and args.format:
                 kwargs['format'] = args.format
+            if hasattr(args, 'no_save') and args.no_save:
+                kwargs['no_save'] = True
 
             return run_command(args.workflow, **kwargs)
 
@@ -444,6 +519,31 @@ def main():
                 kwargs['json_output'] = True
 
             return discover_command(**kwargs)
+
+        elif args.command == 'migrate':
+            if not args.migrate_action:
+                migrate_parser.print_help()
+                return 0
+            
+            kwargs = {'migrate_action': args.migrate_action}
+            
+            if args.migrate_action == 'export':
+                if hasattr(args, 'output') and args.output:
+                    kwargs['output'] = args.output
+                if hasattr(args, 'include_api_keys') and args.include_api_keys:
+                    kwargs['include_api_keys'] = True
+            elif args.migrate_action == 'import':
+                kwargs['input'] = args.input
+                if hasattr(args, 'dry_run') and args.dry_run:
+                    kwargs['dry_run'] = True
+                if hasattr(args, 'yes') and args.yes:
+                    kwargs['yes'] = True
+                if hasattr(args, 'overwrite') and args.overwrite:
+                    kwargs['overwrite'] = True
+                if hasattr(args, 'merge') and args.merge:
+                    kwargs['merge'] = True
+            
+            return migrate_command(**kwargs)
 
         elif args.command == 'prompt':
             # Explicit natural language query

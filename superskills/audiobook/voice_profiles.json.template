@@ -1,0 +1,21 @@
+{
+  "audiobook": {
+    "provider": "gemini",
+    "voice_id": "Puck",
+    "voice_name": "Puck (Upbeat)",
+    "language": "English",
+    "model": "gemini-2.5-flash-preview-tts",
+    "speed": 1.0
+  },
+  "audiobook_elevenlabs": {
+    "provider": "elevenlabs",
+    "voice_id": "your_elevenlabs_voice_id_here",
+    "voice_name": "Your ElevenLabs Voice",
+    "language": "English",
+    "model": "eleven_turbo_v2_5",
+    "speed": 0.95,
+    "stability": 0.65,
+    "similarity_boost": 0.85,
+    "style": 0.20
+  }
+}

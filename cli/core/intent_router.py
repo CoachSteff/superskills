@@ -76,6 +76,10 @@ class IntentRouter:
         input_text = params.get('input')
         input_file = params.get('input_file')
 
+        # If no explicit input provided, construct from parameters
+        if not input_text and not input_file:
+            input_text = self._construct_input_from_parameters(params)
+
         # Validate input
         if input_file:
             input_path = Path(input_file)
@@ -89,7 +93,8 @@ class IntentRouter:
             kwargs['input_file'] = input_file
         if 'output_file' in params:
             kwargs['output_file'] = params['output_file']
-        if 'format' in params:
+        # Only pass 'format' if it's an output format, not a content format
+        if 'format' in params and params['format'] in ['json', 'plain', 'markdown', 'yaml']:
             kwargs['format'] = params['format']
         if 'content_type' in params:
             kwargs['content_type'] = params['content_type']
@@ -97,6 +102,41 @@ class IntentRouter:
             kwargs['profile_type'] = params['profile_type']
 
         return call_command(skill_name, input_text, **kwargs)
+
+    def _construct_input_from_parameters(self, params: dict) -> str:
+        """
+        Construct natural language input from structured parameters.
+        
+        This allows natural language prompts to be converted into skill inputs
+        when no explicit input text is provided.
+        """
+        parts = []
+        
+        # Extract topic/subject
+        if 'topic' in params:
+            parts.append(params['topic'])
+        elif 'subject' in params:
+            parts.append(params['subject'])
+        
+        # Add audience context
+        if 'audience' in params:
+            parts.append(f"for {params['audience']}")
+        
+        # Add format requirements
+        if 'format' in params and params['format'] not in ['json', 'plain', 'markdown']:
+            # Only include if it's a content format, not output format
+            parts.append(f"in {params['format']} format")
+        
+        # Add any additional context
+        if 'context' in params:
+            parts.append(params['context'])
+        
+        # If we have parts, join them into a prompt
+        if parts:
+            return ' '.join(parts)
+        
+        # Fallback: return empty string (will trigger normal validation in call_command)
+        return ''
 
     def _handle_run_workflow(self, intent: IntentResult) -> int:
         """Handle run_workflow intent"""
@@ -107,7 +147,7 @@ class IntentRouter:
         workflow_name = intent.target
         params = intent.parameters
 
-        # Build kwargs
+        # Build kwargs from parameters
         kwargs = {}
         if 'input' in params:
             kwargs['input'] = params['input']
@@ -115,7 +155,7 @@ class IntentRouter:
             kwargs['output'] = params['output']
         if 'topic' in params:
             kwargs['topic'] = params['topic']
-        if 'format' in params:
+        if 'format' in params and params['format'] in ['json', 'plain', 'markdown', 'yaml']:
             kwargs['format'] = params['format']
 
         return run_command(workflow_name, **kwargs)

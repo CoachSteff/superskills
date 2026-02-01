@@ -1,0 +1,133 @@
+# Orchestrator Profile Template
+
+## Workflow Preferences
+
+**Default Research Depth:**
+- Standard (5-7 key points per topic)
+
+**Output Preferences:**
+- Blog posts: 1200-1500 words
+- LinkedIn posts: 200-300 words
+- Email newsletters: 400-600 words
+
+**Auto-proceed Behavior:**
+- Execute all phases automatically (single-turn mode)
+- Present complete workflow in one output
+
+## Content Focus Areas
+
+**Primary Topics:**
+- [Your main expertise areas]
+- [Industry or domain focus]
+- [Target audience segments]
+
+**Content Goals:**
+- [Education / Thought leadership / Marketing / etc.]
+- [Specific business objectives]
+
+## Follow-up Defaults
+
+**Preferred Next Steps (in order of preference):**
+1. Social posts (LinkedIn + Twitter)
+2. Email newsletter adaptation
+3. Podcast script
+4. Presentation outline
+
+**Skip Follow-up When:**
+- Simple requests or one-off content
+- User indicates they're done
+- Content is part of larger workflow
+
+## Voice & Style References
+
+**Voice Characteristics:**
+(See your Author PROFILE.md for detailed voice guidelines)
+
+**Format Preferences:**
+- Numbered lists for action steps
+- Bold for emphasis
+- Short paragraphs (2-3 sentences)
+- Subheadings every 200-300 words
+
+## Output Locations
+
+**File Organization:**
+- Blog posts: `output/`
+- Social content: `output/social/`
+- Scripts: `output/scripts/`
+- Email: `output/email/`
+
+**Naming Convention:**
+- Use descriptive filenames
+- Include content type prefix
+- Timestamp automatically added by system
+
+## Research Guidelines
+
+**Preferred Sources:**
+- Industry reports and studies
+- Expert interviews and insights
+- Recent data (within last 2 years preferred)
+- Academic research when relevant
+
+**Depth by Content Type:**
+- Blog posts: 5-7 key findings
+- LinkedIn posts: 2-3 key findings
+- Email: 3-4 key findings
+- Presentations: 7-10 key findings
+
+## Quality Standards
+
+**Must Include:**
+- Specific data points or statistics
+- Actionable takeaways
+- Clear call-to-action
+- User's authentic voice
+
+**Avoid:**
+- Vague generalities
+- Unsupported claims
+- Academic jargon
+- Clickbait headlines
+
+## Customization Notes
+
+**Edit this file to:**
+- Set your default research depth
+- Specify preferred content lengths
+- Define your expertise areas
+- List your top follow-up preferences
+- Add voice characteristics specific to orchestrated content
+
+**Example Customization:**
+
+```markdown
+## Workflow Preferences
+
+**Default Research Depth:**
+- Deep (10+ key points, academic sources included)
+
+**Output Preferences:**
+- Blog posts: 2000-2500 words (comprehensive guides)
+- LinkedIn posts: 250-350 words (thought leadership)
+
+## Content Focus Areas
+
+**Primary Topics:**
+- AI adoption in enterprise
+- Remote work transformation  
+- Knowledge worker productivity
+
+**Content Goals:**
+- Thought leadership positioning
+- Lead generation for consulting services
+- Building community of practice
+
+## Follow-up Defaults
+
+**Preferred Next Steps:**
+1. LinkedIn post (always)
+2. Email newsletter (for major pieces)
+3. Podcast script (quarterly deep dives)
+4. Skip for time-sensitive content
+```

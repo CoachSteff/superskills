@@ -941,6 +941,61 @@ Stop and ask user if:
 
 ---
 
-**Last Updated:** December 23, 2024  
-**Project:** SuperSkills v2.4.1  
+---
+
+## 12. Profile Customization System
+
+### Master Briefing & Profile Builder
+
+**New users**: SuperSkills now supports universal profile customization via the **profile-builder** skill.
+
+**Key Files:**
+- `MASTER_BRIEFING_TEMPLATE.yaml` - Foundation template for any user's brand voice
+- `PROFILE_TEMPLATE.md` - Generic skill profile template
+- `docs/PROFILE_CUSTOMIZATION.md` - Comprehensive customization guide
+
+**Profile Builder Skill:**
+```bash
+# Create Master Briefing (brand voice foundation)
+superskills call profile-builder "help me create my master briefing"
+
+# Generate skill profiles
+superskills call profile-builder "generate a profile for copywriter"
+superskills call profile-builder "generate a profile for researcher"
+
+# Audit existing profiles
+superskills call profile-builder "audit my copywriter profile"
+```
+
+**Master Briefing Structure** (8 sections):
+1. Identity & Context
+2. Audience Definition
+3. Voice & Tone (with voice sample)
+4. Perspective & Positioning
+5. Frameworks & Methodologies
+6. Expertise Documentation
+7. Examples & Voice Samples
+8. Guardrails & Compliance
+
+**Skill Profile Structure** (10 sections):
+1. Identity
+2. Voice and Tone
+3. The [Your Name] Factor
+4. Core Frameworks
+5. Inputs
+6. Outputs
+7. Quality Gates
+8. Guardrails
+9. Example Output Style
+10. Integration Notes
+
+**Profile Workflow:**
+- User creates Master Briefing → Profile Builder generates skill profiles → Skills use PROFILE.md for personalization
+- All PROFILE.md files gitignored; templates committed
+- Supports diverse users: creators, consultants, marketers, analysts, etc.
+
+---
+
+**Last Updated:** January 11, 2026  
+**Project:** SuperSkills v2.6.0+  
 **Maintainer:** See CONTRIBUTING.md

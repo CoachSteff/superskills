@@ -70,6 +70,10 @@ class WorkflowValidator:
         # Validate variable references
         defined_vars = set(workflow.get('variables', {}).keys())
         output_vars = set()
+        
+        # Standard runtime variables that can be provided at execution time
+        # These are commonly passed via CLI flags or engine.execute() calls
+        runtime_vars = {'input', 'input_file', 'filename', 'topic', 'format', 'output'}
 
         for idx, step in enumerate(workflow.get('steps', []), 1):
             step_name = step.get('name')
@@ -86,7 +90,8 @@ class WorkflowValidator:
             referenced_vars = self._extract_variables(input_text)
 
             for var in referenced_vars:
-                if var not in defined_vars and var not in output_vars:
+                # Check against defined vars, output vars from previous steps, and runtime vars
+                if var not in defined_vars and var not in output_vars and var not in runtime_vars:
                     errors.append(
                         f"Step {idx} ({step_name}): Undefined variable '${{{var}}}' in input"
                     )

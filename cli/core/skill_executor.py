@@ -2,10 +2,7 @@
 Skill execution engine.
 """
 import importlib
-import importlib.util
 import json
-import sys
-from pathlib import Path
 from typing import Any, Dict, Optional
 
 from cli.core.skill_loader import SkillInfo, SkillLoader
@@ -155,20 +152,7 @@ class SkillExecutor:
 
         try:
             self.logger.debug(f"Loading Python module: {module_path}")
-            
-            # Handle hyphenated skill directories (e.g., video-recorder)
-            if 'video_recorder' in module_path:
-                skill_dir = Path(__file__).parent.parent.parent / 'superskills' / 'video-recorder'
-                src_init = skill_dir / 'src' / '__init__.py'
-                spec = importlib.util.spec_from_file_location(
-                    "superskills.video_recorder.src",
-                    str(src_init)
-                )
-                module = importlib.util.module_from_spec(spec)
-                sys.modules["superskills.video_recorder.src"] = module
-                spec.loader.exec_module(module)
-            else:
-                module = importlib.import_module(module_path)
+            module = importlib.import_module(module_path)
             skill_class = getattr(module, class_name)
 
             output_dir = kwargs.get('output_dir', self.config.cache_dir)
@@ -248,106 +232,18 @@ class SkillExecutor:
                     }
                 }
 
-            elif skill_info.name == 'vision':
-                self.logger.debug("Initializing vision analyzer")
-                skill_instance = skill_class()
+            elif skill_info.name == 'audiobook':
+                # Import the execute function from audiobook skill
+                audiobook_module = importlib.import_module('superskills.audiobook.src')
                 
-                # Parse input: can be JSON with options or simple text
-                try:
-                    params = json.loads(input_text)
-                    mode = params.get('mode', 'describe')
-                    screenshot_path = params.get('screenshot_path')
-                    region = params.get('region')
-                    if region and isinstance(region, list):
-                        region = tuple(region)
-                    custom_prompt = params.get('custom_prompt')
-                except json.JSONDecodeError:
-                    # Treat as custom prompt for describe mode
-                    mode = 'describe'
-                    screenshot_path = None
-                    region = None
-                    custom_prompt = input_text if input_text.strip() else None
+                # Pass input_text and all kwargs to the execute function
+                result = audiobook_module.execute(input_text, **kwargs)
                 
-                self.logger.info(f"Analyzing screen with mode: {mode}")
-                result = skill_instance.analyze(
-                    mode=mode,
-                    screenshot_path=screenshot_path,
-                    region=region,
-                    custom_prompt=custom_prompt
-                )
-                
-                self.logger.info("Vision analysis completed")
-                
-                return {
-                    'output': result.description,
-                    'metadata': {
-                        'skill': skill_info.name,
-                        'type': 'python',
-                        'mode': result.mode,
-                        'screenshot': result.screenshot_path,
-                        'elements': result.elements,
-                        'errors': result.errors,
-                        'suggestions': result.suggestions,
-                        'text_content': result.text_content
-                    }
-                }
+                return result
 
             else:
-                # GENERIC PYTHON SKILL HANDLER
-                self.logger.info(f"Executing generic Python skill: {skill_info.name}")
-                
-                try:
-                    # Instantiate the skill class with common kwargs
-                    init_kwargs = {}
-                    if 'output_dir' in kwargs:
-                        init_kwargs['output_dir'] = kwargs['output_dir']
-                    
-                    skill_instance = skill_class(**init_kwargs)
-                    
-                    # Try common execution method names in priority order
-                    execution_methods = ['execute', 'run', 'process', 'generate', '__call__']
-                    
-                    for method_name in execution_methods:
-                        if hasattr(skill_instance, method_name) and callable(getattr(skill_instance, method_name)):
-                            self.logger.debug(f"Found execution method: {method_name}")
-                            method = getattr(skill_instance, method_name)
-                            
-                            # Execute the skill
-                            result = method(input_text, **kwargs)
-                            
-                            # Normalize response format
-                            if isinstance(result, dict):
-                                output = result
-                            elif isinstance(result, str):
-                                output = {'output': result}
-                            else:
-                                output = {'output': str(result)}
-                            
-                            # Add metadata
-                            if 'metadata' not in output:
-                                output['metadata'] = {}
-                            output['metadata']['skill'] = skill_info.name
-                            output['metadata']['type'] = 'python'
-                            output['metadata']['provider'] = skill_info.python_module
-                            
-                            self.logger.info(f"Successfully executed {skill_info.name} via {method_name}()")
-                            return output
-                    
-                    # No recognized execution method found
-                    raise NotImplementedError(
-                        f"Skill '{skill_info.name}' class has no recognized execution method. "
-                        f"Tried: {', '.join(execution_methods)}"
-                    )
-                    
-                except ImportError as e:
-                    self.logger.error(f"Failed to import dependencies for {skill_info.name}: {e}")
-                    raise RuntimeError(
-                        f"Skill '{skill_info.name}' has missing dependencies. "
-                        f"Check the skill's README.md for installation instructions. Error: {e}"
-                    )
-                except Exception as e:
-                    self.logger.error(f"Error executing generic Python skill {skill_info.name}: {e}")
-                    raise
+                self.logger.error(f"Python skill execution not implemented for: {skill_info.name}")
+                raise NotImplementedError(f"Python skill execution not implemented for: {skill_info.name}")
 
         except Exception as e:
             self.logger.error(f"Failed to execute Python skill {skill_info.name}: {e}", exc_info=True)

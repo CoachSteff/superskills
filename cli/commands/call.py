@@ -18,26 +18,50 @@ def call_command(skill_name: str, input_text: str = None, **kwargs):
     output_format = kwargs.get('format', 'markdown')
     input_file = kwargs.get('input_file')
     output_file = kwargs.get('output_file')
+    no_save = kwargs.get('no_save', False)
 
-    # Read input - priority order: CLI argument > file > stdin > error
-    if input_text:
-        pass
-    elif input_file:
-        input_path = Path(input_file)
-        if not input_path.exists():
-            print(f"Error: Input file not found: {input_file}")
+    # Special handling for audiobook skill - pass file path, not content
+    if skill_name == 'audiobook':
+        # For audiobook, we need the file path, not the file content
+        if input_file:
+            # Verify file exists
+            input_path = Path(input_file)
+            if not input_path.exists():
+                print(f"Error: Input file not found: {input_file}")
+                return 1
+            # Pass file path as input_text
+            input_text = str(input_path.absolute())
+            # Also keep in kwargs for the skill
+            kwargs['input_file'] = str(input_path.absolute())
+        elif input_text:
+            # Check if input_text is a valid file path
+            input_path = Path(input_text)
+            if input_path.exists():
+                input_text = str(input_path.absolute())
+                kwargs['input_file'] = str(input_path.absolute())
+            else:
+                print(f"Error: Input file not found: {input_text}")
+                return 1
+        else:
+            print("Error: Audiobook skill requires --input flag with file path")
             return 1
-        with open(input_path, 'r', encoding='utf-8') as f:
-            input_text = f.read()
-    elif not sys.stdin.isatty():
-        input_text = sys.stdin.read()
     else:
-        print("Error: Provide input via argument, --input-file flag, or stdin")
-        return 1
+        # Standard handling for other skills - read input
+        # Only read from stdin if input_text not already provided
+        if not input_text and not sys.stdin.isatty():
+            input_text = sys.stdin.read()
+        elif not input_text and input_file:
+            input_path = Path(input_file)
+            if not input_path.exists():
+                print(f"Error: Input file not found: {input_file}")
+                return 1
 
-    if not input_text:
-        print("Error: Provide input via argument, --input-file flag, or stdin")
-        return 1
+            with open(input_path, 'r', encoding='utf-8') as f:
+                input_text = f.read()
+
+        if not input_text:
+            print("Error: Provide input via argument, --input flag, or stdin")
+            return 1
 
     if output_format == 'plain':
         # Silent mode for plain output
@@ -52,8 +76,11 @@ def call_command(skill_name: str, input_text: str = None, **kwargs):
         # Format output
         formatted = OutputFormatter.format(result, output_format)
 
-        # Write or print
+        # Determine where to save output
+        auto_save = config.get('output.auto_save', True) and not no_save
+        
         if output_file:
+            # Explicit output file specified
             output_path = Path(output_file)
             output_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -62,7 +89,22 @@ def call_command(skill_name: str, input_text: str = None, **kwargs):
 
             if output_format != 'plain':
                 print(f"\n✓ Output saved to: {output_file}", file=sys.stderr)
+        elif auto_save and output_format != 'plain':
+            # Auto-save to output directory
+            from cli.utils.paths import generate_output_filename
+            
+            output_dir = config.get_output_dir()
+            output_filename = generate_output_filename(skill_name, output_format)
+            output_path = output_dir / output_filename
+            
+            with open(output_path, 'w', encoding='utf-8') as f:
+                f.write(formatted)
+            
+            # Print to terminal
+            print(formatted)
+            print(f"\n✓ Output saved to: {output_path}", file=sys.stderr)
         else:
+            # Print only (no save)
             print(formatted)
 
         return 0

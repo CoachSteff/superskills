@@ -57,3 +57,46 @@ def get_skills_dir() -> Path:
         Path to skills directory
     """
     return get_project_root() / "superskills"
+
+
+def get_user_config_dir() -> Path:
+    """
+    Get the user configuration directory path.
+
+    Returns:
+        Path to user config directory (~/.superskills)
+    """
+    config_dir = Path.home() / ".superskills"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    return config_dir
+
+
+def generate_output_filename(name: str, format: str = 'markdown') -> str:
+    """
+    Generate a timestamped output filename.
+    
+    Args:
+        name: Base name (skill or workflow name)
+        format: Output format ('markdown', 'plain', 'json', 'yaml')
+    
+    Returns:
+        Filename string with timestamp
+    """
+    from datetime import datetime
+    
+    # Sanitize name (remove special characters)
+    safe_name = name.replace('/', '_').replace('\\', '_').replace(' ', '_')
+    
+    # Generate timestamp
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    
+    # Determine file extension
+    ext_map = {
+        'markdown': 'md',
+        'plain': 'txt',
+        'json': 'json',
+        'yaml': 'yaml'
+    }
+    ext = ext_map.get(format, 'txt')
+    
+    return f"{safe_name}_{timestamp}.{ext}"

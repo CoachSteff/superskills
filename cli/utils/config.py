@@ -105,7 +105,9 @@ class CLIConfig:
             },
             'output': {
                 'default_format': 'markdown',
-                'save_intermediates': True
+                'save_intermediates': True,
+                'auto_save': True,
+                'directory': './output'
             },
             'workflows': {
                 'auto_save': True,
@@ -165,3 +167,26 @@ class CLIConfig:
             'OPENAI_API_KEY': bool(os.getenv('OPENAI_API_KEY')),
             'GEMINI_API_KEY': bool(os.getenv('GEMINI_API_KEY'))
         }
+
+    def get_output_dir(self) -> Path:
+        """
+        Get the output directory path from config.
+        
+        Returns absolute path, creating directory if it doesn't exist.
+        """
+        from cli.utils.paths import get_project_root
+        
+        configured_path = self.get('output.directory', './output')
+        
+        # Resolve path relative to project root if relative
+        if configured_path.startswith('./') or configured_path.startswith('.\\'):
+            output_dir = get_project_root() / configured_path[2:]
+        elif configured_path.startswith('~'):
+            output_dir = Path(configured_path).expanduser()
+        else:
+            output_dir = Path(configured_path)
+        
+        # Create directory if it doesn't exist
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        return output_dir

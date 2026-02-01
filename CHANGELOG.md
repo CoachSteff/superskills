@@ -7,130 +7,116 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.6.0] - 2026-01-27
-
-### Summary
-New skill release: Adds offer-builder for professional training/coaching proposal generation.
-
-### Added
-- **offer-builder skill**: Professional proposal generator for L&D services
-  - Creates structured offers for training, coaching, workshops, and facilitation
-  - Language-agnostic design (output language configured via PROFILE.md)
-  - Follows CRAFTER methodology (Context, Role, Action, Format, Target, Examples, Refining)
-  - Proven structure: situation analysis, approach, program, budget, references
-  - Supports multiple languages: English, Dutch, French, German
-  - Includes PROFILE.md.template for personalization
-
-### Technical Notes
-- Skill count: 45 → 46
-- Personal data (PROFILE.md) remains gitignored per existing patterns
-- No CLI changes required (prompt-based skill)
-
-## [2.5.4] - 2026-01-27
-
-### Summary
-Housekeeping release: Cleans up repository root per project conventions, removes local-only audit files from tracking, and improves portability.
-
-### Changed
-- **Repository Root Cleanup** (per `.cursorrules` §1)
-  - Moved `IMPLEMENTATION_SUMMARY_v2.5.0_fixes.md` → `dev/`
-  - Root now contains only canonical files: README, CHANGELOG, ROADMAP, WARP, CONTRIBUTING, LICENSE, pyproject.toml, requirements.txt, setup.sh
-
-### Removed
-- **Audit Files from Git Tracking**
-  - Removed `superskills-audit/` from version control (kept locally for reference)
-  - Added to `.gitignore` to prevent future commits
-  - Audit data preserved in local workspace only
-
-### Technical Notes
-- No functional changes to skills or CLI
-- Follows `.cursorrules` root directory maintenance guidelines
-- Local audit files (`superskills-audit/`) remain accessible but won't pollute repo
-
-## [2.5.3] - 2026-01-27
-
-### Summary
-Major functionality restoration release: Enables all 49 skills (100% success rate) by implementing generic Python skill execution and fixing presenter import error. Restores 8 previously broken Python skills.
+### Changed (BREAKING)
+- **Audiobook Skill**: Default TTS provider changed from ElevenLabs to Gemini
+  - Gemini offers higher character limits (100,000 vs 5,000) and generous free tier
+  - Default voice changed to "Puck" (Gemini's upbeat voice)
+  - Default model: `gemini-2.5-flash-preview-tts`
+  - Environment variable fallback now checks `GEMINI_API_KEY` first, then `ELEVENLABS_VOICE_ID` for backward compatibility
+  - **Migration for existing users**: Add `"provider": "elevenlabs"` to your `voice_profiles.json` to keep using ElevenLabs
+  - New users: Set `GEMINI_API_KEY` environment variable or use `voice_profiles.json.template`
+  - CLI override still works: `--tts-provider elevenlabs` to use ElevenLabs explicitly
 
 ### Fixed
-- **BUG-003: Generic Python Skill Execution** (Critical)
-  - Implemented generic Python skill execution handler in `skill_executor.py`
-  - Root cause: Only 3 Python skills hardcoded (narrator, transcriber, obsidian), other 7 failed with "not implemented"
-  - Impact: Restores 7 Python skills (coursepackager, craft, designer, emailcampaigner, marketer, scraper, videoeditor)
-  - Location: `cli/core/skill_executor.py` lines 235-290
-  - Implementation:
-    - Tries common execution method names in priority order: `execute`, `run`, `process`, `generate`, `__call__`
-    - Normalizes output format (dict/str/other → standardized dict)
-    - Provides helpful error messages for missing dependencies
-    - Maintains backward compatibility with existing hardcoded handlers
-  - Python skill success rate: 9/16 (56%) → 16/16 (100%)
-
-- **BUG-004: Presenter RGBColor Import Error** (Medium)
-  - Fixed `NameError: name 'RGBColor' is not defined` in presenter skill
-  - Root cause: Class-level THEMES dict referenced RGBColor before import check
-  - Impact: Restores 1 Python skill (presenter)
-  - Location: `superskills/presenter/src/Presenter.py` lines 45-96
-  - Fix: Moved THEMES dict from class-level to `__init__` method
-  - Added dependency check at initialization with helpful error message
-  - Updated all references from `Presenter.THEMES` to `self.THEMES`
-
-### Changed
-- **Overall Success Rate**: 42/49 (86%) → 49/49 (100%)
-- **Python Skills**: All 16 Python-powered skills now functional
-- **Skill Executor**: Generic handler enables any Python skill following standard interface conventions
-- **Error Messages**: Improved clarity for missing dependencies and unsupported methods
-
-### Technical Notes
-- Generic handler maintains backward compatibility with existing hardcoded handlers
-- Skills may still fail due to missing dependencies, but provide clear installation instructions
-- Recommended Python skill interface: implement `execute(input_text: str, **kwargs) -> Union[str, dict]`
-- Future Python skills automatically supported without code changes
-
-## [2.5.2] - 2026-01-27
-
-### Summary
-Critical bug fix release: Resolves CLI hang in non-TTY environments and eliminates hardcoded paths, enabling automation, portability, and multi-user deployments.
-
-### Fixed
-- **BUG-001: CLI Hangs in Non-TTY Environments** (Critical)
-  - Fixed `superskills call` command hanging when input provided as CLI argument in non-TTY environments
-  - Root cause: Input source priority incorrectly checked stdin before CLI arguments
-  - Impact: Enables automation, scripting, and IDE agent integration
-  - Location: `cli/commands/call.py` lines 22-40
-  - Reordered input priority: CLI argument > file > stdin > error
-  - All input methods still work: CLI arg, piped stdin, file input
-
-- **BUG-002: Hardcoded Paths from Old Machine** (Medium)
-  - Removed all hardcoded paths referencing `/Users/steffvanhaverbeke/` and `/mnt/user-data`
-  - Impact: Improves portability across different users and environments
-  - Files updated:
-    - `superskills/manager/SKILL.md` and `PROFILE.md` (2 paths)
-    - `superskills/publisher/SKILL.md` and `PROFILE.md` (4 paths)
-    - `docs/DEVELOPMENT_HISTORY.md` (1 path)
-    - `tests/FINAL_TEST_REPORT.md` (1 path)
-    - `tests/TEST_SUMMARY.md` (2 paths)
-  - Replaced with generic placeholders: `~/Documents/Workspace`, `~/Documents/Outputs`
-  - Added support for optional environment variables: `$WORKSPACE_DIR`, `$OUTPUT_DIR`
+- **Audiobook Skill**: Fixed Gemini TTS token limit error (8,192 tokens)
+  - Reduced `MAX_CHAPTER_WORDS` from 10,000 to 5,000 words for safer token estimation
+  - Reduced `MAX_CHAPTER_CHARS` from 35,000 to 32,000 characters
+  - Automatic chapter splitting when text exceeds limits
+  - Multi-part audio files with suffixes (chapter_01a.mp3, chapter_01b.mp3, etc.)
+  - Better error messages for token limit violations
+- **Audiobook Skill**: Fixed character limit validation bug
+  - Added `MAX_CHAPTER_CHARS = 35000` constant to prevent ElevenLabs API errors
+  - Updated `_split_at_paragraphs()` to check BOTH word count AND character count
+  - Enforces character limit before word limit if exceeded first
+  - Added pre-send validation with detailed error message showing char counts
+  - Provides 5k buffer below 40k limit for chapter announcements
+- **Audiobook Skill**: Fixed `ValueError: embedded null byte` error in filename sanitization
+  - Enhanced `_sanitize_filename()` to remove null bytes and control characters
+  - Added Unicode normalization for international characters (Dutch, French, German, etc.)
+  - Added fallback for completely sanitized-away titles
+  - Prevents file creation errors with corrupted or malformed PDF text
+- **Audiobook Skill**: Fixed prologue/epilogue pattern matching
+  - Corrected regex patterns to avoid matching newlines in chapter headings
+  - Fixed `AttributeError` when optional capture groups return `None`
+  - Changed whitespace matching from `\s` to `[ \t]` to prevent multiline matches
+- **CLI**: Fixed `--chapter-range` parameter not being passed to audiobook skill
+  - Added missing `chapter_range` kwarg in `cli/main.py` call command handler
 
 ### Added
-- **Comprehensive Test Coverage for Call Command**
-  - New: `tests/test_call_command.py` (18 unit tests)
-    - Input priority validation (CLI arg > file > stdin)
-    - Non-TTY regression tests (core BUG-001 validation)
-    - Error handling scenarios
-    - Output format testing (JSON, markdown, plain)
-  - New: `tests/integration/test_cli_non_tty.py` (9 integration tests)
-    - Real CLI execution in subprocess with timeout protection
-    - Parallel execution testing
-    - Backward compatibility validation
-  - Total test count: 250 → 277 tests (+27 tests, +10.8%)
-  - All tests pass (267 passing, 1 skipped)
+- **Audiobook Skill**: Multi-provider TTS architecture
+  - Abstract TTS provider layer with pluggable provider support
+  - Support for multiple TTS services: Gemini (default), ElevenLabs, OpenAI (placeholder)
+  - Provider-specific character limits and configuration validation
+  - Factory pattern for provider instantiation
+  - Configuration hierarchy: CLI parameters > skill config > environment variables
+  - New CLI arguments: `--tts-provider`, `--tts-model`, `--tts-voice`, `--skip-quota-check`
+  - Provider-specific API key resolution (GEMINI_API_KEY, ELEVENLABS_API_KEY, OPENAI_API_KEY)
+  - Example usage: `superskills call audiobook --input book.pdf --tts-provider gemini --tts-voice Puck`
+- **Audiobook Skill**: Gemini TTS provider implementation
+  - Full text-to-speech support using Google Generative AI
+  - 30 prebuilt voices (Puck, Charon, Aoede, etc.)
+  - Two models: `gemini-2.5-flash-preview-tts` (fast) and `gemini-2.5-pro-preview-tts` (quality)
+  - 100,000 character limit per request (much higher than ElevenLabs)
+  - Automatic PCM to MP3 conversion
+  - Requires: `google-genai` and `pydub` packages
+- **Audiobook Skill**: Pre-flight quota validation
+  - Checks available credits/quota before starting generation
+  - Displays estimated character usage vs available quota
+  - Warns user if insufficient quota detected
+  - User prompt to continue or abort if quota low
+  - ElevenLabs quota check via subscription API
+  - Gemini quota check (placeholder - API doesn't support yet)
+  - Can be skipped with `--skip-quota-check` flag
+- **Audiobook Skill**: Graceful degradation on errors
+  - Partial success support: saves completed chapters even if later chapters fail
+  - Quota exceeded errors handled gracefully (stops processing, saves progress)
+  - User prompted to continue on non-quota errors
+  - Failed chapters tracked in metadata
+  - `partial_success` flag in AudiobookResult
+  - Detailed error reporting with chapter-level granularity
+  - Example: Generate chapters 1-10, quota runs out at chapter 8 → chapters 1-7 saved successfully
 
-### Changed
-- **CLI Call Command**: Input reading logic refactored for correct priority handling
-- **Skill Templates**: All skill SKILL.md files now use generic path placeholders
-- **Documentation**: Test and development docs now use relative paths
-- **Test Suite**: Maintained zero regressions (all 267 existing tests still pass)
+### Added
+- **Audiobook Skill**: Complete document-to-audiobook conversion pipeline
+  - Automatic chapter detection with multiple strategies (markdown, numbered, pagebreak, custom regex)
+  - Multi-format document support: PDF, Docx, Markdown, Plain Text
+  - One MP3 file per chapter with sequential naming: `{prefix}_chapter_{num:02d}_{title}.mp3`
+  - Comprehensive metadata JSON with chapter titles, durations, word counts, WPM tracking
+  - ElevenLabs voice generation with audiobook-optimized settings (speed 0.95, stability 0.65)
+  - Smart fallbacks: single-chapter mode, automatic splitting for oversized content (>10k words)
+  - Model compatibility fallback system (turbo → monolingual → flash)
+  - Text optimization for natural speech delivery (removes parentheticals, normalizes punctuation)
+  - Configurable voice profiles via `voice_profiles.json`
+  - Custom chapter detection patterns via regex
+  - Full test suite with 62 unit and integration tests
+  - **CLI Integration**: Full command-line support with `--output-prefix` and `--chapter-strategy` flags
+    - Example: `superskills call audiobook --input book.pdf --output-prefix "my_book" --chapter-strategy auto`
+    - Automatic credential loading from `.env` files (skill-specific and global)
+    - Python skill execution path with special file-path handling (does not read file content)
+  - **Text Cleaning Pipeline**: Automatic PDF text cleaning for improved narration quality
+    - Removes page numbers, headers, and footers from extracted PDF text
+    - Fixes word hyphenation breaks across lines (e.g., "exam-\nple" → "example")
+    - Normalizes excessive whitespace and removes duplicate lines
+    - Configurable custom removal patterns via regex
+    - New `TextCleaner` class for standalone text processing
+    - Enabled by default for PDFs, can be disabled with `clean_text=False`
+  - **Chapter Announcements**: Every chapter begins with spoken announcement
+    - Includes book title, chapter number, and chapter title
+    - Example: "The Great Novel. Chapter 1. The Beginning."
+    - Special sections use format: "Book Title. Prologue: Subtitle."
+    - Helps listeners navigate and resume playback
+  - **Prologue and Epilogue Support**: Automatic detection of special book sections
+    - Detects: Prologue, Epilogue, Foreword, Afterword, Preface
+    - Case-insensitive matching with optional subtitles
+    - Properly ordered output: Prologue → Chapters → Epilogue
+    - Sequential numbering across all sections
+  - **Chapter Range Selection**: Process specific chapters instead of entire book
+    - New `--chapter-range` CLI flag for selective chapter processing
+    - Format: `--chapter-range 1` (single) or `--chapter-range 1-5` (range)
+    - Enables faster testing, partial conversions, and batch processing
+    - Range validation with helpful error messages
+    - 1-indexed, inclusive range (e.g., `1-3` processes chapters 1, 2, 3)
+    - Example: `superskills call audiobook --input book.pdf --chapter-range 1` (first chapter only)
 
 ## [2.5.1] - 2024-12-24
 

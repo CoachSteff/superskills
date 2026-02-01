@@ -1,8 +1,23 @@
 # SuperSkills - AI-Powered Automation Skills for Claude
 
-Custom skill library for Claude Desktop that automates coaching, training, and content creation workflows. Built on Anthropic's Agent Skills framework.
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
+[![Works with OpenClaw](https://img.shields.io/badge/Works%20with-OpenClaw%20🦞-ff6b6b.svg)](https://openclaw.ai)
+[![GitHub stars](https://img.shields.io/github/stars/CoachSteff/superskills?style=social)](https://github.com/CoachSteff/superskills)
+
+Custom skill library for AI agents that automates coaching, training, and content creation workflows. Works standalone, with Claude Desktop, or as [OpenClaw](https://openclaw.ai) skills.
 
 **Quick Start:** See [QUICKSTART.md](docs/QUICKSTART.md) for common commands and examples.
+
+> **🦞 OpenClaw Users:** See [OPENCLAW_INTEGRATION.md](docs/OPENCLAW_INTEGRATION.md) for setup instructions.
+
+## Who Is This For?
+
+- **Coaches & Trainers** — Automate content creation, proposals, and training materials
+- **Content Creators** — Research, write, edit, and produce podcasts with AI
+- **Freelancers** — Scale your operations without proportional effort increases
+- **AI Enthusiasts** — Learn production-ready patterns for AI automation
+- **OpenClaw Users** — Extend your personal AI assistant with specialized skills
 
 ## Overview
 
@@ -335,14 +350,16 @@ superskills run my-workflow --topic "Your topic"
 
 ## Documentation
 
-- **[Roadmap](ROADMAP.md)** - Product vision and development roadmap
-- **[CLI Setup](dev/CLI_SETUP.md)** - SuperSkills CLI installation and usage
 - **[Quick Start](docs/QUICKSTART.md)** - Get started in 5 minutes
+- **[OpenClaw Integration](docs/OPENCLAW_INTEGRATION.md)** - Use SuperSkills with OpenClaw 🦞
+- **[CLI Setup](dev/CLI_SETUP.md)** - SuperSkills CLI installation and usage
 - **[IDE Integration](docs/IDE_INTEGRATION.md)** - Integrate with Cursor, Antigravity, Verdent
 - **[AI Assistant Guide](docs/AI_ASSISTANT_GUIDE.md)** - Integration patterns for IDE AI assistants
-- **[Architecture](dev/ARCHITECTURE.md)** - System design and patterns
 - **[Credential Setup](docs/CREDENTIAL_SETUP.md)** - API key configuration guide
+- **[Profile Customization](docs/PROFILE_CUSTOMIZATION.md)** - Personalize skills to your voice
 - **[Skill Development](docs/SKILL_DEVELOPMENT.md)** - Create custom skills
+- **[Architecture](dev/ARCHITECTURE.md)** - System design and patterns
+- **[Roadmap](ROADMAP.md)** - Product vision and development roadmap
 - **[Contributing](dev/CONTRIBUTING.md)** - Contribution guidelines
 
 ## IDE Integration
@@ -559,6 +576,30 @@ SuperSkills uses a hybrid credential system with priority hierarchy:
 - Use `scripts/distribute_credentials.py` to sync credentials to skills
 - See `docs/CREDENTIAL_SETUP.md` for API key setup
 
+## Community
+
+SuperSkills is built for the AI automation community. We welcome contributions, feedback, and collaboration!
+
+### Get Involved
+
+- **🐛 Report Issues**: [GitHub Issues](https://github.com/CoachSteff/superskills/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/CoachSteff/superskills/discussions)
+- **🦞 OpenClaw Discord**: [Friends of the Crustacean](https://discord.com/invite/clawd)
+
+### Contributing
+
+We love contributions! Whether it's:
+- **New skills** - Build automation for your use case
+- **Bug fixes** - Found something broken? Fix it!
+- **Documentation** - Help others get started
+- **Examples** - Share your workflows
+
+See [CONTRIBUTING.md](dev/CONTRIBUTING.md) for guidelines.
+
+### Skill Requests
+
+Want a skill that doesn't exist? [Open a discussion](https://github.com/CoachSteff/superskills/discussions/new?category=ideas) with your use case. The community might build it — or help you build it yourself!
+
 ## License
 
 MIT License - See [LICENSE](LICENSE) file for details.
@@ -567,11 +608,4 @@ MIT License - See [LICENSE](LICENSE) file for details.
 
 Built on [Anthropic's Agent Skills framework](https://anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills).
 
-## Contributing
-
-Contributions welcome! See [CONTRIBUTING.md](dev/CONTRIBUTING.md) for guidelines.
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/CoachSteff/superskills/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/CoachSteff/superskills/discussions)
+Special thanks to the [OpenClaw](https://openclaw.ai) community for inspiration and feedback. 🦞

@@ -8,7 +8,7 @@ version = "2.5.1"
 description = "AI-powered automation skills for freelance coaching & training businesses"
 readme = "README.md"
 requires-python = ">=3.9"
-license = {text = "MIT"}
+license = {text = "GPL-3.0-or-later"}
 authors = [
     {name = "Steff Vanhaverbeke", email = "steff@cs-workx.be"}
 ]
@@ -16,7 +16,7 @@ keywords = ["ai", "automation", "claude", "skills", "coaching", "training"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

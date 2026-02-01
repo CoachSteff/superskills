@@ -1,6 +1,6 @@
 # SuperSkills - AI-Powered Automation Skills for Claude
 
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
 [![Works with OpenClaw](https://img.shields.io/badge/Works%20with-OpenClaw%20🦞-ff6b6b.svg)](https://openclaw.ai)
 [![GitHub stars](https://img.shields.io/github/stars/CoachSteff/superskills?style=social)](https://github.com/CoachSteff/superskills)

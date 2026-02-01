@@ -1,0 +1,5 @@
+playwright>=1.40.0
+ffmpeg-python>=0.2.0
+pydub>=0.25.0
+jinja2>=3.0.0
+pyyaml>=6.0.0

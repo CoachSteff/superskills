@@ -1,0 +1,71 @@
+# Brand Configuration Template for Slide Designer
+# Copy this file to default.yaml and customize with your brand values
+
+identity:
+  name: "YourBrand"  # Replace with your brand or company name
+  tagline: "#yourtag"  # Replace with your tagline or motto
+  logo:
+    file: "assets/logo.svg"  # Path to your logo (SVG preferred, PNG/JPG also supported)
+    width: 200  # Logo width in pixels
+    position: "bottom-right"  # Options: top-left, top-right, bottom-left, bottom-right
+    opacity: 0.9  # 0.0 to 1.0 (0.9 = subtle transparency)
+
+colors:
+  # PRIMARY: Your main brand color - used for headings and emphasis
+  # Example: #2563eb (blue), #00BFFF (cyan), #8b5cf6 (purple)
+  primary: "#2563eb"
+  
+  # BACKGROUND: Slide background color
+  # Dark theme: #1f2937 (charcoal) or #111827 (darker)
+  # Light theme: #ffffff (white) or #f9fafb (off-white)
+  background: "#1f2937"
+  
+  # TEXT: Main body text color (high contrast with background)
+  # Dark theme: #ffffff (white)
+  # Light theme: #1f2937 (dark gray)
+  text: "#ffffff"
+  
+  # SECONDARY TEXT: Captions and de-emphasized text
+  text_secondary: "#9ca3af"
+  
+  # ACCENT COLORS: For variety and emphasis
+  accent_warning: "#ef4444"    # Red - warnings, errors
+  accent_highlight: "#eab308"  # Yellow/Gold - highlights, questions
+  accent_success: "#10b981"    # Green - success, positives
+
+typography:
+  heading:
+    # System fonts for maximum compatibility
+    family: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    weight: 700  # Bold for headings
+  body:
+    family: "system-ui, -apple-system, sans-serif"
+    weight: 400  # Regular for body text
+  sizes:
+    title_heading: "72px"    # Large title slides
+    content_heading: "48px"  # Section headings
+    body: "32px"             # Bullets and body text
+    caption: "28px"          # Image captions, footnotes
+
+spacing:
+  padding: "80px"           # Minimum padding from slide edges
+  line_height: "1.5"        # Line height for readability
+  bullet_spacing: "0.8em"   # Space between bullet items
+
+slides:
+  width: 1920   # Full HD standard (don't change)
+  height: 1080  # Full HD standard (don't change)
+  max_bullets: 5            # Maximum bullets per slide
+  max_words_per_bullet: 12  # Maximum words per bullet
+  max_heading_chars: 50     # Maximum characters in heading
+
+themes:
+  # Dark theme (recommended for video)
+  dark:
+    background: "#1f2937"
+    text: "#ffffff"
+  
+  # Light theme (alternative)
+  light:
+    background: "#ffffff"
+    text: "#1f2937"

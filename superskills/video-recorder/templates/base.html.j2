@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        :root {
+            --color-primary: {{ brand.colors.primary }};
+            --color-secondary: {{ brand.colors.secondary }};
+            --color-accent: {{ brand.colors.accent }};
+            --color-bg: {{ brand.colors.background }};
+            --color-text: {{ brand.colors.text }};
+            --color-text-secondary: {{ brand.colors.text_secondary }};
+            
+            --font-heading: {{ brand.fonts.heading.family }};
+            --font-body: {{ brand.fonts.body.family }};
+            --font-signature: {{ brand.fonts.signature.family }};
+            
+            --slide-padding: {{ brand.layout.padding }}px;
+            --title-size: {{ brand.layout.title_size }}px;
+            --heading-size: {{ brand.layout.heading_size }}px;
+            --body-size: {{ brand.layout.body_size }}px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            width: {{ brand.layout.slide_width }}px;
+            height: {{ brand.layout.slide_height }}px;
+            background: var(--color-bg);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--slide-padding);
+            position: relative;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        h1 {
+            font-family: var(--font-heading);
+            font-size: var(--title-size);
+            font-weight: {{ brand.fonts.heading.weight }};
+            color: var(--color-primary);
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-family: var(--font-heading);
+            font-size: var(--heading-size);
+            font-weight: {{ brand.fonts.heading.weight }};
+            color: var(--color-primary);
+            margin-bottom: 1em;
+            line-height: 1.3;
+        }
+        
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.6;
+            color: var(--color-text);
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 2em;
+        }
+        
+        ul li {
+            position: relative;
+            margin-bottom: {{ brand.layout.bullet_spacing }};
+        }
+        
+        ul li::before {
+            content: "•";
+            color: var(--color-accent);
+            font-size: 1.5em;
+            position: absolute;
+            left: -1em;
+            font-weight: bold;
+        }
+        
+        {% if brand.logo.enabled %}
+        .logo {
+            position: absolute;
+            opacity: {{ brand.logo.opacity }};
+            z-index: 100;
+        }
+        
+        /* Position mapping */
+        .logo-top-left {
+            top: {{ brand.logo.padding }}px;
+            left: {{ brand.logo.padding }}px;
+        }
+        
+        .logo-top-right {
+            top: {{ brand.logo.padding }}px;
+            right: {{ brand.logo.padding }}px;
+        }
+        
+        .logo-bottom-left {
+            bottom: {{ brand.logo.padding }}px;
+            left: {{ brand.logo.padding }}px;
+        }
+        
+        .logo-bottom-right {
+            bottom: {{ brand.logo.padding }}px;
+            right: {{ brand.logo.padding }}px;
+        }
+        
+        /* Image logo */
+        .logo-image {
+            width: {{ brand.logo.width }}px;
+            height: auto;
+            display: block;
+        }
+        
+        /* Text logo (fallback) */
+        .logo-text {
+            font-family: var(--font-signature);
+            font-size: {{ brand.logo.size }}px;
+            color: {{ brand.logo.color }};
+            font-weight: {{ brand.fonts.signature.weight }};
+        }
+        {% endif %}
+    </style>
+</head>
+<body>
+    <div class="slide">
+        {% block content %}{% endblock %}
+    </div>
+    
+    {% if brand.logo.enabled %}
+    <div class="logo logo-{{ brand.logo.position }}">
+        {% if brand.logo.file and brand.logo.resolved_path %}
+        <img src="file://{{ brand.logo.resolved_path }}" 
+             alt="Logo" 
+             class="logo-image">
+        {% else %}
+        <span class="logo-text">{{ brand.logo.text }}</span>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

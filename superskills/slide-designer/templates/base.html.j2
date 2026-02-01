@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="{{ language | default('nl') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>{{ title | default('Slide') }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --color-primary: {{ brand.colors.primary }};
+            --color-background: {{ theme_colors.background }};
+            --color-text: {{ theme_colors.text }};
+            --color-text-secondary: {{ brand.colors.text_secondary }};
+            --color-accent-warning: {{ brand.colors.accent_warning }};
+            --color-accent-highlight: {{ brand.colors.accent_highlight }};
+            --color-accent-success: {{ brand.colors.accent_success }};
+            --font-heading: {{ brand.typography.heading.family }};
+            --font-body: {{ brand.typography.body.family }};
+            --padding: {{ brand.spacing.padding }};
+            --line-height: {{ brand.spacing.line_height }};
+            --bullet-spacing: {{ brand.spacing.bullet_spacing }};
+        }
+        
+        body {
+            width: 1920px;
+            height: 1080px;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            padding: var(--padding);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .logo {
+            position: absolute;
+            bottom: var(--padding);
+            right: var(--padding);
+            width: {{ brand.identity.logo.width }}px;
+            opacity: {{ brand.identity.logo.opacity }};
+        }
+        
+        {% block additional_styles %}{% endblock %}
+    </style>
+</head>
+<body>
+    {% block content %}{% endblock %}
+    
+    {% if logo_path %}
+    <img class="logo" src="{{ logo_path }}" alt="{{ brand.identity.name }}">
+    {% else %}
+    <div class="logo" style="font-family: system-ui, sans-serif; font-size: 24px; color: var(--color-primary); font-weight: 700;">
+        {{ brand.identity.name }}<br>
+        <span style="font-size: 12px; color: var(--color-text-secondary);">{{ brand.identity.tagline }}</span>
+    </div>
+    {% endif %}
+</body>
+</html>

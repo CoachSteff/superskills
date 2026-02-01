@@ -13,8 +13,12 @@ crawl4ai>=0.1.0            # Scraper skill
 beautifulsoup4>=4.12.0     # HTML parsing
 
 # Media Processing (Optional)
-Pillow>=10.0.0             # Image manipulation (Designer)
+Pillow>=10.0.0             # Image manipulation (Designer, Vision)
 pydub>=0.25.0              # Audio processing (Narrator)
+
+# Vision Skill
+pyautogui>=0.9.54          # Screen capture
+numpy>=1.24.0              # Image comparison
 
 # Development Tools
 pytest>=7.4.0

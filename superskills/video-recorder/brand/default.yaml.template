@@ -1,0 +1,309 @@
+# ==============================================================================
+# Brand Configuration Template for Video-Recorder SuperSkill
+# ==============================================================================
+# AI Agent Instruction Set - Visual Styling Rules
+#
+# USAGE CONTEXT:
+# This configuration defines the visual identity for all generated videos.
+# AI agents should reference this file to ensure brand consistency while
+# PROFILE.md defines content structure and slide guidelines.
+#
+# CROSS-REFERENCE: See PROFILE.md for content guidelines, slide types,
+# text density rules, and AI execution workflow.
+# ==============================================================================
+
+# ==============================================================================
+# COLOR PALETTE
+# ==============================================================================
+# Based on your brand's visual aesthetic and presentation style
+# Design Principle: Dark theme with bright blue highlights and strategic accents
+# Contrast Ratio: WCAG AA compliant (white on dark = 15:1)
+
+colors:
+  # PRIMARY COLOR: Blue - Signature brand color
+  # USE FOR: Main headings, brand emphasis, key terms, framework names
+  # AVOID: Body text (use 'text'), large backgrounds (too bright)
+  # RATIONALE: Immediately recognizable brand color
+  # CONTRAST: 8:1 ratio with dark background (excellent readability)
+  primary: "#2563eb"
+  
+  # SECONDARY COLOR: Dark charcoal - Default slide background
+  # USE FOR: Slide backgrounds (dark theme default)
+  # CREATES: High contrast foundation for white text
+  # PROFESSIONAL: Corporate-friendly, reduces eye strain
+  secondary: "#1f2937"
+  
+  # ACCENT COLOR: Red - Emphasis and warnings
+  # USE FOR: Warning symbols, "no" icons, critical points, errors
+  # FREQUENCY: Sparingly, 1-2 elements per slide maximum
+  # CONTEXT: Negative concepts, things to avoid, danger signals
+  # EXAMPLE: "❌ Too many bullets (>6 per slide)"
+  accent: "#ef4444"
+  
+  # ACCENT SECONDARY: Yellow/Gold - Highlights and questions
+  # USE FOR: Questions, important highlights, attention-grabbing moments
+  # FREQUENCY: Alternate with red/green for visual variety
+  # CONTEXT: Engagement, curiosity, exploration, "aha" moments
+  # EXAMPLE: Question headings, "💡" lightbulb concepts
+  accent_secondary: "#eab308"
+  
+  # ACCENT TERTIARY: Green - Positive elements
+  # USE FOR: Checkmarks, success indicators, positive outcomes, growth
+  # FREQUENCY: Reserve for clearly positive concepts only
+  # CONTEXT: Achievements, correct practices, progress
+  # EXAMPLE: "✅ Heading clarity: understandable in 2 seconds"
+  accent_tertiary: "#10b981"
+  
+  # BACKGROUND: Default dark theme (same as secondary)
+  # MATCHES: Your brand's presentation style
+  # AI RULE: Use this unless user explicitly requests light theme
+  background: "#1f2937"
+  
+  # BACKGROUND LIGHT: Alternative light theme (rarely used)
+  # USE WHEN: User explicitly requests "theme: light" in input
+  # ADJUST: Text colors automatically swap (use text_dark for headings)
+  # NOTE: Blue (#2563eb) still works on white (8:1 contrast)
+  background_light: "#ffffff"
+  
+  # TEXT PRIMARY: White - Main body text
+  # USE FOR: All body text, bullets, captions on dark backgrounds
+  # CONTRAST: WCAG AA+ compliant with #1f2937 background (15:1 ratio)
+  # READABILITY: Maximum contrast, optimal for 1920x1080 resolution
+  text: "#ffffff"
+  
+  # TEXT DARK: For light backgrounds (inverse of text)
+  # USE WHEN: theme="light" or light background slides
+  # MAINTAINS: Same contrast ratio (15:1) on white background
+  text_dark: "#1f2937"
+  
+  # TEXT SECONDARY: Gray - Supporting/de-emphasized text
+  # USE FOR: Captions, metadata, less important text, image captions
+  # READABILITY: Sufficient contrast (7:1) but visually de-emphasized
+  # PURPOSE: Creates hierarchy without bold/size changes
+  text_secondary: "#9ca3af"
+
+# ==============================================================================
+# TYPOGRAPHY
+# ==============================================================================
+# System fonts for maximum compatibility and professional appearance
+# Font Loading: No external fonts = faster rendering, no CORS issues
+# Hierarchy: Bold headings (700), regular body (400), script signature (400)
+
+fonts:
+  heading:
+    # SYSTEM UI STACK: Native system fonts for crisp rendering
+    # FALLBACKS: macOS → Windows → Linux font preferences
+    # WEIGHT 700: Bold for headings = immediate visual hierarchy
+    # USE FOR: Slide headings, section titles, framework names
+    # RATIONALE: Professional appearance, consistent across platforms
+    family: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+    weight: 700
+    
+  body:
+    # SAME FAMILY: Consistency with headings, different weight creates hierarchy
+    # WEIGHT 400: Regular for body text = optimal readability
+    # USE FOR: Bullets, captions, body text, all non-heading text
+    # RATIONALE: Clean, readable, matches heading font family
+    family: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    weight: 400
+    
+  signature:
+    # CURSIVE STACK: Handwritten/script style for personal branding
+    # FALLBACKS: Multiple cursive fonts for cross-platform compatibility
+    # USE FOR: Logo text fallback ONLY (when logo.file is null)
+    # RATIONALE: Handwritten style adds personal touch, signature aesthetic
+    # NOTE: Not used for slide content, only logo watermark
+    family: "'Brush Script MT', 'Dancing Script', 'Pacifico', cursive"
+    weight: 400
+
+# ==============================================================================
+# LAYOUT & SPACING
+# ==============================================================================
+# Based on 1920x1080 Full HD standard (most common video resolution)
+# Generous padding ensures content doesn't touch edges (professional appearance)
+# All measurements in pixels for predictable, consistent rendering
+
+layout:
+  # SLIDE DIMENSIONS: Standard Full HD video format
+  # 1920x1080 = 16:9 aspect ratio (universal video standard)
+  # AI AGENTS: Never change these values (fixed output resolution)
+  slide_width: 1920
+  slide_height: 1080
+  
+  # PADDING: Distance from slide edges to content boundaries
+  # 80px = 4.2% of slide width (generous whitespace)
+  # PURPOSE: Professional appearance, content doesn't touch edges
+  # AI AGENTS: Ensure all text/images respect this boundary
+  # RATIONALE: Prevents cropping issues, creates breathing room
+  padding: 80
+  
+  # TITLE SIZE: For title slide headings (Level 1 hierarchy)
+  # 72px = Large enough for immediate impact at 1920x1080
+  # USE ON: First slide, major section dividers, closing slide
+  # VISIBILITY: Readable from 10+ feet away (presentation context)
+  # RATIONALE: Establishes strong visual hierarchy, grabs attention
+  title_size: 72
+  
+  # HEADING SIZE: For content slide headings (Level 2 hierarchy)
+  # 48px = Clear hierarchy below title, still prominent
+  # USE ON: Content slides, framework names, section headings
+  # READABILITY: Scannable at glance (2-second comprehension)
+  # RATIONALE: Balances prominence with content space
+  heading_size: 48
+  
+  # BODY SIZE: For bullets, captions, body text (Level 3 hierarchy)
+  # 32px = Ensures readability at 1920x1080 resolution
+  # USE FOR: All bullet points, captions, body text
+  # MINIMUM: Never go below 32px for body text (readability threshold)
+  # RATIONALE: Readable from typical viewing distance (3-6 feet)
+  body_size: 32
+  
+  # BULLET SPACING: Line height multiplier for bullet lists
+  # 0.8em = 80% of font size added as space between lines
+  # EXAMPLE: 32px font + 25.6px spacing = comfortable reading
+  # PURPOSE: Breathing room between bullets, prevents cramped appearance
+  # AI AGENTS: Apply to all bullet lists for visual consistency
+  bullet_spacing: "0.8em"
+
+# ==============================================================================
+# LOGO CONFIGURATION
+# ==============================================================================
+# Supports both image files (SVG/PNG preferred) and text fallback
+# Position-aware system: 4 corners (top-left, top-right, bottom-left, bottom-right)
+# Resolution: Intelligent path resolution (relative from brand/ or absolute)
+
+logo:
+  enabled: true
+  
+  # IMAGE LOGO: Path to logo file (preferred branding method)
+  # RELATIVE PATH: From brand/ directory (e.g., "assets/logo.svg")
+  # ABSOLUTE PATH: Full system path also supported (/Users/kessa/logo.png)
+  # SUPPORTED FORMATS: .svg (scalable, preferred), .png, .jpg, .webp
+  # SET TO null: To use text fallback instead (see 'text' field below)
+  # AI AGENTS: Check file exists before rendering, fallback gracefully
+  file: "assets/logo.svg"
+  
+  # TEXT FALLBACK: Used when file is null or not found
+  # RENDERS: In signature cursive font (handwritten style)
+  # PLACEMENT: Same position as image logo (bottom-right default)
+  # USE CASE: When logo file unavailable or text watermark preferred
+  # FONT: Uses fonts.signature family (Brush Script MT, etc.)
+  text: "[Your Brand Name]"
+  
+  # POSITION: Logo placement on slide (4 corner options)
+  # OPTIONS: "top-left", "top-right", "bottom-left", "bottom-right"
+  # RECOMMENDATION: bottom-right (doesn't obstruct slide content)
+  # AI AGENTS: Respect user's position if specified, else use default
+  # RATIONALE: Bottom-right is least intrusive, industry standard
+  position: "bottom-right"
+  
+  # WIDTH: Logo width in pixels (height auto-scales to maintain aspect ratio)
+  # 200px = Visible but not dominant (10.4% of slide width)
+  # RANGE: 150-250px recommended (smaller = subtle, larger = prominent)
+  # AI AGENTS: Adjust if user provides custom width, maintain aspect ratio
+  # RATIONALE: Balance between visibility and content space
+  width: 200
+  
+  # SIZE: Font size for text fallback logo (when file is null)
+  # 36px = Matches signature font aesthetic, subtle branding
+  # USE WITH: fonts.signature family (cursive/handwritten style)
+  # VISIBILITY: Readable but not distracting (watermark effect)
+  size: 36
+  
+  # COLOR: Text color for fallback logo (when using text instead of file)
+  # White (#ffffff) ensures visibility on dark backgrounds
+  # CONTRAST: Matches body text color for consistency
+  # AI AGENTS: Automatically adjust if user specifies light theme
+  color: "#ffffff"
+  
+  # OPACITY: Transparency level (0.0 = invisible, 1.0 = fully opaque)
+  # 0.9 = Subtle transparency (professional watermark appearance)
+  # EFFECT: Visible but doesn't compete with main content
+  # RATIONALE: Branding present without overwhelming slide content
+  opacity: 0.9
+  
+  # PADDING: Distance from slide edges (overrides layout.padding for logo)
+  # 40px = Half of content padding (logo can be closer to edges)
+  # PURPOSE: Subtle corner placement without touching edge
+  # COORDINATES: bottom-right = (1920-40-width, 1080-40-height)
+  padding: 40
+
+# ==============================================================================
+# THEME CONFIGURATION
+# ==============================================================================
+# Global theme setting affects background and text colors throughout presentation
+# Two options: "dark" (default) or "light" (rare, user-requested only)
+
+# DEFAULT THEME: "dark" (brand standard)
+# MATCHES: Professional brand aesthetic and presentation style
+# COLORS: Dark charcoal background (#1f2937) + white text (#ffffff)
+# RATIONALE: Professional, reduces eye strain, emphasizes content
+#
+# ALTERNATIVE: "light" (use background_light + text_dark colors)
+# USE WHEN: User explicitly requests "theme: light" in input JSON
+# COLORS: White background (#ffffff) + dark text (#1f2937)
+# NOTE: Blue (#2563eb) headings work on both themes
+#
+# AI AGENTS: Always default to "dark" unless user specifies otherwise
+theme: "dark"
+
+# ==============================================================================
+# ICON STYLE (Future Enhancement)
+# ==============================================================================
+# Guidelines for icon-based slides (when icon feature implemented)
+# Current Status: Defined for future use, not yet in templates
+
+icons:
+  # STYLE: Minimalist line art matching professional aesthetic
+  # EXAMPLES: Shield (security), brain (AI), gear (process), heart (empathy)
+  # LIBRARY: plant, rocket, stairs, handshake, puzzle, scale, chip
+  # COMPLEXITY: Simple geometric shapes, recognizable at 32px size
+  style: "minimalist line art"
+  
+  # COLOR: White to match body text (#ffffff)
+  # MAINTAINS: Visual consistency with text elements
+  # CONTRAST: Clear visibility on dark background
+  color: "#ffffff"
+  
+  # STROKE WIDTH: Line thickness for icon strokes
+  # 2px = Matches body text weight (400), clear but not heavy
+  # VISIBILITY: Recognizable at 32px square size
+  stroke_width: 2
+
+# ==============================================================================
+# BRAND NARRATIVE & DESIGN PHILOSOPHY
+# ==============================================================================
+# Context for AI agents: Why these values were chosen
+
+notes: |
+  [Your Brand Name] Aesthetic (Visual Identity):
+  - Clean, modern, professional appearance (corporate-friendly)
+  - Dark backgrounds with blue signature highlights
+  - Strategic use of red for emphasis, yellow for questions, green for success
+  - Minimalist icons and graphics (line art style, not filled/solid)
+  - Corporate-friendly yet approachable tone (not cold or impersonal)
+  - Thought leadership positioning (expert but warm, authoritative but accessible)
+  
+  [Your Program] Style (Content Approach):
+  - Educational and empowering (teaching mindset, not selling)
+  - Framework-driven content (structured methodologies)
+  - Engagement through questions (interactive moments)
+  - Visual hierarchy: nested structure (presentation → section → slide → element)
+  - Adaptable to your target audience and content context
+  
+  AI Agent Instructions (Implementation Rules):
+  - Apply this configuration to ALL generated slides (no exceptions)
+  - Reference PROFILE.md for content structure guidelines (11 sections)
+  - Maintain high contrast (white text on dark background = 15:1 ratio)
+  - Use primary color for headings consistently (every slide)
+  - Logo always bottom-right unless user explicitly overrides position
+  - Dark theme default unless user explicitly requests "theme: light"
+  - Text density limits: 3-5 bullets, 5-12 words per bullet, 50 char heading
+  - Duration guidelines: 10-15 seconds per slide, 30-90 seconds total
+  - Quality checks: Run PROFILE.md Section XI checklist before finalizing
+  
+  Cross-References:
+  - Content guidelines: PROFILE.md (comprehensive AI instruction set)
+  - Technical docs: README.md (usage examples, troubleshooting)
+  - Templates: templates/*.html.j2 (Jinja2 templates using these values)
+  - Source material: brand/assets/ (visual reference materials)

@@ -1,0 +1,244 @@
+# Slide Designer Brand Profile for [Your Brand Name]
+> AI Agent Instruction Set for Autonomous Slide Design
+
+This document provides comprehensive guidelines for AI agents to autonomously design professional, on-brand slide presentations using the slide-designer SuperSkill.
+
+---
+
+## I. Design Philosophy
+
+### Core Principle: Visual Clarity Over Decoration
+
+Every element must serve communication. No decorative flourishes. Clean beats cluttered. If it doesn't aid understanding, remove it.
+
+### The Nested Hierarchy
+
+Map content to slides using this structure:
+
+| Level | Element | Guideline |
+|-------|---------|-----------|
+| 1 | Presentation | 3-7 slides, complete narrative arc |
+| 2 | Section | 1 title + 2-4 content slides per topic |
+| 3 | Slide | 1 concept, 1 heading, 3-5 bullets max |
+| 4 | Element | 5-12 words per bullet, fragments not sentences |
+
+### Content Density Rules
+
+**Hard Limits (Never Exceed):**
+- Slides per presentation: 7
+- Bullets per slide: 5
+- Words per bullet: 12
+- Characters in heading: 50
+- Characters in bullet: 80
+
+**Optimal Targets:**
+- Slides: 5
+- Bullets: 4
+- Words per bullet: 7-8
+
+---
+
+## II. Visual Brand Identity
+
+### Colors
+
+| Role | Color | Hex | Usage |
+|------|-------|-----|-------|
+| Primary | [Your Primary Color] | #2563eb | Headings, emphasis |
+| Background | [Your Background] | #1f2937 | Slide background |
+| Text | White | #ffffff | Body text |
+| Secondary | Gray | #9ca3af | Captions |
+| Warning | Red | #ef4444 | Negative points |
+| Highlight | Gold | #eab308 | Questions |
+| Success | Green | #10b981 | Positive points |
+
+**Rules:**
+- [Your Primary Color] for ALL headings (adjust to your preference)
+- Maximum 2 accent colors per slide
+- Default to white text when in doubt
+
+### Typography
+
+| Element | Size | Weight | Family |
+|---------|------|--------|--------|
+| Title heading | 72px | 700 | system-ui |
+| Content heading | 48px | 700 | system-ui |
+| Body/bullets | 32px | 400 | system-ui |
+| Caption | 28px | 400 | system-ui |
+
+**Rules:**
+- Never go below 28px (readability threshold)
+- Never use italics (reduces scannability)
+- Bold for headings only
+
+### Spacing
+
+- Padding: 80px minimum on all sides
+- Line height: 1.5 for body text
+- Bullet spacing: 0.8em between items
+- Whitespace: 40-60% of slide should be empty
+
+### Logo
+
+- Position: bottom-right corner (or customize)
+- Width: 200px
+- Opacity: 0.9
+- Present on every slide
+
+---
+
+## III. Layout Selection Rules
+
+### Automatic Layout Detection
+
+```
+IF content ends with "?" → question
+IF content has quotation marks + name → quote
+IF content references image/diagram → image
+IF content is < 8 words → title
+IF content has bullet points → content
+DEFAULT → content
+```
+
+### Position-Based Rules
+
+| Position | Required Layout | Rationale |
+|----------|----------------|-----------|
+| First | title | Set context, immediate impact |
+| Last | title OR content | Conclusion or CTA |
+| After 2+ content | question OR image | Visual variety |
+
+### Variety Enforcement
+
+**Never allow:**
+- 3+ consecutive `content` slides
+- 2+ consecutive `title` slides
+- `question` immediately after `question`
+
+**Inject variety:**
+- After 2 content slides, suggest question or image
+- Alternate bullet-heavy and minimal slides
+
+---
+
+## IV. Content Transformation Rules
+
+### Script → Slides
+
+1. Count total words
+2. Calculate slides: `words ÷ 20 = slide count` (round to 3-7)
+3. Identify topic boundaries (conjunctions, paragraph breaks)
+4. Chunk into slide-sized segments (12-18 words each)
+5. Extract key points as bullets
+
+### Markdown → Slides
+
+```
+# H1 → New slide (title type if first)
+## H2 → Subheading within current slide
+- Bullet → Slide bullet
+Paragraph → Convert to bullets OR quote slide
+```
+
+### Bullet Extraction
+
+Transform prose into scannable points:
+
+**Input:** "We will learn about prompt engineering, how to personalize AI tools, and building your second brain system."
+
+**Output bullets:**
+- Prompt engineering fundamentals
+- AI tool personalization
+- Second brain system
+
+**Rules:**
+- Start with action verb when possible
+- Remove articles (the, a, an)
+- Remove filler words
+- Keep parallel structure
+
+---
+
+## V. Quality Checklist
+
+Before generating output, verify:
+
+### Content
+- [ ] 3-7 slides total
+- [ ] 3-5 bullets per content slide
+- [ ] 5-12 words per bullet
+- [ ] No full sentences in bullets
+- [ ] Heading on every slide
+
+### Visual
+- [ ] [Your Primary Color] headings
+- [ ] Dark background (or your preference)
+- [ ] 80px padding
+- [ ] Logo bottom-right
+- [ ] White body text
+
+### Structure
+- [ ] Title slide first
+- [ ] Clear conclusion/CTA last
+- [ ] No 3+ same layouts consecutive
+- [ ] Logical narrative flow
+
+---
+
+## VI. Error Prevention
+
+### Common Mistakes to Avoid
+
+| Error | Fix |
+|-------|-----|
+| Too many bullets (>5) | Split into multiple slides |
+| Full sentences in bullets | Convert to fragments |
+| Missing heading | Always add heading |
+| Tiny text (<28px) | Increase to minimum |
+| No logo | Add to every slide |
+| Same layout 3x | Inject variety |
+
+### Content Red Flags
+
+**Trigger manual review if:**
+- Input exceeds 300 words
+- More than 3 frameworks mentioned
+- Image references without URLs
+- Mixed languages without clear pattern
+
+---
+
+## VII. Integration Notes
+
+### Upstream Skills
+- `author`: Creates content → passes to slide-designer
+- `researcher`: Gathers info → author → slide-designer
+
+### Downstream Skills
+- `video-recorder`: Receives HTML slides → renders video
+- `presenter`: Alternative path → PowerPoint instead of video
+
+### Handoff Format
+
+Output JSON for video-recorder compatibility:
+
+```json
+{
+  "slides": [
+    {"type": "title", "heading": "...", "subheading": "..."},
+    {"type": "content", "heading": "...", "bullets": ["...", "..."]}
+  ],
+  "html_files": ["slide_001.html", "slide_002.html"],
+  "combined_html": "presentation_deck.html",
+  "slide_count": 5,
+  "estimated_duration_seconds": 60
+}
+```
+
+---
+
+**Document Version:** 1.0
+**Last Updated:** 2026-02-01
+**For AI Agents:** This is your primary instruction set for slide design. Follow these guidelines strictly for brand-consistent, professional output.
+
+**Customization Note:** Replace placeholders with your brand values in `brand/default.yaml`.

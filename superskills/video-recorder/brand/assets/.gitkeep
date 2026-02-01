@@ -1,0 +1,13 @@
+# Place your logo file here (e.g., logo.svg, logo.png)
+# Supported formats: SVG (preferred), PNG, JPG, WEBP
+#
+# Recommended specifications:
+# - Width: 200-250px for video overlays
+# - Transparent background (for dark/light theme compatibility)
+# - SVG format for scalability
+# - High contrast version for light/dark backgrounds
+#
+# Then update brand/default.yaml:
+#   logo:
+#     file: "assets/your-logo.svg"
+#     text: "YourBrand"  # Fallback text when file is null

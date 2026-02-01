@@ -1,0 +1,11 @@
+# Place your logo file here (e.g., logo.svg, logo.png)
+# Supported formats: SVG (preferred), PNG, JPG, WEBP
+#
+# Recommended dimensions:
+# - Width: 200-250px
+# - Transparent background (for dark/light theme compatibility)
+# - SVG format for scalability
+#
+# Then update brand/default.yaml:
+#   logo:
+#     file: "assets/your-logo.svg"

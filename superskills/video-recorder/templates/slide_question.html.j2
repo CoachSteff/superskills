@@ -1,0 +1,46 @@
+{% extends "base.html.j2" %}
+
+{% block additional_styles %}
+.question-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.question {
+    font-family: var(--font-heading);
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--color-primary);
+    max-width: 80%;
+    line-height: 1.3;
+}
+
+.follow-ups {
+    margin-top: 48px;
+    list-style: none;
+}
+
+.follow-ups li {
+    font-size: 32px;
+    color: var(--color-text-secondary);
+    margin-bottom: 16px;
+}
+{% endblock %}
+
+{% block content %}
+<div class="question-container">
+    <h2 class="question">{{ slide.heading }}</h2>
+    
+    {% if slide.bullets %}
+    <ul class="follow-ups">
+        {% for bullet in slide.bullets %}
+        <li>{{ bullet }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}

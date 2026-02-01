@@ -1,0 +1,1 @@
+"""Vision skill tests package."""

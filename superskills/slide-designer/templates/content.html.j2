@@ -1,0 +1,65 @@
+{% extends "base.html.j2" %}
+
+{% block additional_styles %}
+.content-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 60px;
+}
+
+.heading {
+    font-family: var(--font-heading);
+    font-size: {{ brand.typography.sizes.content_heading }};
+    font-weight: {{ brand.typography.heading.weight }};
+    color: var(--color-primary);
+    margin-bottom: 48px;
+}
+
+.bullets {
+    list-style: none;
+    padding-left: 0;
+}
+
+.bullets li {
+    font-size: {{ brand.typography.sizes.body }};
+    line-height: var(--line-height);
+    margin-bottom: var(--bullet-spacing);
+    padding-left: 40px;
+    position: relative;
+}
+
+.bullets li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-size: {{ brand.typography.sizes.body }};
+}
+
+.body-text {
+    font-size: {{ brand.typography.sizes.body }};
+    line-height: 1.6;
+    margin-top: 24px;
+    color: var(--color-text-secondary);
+}
+{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2 class="heading">{{ slide.heading }}</h2>
+    
+    {% if slide.bullets %}
+    <ul class="bullets">
+        {% for bullet in slide.bullets %}
+        <li>{{ bullet }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    {% if slide.text %}
+    <p class="body-text">{{ slide.text }}</p>
+    {% endif %}
+</div>
+{% endblock %}

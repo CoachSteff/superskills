@@ -1,0 +1,768 @@
+# Video Recorder Brand Profile
+> AI Agent Instruction Set for Autonomous Video Generation
+
+This document provides comprehensive guidelines for AI agents (OpenClaw/Kessa) to autonomously generate professional, on-brand video presentations using the video-recorder SuperSkill.
+
+**Reference Files:**
+- Visual styling configuration: `brand/default.yaml`
+- Technical documentation: `README.md`
+- Source material: `brand/assets/[Your Program Name].pdf`
+
+---
+
+## I. Visual Brand Identity
+
+### [Your Brand Name] Brand Overview
+
+**Core Identity:**
+- **Primary Color:** [Your Brand Color] (#2563eb) - signature brand color
+- **Theme:** Dark (charcoal #1f2937 backgrounds with white text)
+- **Aesthetic:** Clean, modern, professional yet approachable
+- **Positioning:** Thought leadership in AI adoption and productivity
+
+**Visual Language:**
+- High contrast design (white on dark)
+- Strategic color accents (red for warnings, yellow for highlights, green for positives)
+- Minimalist line art icons
+- Generous whitespace (80px padding minimum)
+- Corporate-friendly yet warm tone
+
+**Logo:**
+- Position: Bottom-right corner
+- Format: SVG preferred (scalable), PNG fallback
+- Size: 200px width (height auto-scales)
+- Opacity: 0.9 (subtle watermark effect)
+
+---
+
+## II. Content Architecture Principles
+
+### Visual Hierarchy System (Nested Prompt Model)
+
+Map nested prompt hierarchy to slide structure for optimal information architecture:
+
+**Level 1: Presentation (System)**
+- Overall theme and central message
+- Duration: 30-90 seconds total
+- Slide count: 3-7 slides maximum
+- Purpose: Complete narrative arc with clear beginning, middle, end
+
+**Level 2: Section (Agent/Project)**
+- Major topic blocks within presentation
+- Structure: 1 title slide + 2-4 content slides per section
+- Flow: Clear narrative progression
+- Transitions: Smooth topic shifts with contextual bridges
+
+**Level 3: Slide (User)**
+- Single concept per slide (one idea only)
+- Components: 1 heading + 3-5 bullets maximum
+- Duration: 10-15 seconds speaking time per slide
+- Rule: Never exceed 20 seconds per slide
+
+**Level 4: Element (Sub-prompt)**
+- Individual bullet points or text fragments
+- Length: 5-10 words maximum per bullet
+- Format: Sentence fragments, not complete sentences
+- Visual: Icons preferred over dense text when applicable
+
+### Workshop/Training Presentation Style
+
+**Tone Guidelines:**
+- **Professional yet conversational** - Expert but accessible
+- **Thought leadership positioning** - Authoritative without arrogance
+- **Warm, not corporate-cold** - Human, approachable, empathetic
+- **Inclusive pronouns** - Use "we" and "you" (je in Dutch)
+- **Question-driven engagement** - Prompt audience reflection
+
+**Pacing Rules:**
+- Title slides: 3-4 seconds (quick impact, introduce topic)
+- Content slides: 10-15 seconds (digestible information chunks)
+- Image slides: 5-8 seconds (visual emphasis without explanation)
+- **Never exceed 20 seconds per slide** (pace slows, attention wanes)
+
+**Language Patterns:**
+- Questions engage audience: "Wat wil je leren?" "How can we improve?"
+- Frameworks use acronyms: CRAFT, CODE, PARA
+- Bullets use action-oriented verbs: "Build", "Create", "Learn"
+- Avoid jargon: Use simple Dutch/English, explain technical terms
+- Hashtags for branding: [#YourHashtag], #ai, #productiviteit
+
+---
+
+## III. Slide Type Guidelines
+
+### A. Title Slide
+**Purpose:** Introduce topic with immediate impact, set tone
+
+**Content Rules:**
+- Heading: 3-6 words maximum (40 characters)
+- Subheading: 6-10 words (optional, use for context or branding)
+- No bullets or body text (clean, focused)
+- Use hashtag ([#YourHashtag]) or brand tagline when appropriate
+
+**Visual Treatment:**
+- Large, centered heading (72px font size)
+- High contrast: white text on dark charcoal (#1f2937) background
+- Logo: bottom-right, 200px width, 0.9 opacity
+- Generous whitespace (80px padding minimum on all sides)
+
+**Example:**
+```json
+{
+  "type": "title",
+  "heading": "Automatiseren met AI",
+  "subheading": "[#YourHashtag]"
+}
+```
+
+---
+
+### B. Content Slide (Standard)
+**Purpose:** Present key points in scannable, digestible format
+
+**Content Rules:**
+- Heading: 3-7 words (50 characters maximum)
+- Bullets: 3-5 items maximum (optimal: 4)
+- Bullet text: 5-12 words per item (optimal: 7-8 words)
+- **Avoid sub-bullets** (flatten hierarchy to single level)
+- **No full sentences** in bullets (use fragments, key phrases)
+- Action-oriented language (verbs, not just nouns)
+
+**Visual Treatment:**
+- Heading: left-aligned, 48px, [Your Brand Color] (#2563eb)
+- Bullets: white text (#ffffff), 32px, line spacing 0.8em
+- Icons: optional, white minimalist line art (32px square)
+- Background: dark charcoal (#1f2937)
+- Bullet indicator: white or accent color dot
+
+**Example:**
+```json
+{
+  "type": "content",
+  "heading": "CRAFT Framework",
+  "bullets": [
+    "Context: Wat is de situatie?",
+    "Rol: Welke expert rol?",
+    "Actie: Wat is de taak?",
+    "Formaat: Stijl en lengte",
+    "Target: Voor wie?"
+  ]
+}
+```
+
+---
+
+### C. Content Slide (Framework)
+**Purpose:** Present structured methodologies (CRAFT, CODE, PARA, etc.)
+
+**Content Rules:**
+- Framework name as heading (UPPERCASE for emphasis)
+- Each element on separate bullet line
+- Use colons for structure: "Element: Description"
+- 4-6 elements maximum (never exceed 6)
+- Descriptions: 5-8 words per element
+- Sequential order matters (number if necessary)
+
+**Visual Treatment:**
+- Same as standard content slide
+- Consider numbered bullets for sequential frameworks
+- Use accent colors sparingly for emphasis (red, yellow, green)
+- Maintain consistent spacing between elements
+
+**Example:**
+```json
+{
+  "type": "content",
+  "heading": "CODE WORKFLOW",
+  "bullets": [
+    "Capture: Verzamel interessante ideeën",
+    "Organize: Structureer de informatie",
+    "Distill: Vat samen tot kerninzichten",
+    "Express: Creëer iets nieuws"
+  ]
+}
+```
+
+---
+
+### D. Content Slide (Question/Engagement)
+**Purpose:** Prompt audience reflection, create interactive moment
+
+**Content Rules:**
+- Question as heading (conversational Dutch/English)
+- No bullets (question stands alone for emphasis)
+- Optional: 2-3 follow-up prompts as bullets (not answers)
+- Use second-person pronouns: "je/jij" (Dutch), "you" (English)
+- Make question specific, not generic
+
+**Visual Treatment:**
+- Large question text (56px, can increase to 64px if short)
+- Centered or left-aligned based on question length
+- Optional: use accent color (#eab308 yellow) for emphasis
+- Extra whitespace around question for focus
+
+**Example:**
+```json
+{
+  "type": "content",
+  "heading": "Wat wil je graag leren?",
+  "bullets": []
+}
+```
+
+Or with follow-ups:
+```json
+{
+  "type": "content",
+  "heading": "Hoe begin je met AI?",
+  "bullets": [
+    "Wat is je grootste uitdaging?",
+    "Welke tools ken je al?"
+  ]
+}
+```
+
+---
+
+### E. Image Slide
+**Purpose:** Visual emphasis, diagram explanation, break text-heavy content
+
+**Content Rules:**
+- Heading: 3-6 words (optional, omit if image self-explanatory)
+- Caption: 10-15 words maximum (brief explanation)
+- Image should be self-explanatory without narration
+- No bullets (let image speak)
+
+**Visual Treatment:**
+- Image centered, max 60% slide height (avoid overwhelming)
+- Heading above image if present (48px, [Your Brand Color])
+- Caption below image in light gray (#9ca3af), 28px
+- Image should have transparent background or match dark theme
+- Ensure adequate padding around image (80px minimum)
+
+**Technical Requirements:**
+- Format: PNG with transparency, SVG, or JPG
+- Resolution: High quality for 1920x1080 rendering
+- Theme compatibility: Dark-themed images preferred
+
+**Example:**
+```json
+{
+  "type": "image",
+  "heading": "Second Brain Workflow",
+  "image_url": "/path/to/code-diagram.png",
+  "caption": "Capture → Organize → Distill → Express"
+}
+```
+
+---
+
+## IV. Content Density Rules
+
+### Text Length Limits (Character Counts)
+- **Title slide heading:** 40 characters maximum
+- **Content slide heading:** 50 characters maximum
+- **Bullet point:** 80 characters maximum
+- **Caption:** 120 characters maximum
+- **Subheading:** 60 characters maximum
+
+### Element Counts (Quantitative Limits)
+- **Slides per video:** 3-7 (optimal: 5 slides)
+- **Bullets per slide:** 3-5 (never exceed 6, optimal: 4)
+- **Words per bullet:** 5-12 (optimal: 7-8 words)
+- **Sections per presentation:** 1-3 major sections
+- **Transitions:** Every 10-15 seconds
+
+### Speaking Time Allocation
+- **Script length per slide:** 12-18 words (matches 10-15 second duration)
+- **Total video duration:** 30-90 seconds (optimal: 45-60 seconds)
+- **Slide transition timing:** Every 10-15 seconds
+- **Title slide hold:** 3-4 seconds minimum
+- **Question slide hold:** 5-8 seconds (allow reflection)
+
+### Calculation Formulas for AI Agents
+```
+Slide Count = Total Script Words ÷ 15
+Duration per Slide = Total Audio Duration ÷ Number of Slides
+Bullet Count = Key Concepts ÷ 1.5 (rounded up, max 5)
+```
+
+---
+
+## V. Color Usage Guidelines
+
+### Primary Color: [Your Brand Color] (#2563eb)
+
+**Use for:**
+- Main slide headings (always)
+- Brand emphasis words or phrases
+- Interactive elements (future implementation)
+- Framework names (CRAFT, CODE, etc.)
+- Key terms requiring highlight
+
+**Avoid:**
+- Body text (use white #ffffff instead)
+- Large background areas (too bright, overwhelming)
+- Bullet points (reserve for headings only)
+
+**Rationale:** [Your Brand Color] is signature brand color, immediately recognizable, creates strong visual hierarchy against dark background.
+
+---
+
+### Accent Colors (Strategic Use Only)
+
+**Red (#ef4444) - Warnings & Critical Points**
+- Use for: Warning symbols, "no" icons, critical points, errors
+- Frequency: 1-2 elements per slide maximum
+- Context: Negative concepts, things to avoid
+- Example: "❌ Too many bullets (>6 per slide)"
+
+**Yellow/Gold (#eab308) - Questions & Highlights**
+- Use for: Questions, important highlights, attention-grabbing
+- Frequency: Alternate with red/green for visual variety
+- Context: Engagement, curiosity, exploration
+- Example: Question headings, "💡" lightbulb moments
+
+**Green (#10b981) - Positive Outcomes & Success**
+- Use for: Checkmarks, success indicators, positive outcomes
+- Frequency: Reserve for clearly positive concepts
+- Context: Achievements, correct practices, growth
+- Example: "✅ Heading clarity: understandable in 2 seconds"
+
+**Usage Pattern:**
+- Maximum 1-2 accent colors per slide
+- Never mix all three accents in single slide (visual chaos)
+- Reserve accents for strategic emphasis only
+- Default to white text when in doubt
+
+---
+
+### Background & Text (Core Palette)
+
+**Default Theme: Dark**
+- Background: #1f2937 (dark charcoal, professional)
+- Primary text: #ffffff (white, maximum contrast)
+- Secondary text: #9ca3af (gray, for captions and less important text)
+- Contrast ratio: WCAG AA compliant for readability
+
+**Light Theme (Alternative, rarely used):**
+- Background: #ffffff (white)
+- Primary text: #1f2937 (dark charcoal)
+- Headings: Maintain [Your Brand Color] (#2563eb) for consistency
+
+**AI Agent Rule:** Always default to dark theme unless user explicitly requests "theme: light" in input.
+
+---
+
+## VI. Typography Hierarchy
+
+### Font Families
+
+**Headings:** System UI (700 weight)
+- Family: `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`
+- Weight: 700 (bold)
+- Usage: Slide headings, section titles, framework names
+- Rationale: Bold for immediate visual hierarchy, professional appearance
+
+**Body:** System UI (400 weight)
+- Family: `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`
+- Weight: 400 (regular)
+- Usage: Bullets, captions, body text
+- Rationale: Clean, readable, optimal for body text
+
+**Signature:** Brush Script MT / Cursive (400 weight)
+- Family: `'Brush Script MT', 'Dancing Script', 'Pacifico', cursive`
+- Weight: 400 (regular)
+- Usage: Logo text fallback only (when logo.file is null)
+- Rationale: Handwritten style for personal branding touch
+
+---
+
+### Size Hierarchy (Pixel Sizes)
+
+**Title Slide:**
+- Heading: 72px (large, immediate impact)
+- Subheading: 48px (secondary emphasis)
+
+**Content Slide:**
+- Heading: 48px (clear hierarchy below title)
+- Body text: 32px (bullets, captions)
+
+**Image Slide:**
+- Heading: 48px (same as content)
+- Caption: 28px (slightly smaller for de-emphasis)
+
+**Logo:**
+- Text fallback: 36px (subtle branding)
+
+**Minimum Sizes:**
+- Never go below 32px for body text (readability threshold)
+- Never go below 28px for captions
+
+---
+
+### Weight & Style Rules
+
+- **Never use italics** (reduces readability, harder to scan)
+- **Bold for headings only** (700 weight, clear hierarchy)
+- **Regular weight for body** (400 weight, optimal reading)
+- **No underlines** (except for links, which we don't use)
+- **No ALL CAPS body text** (framework names in headings acceptable)
+- **Adequate line spacing** (0.8em minimum between bullets)
+
+---
+
+## VII. Icon & Visual Style
+
+### Icon Characteristics
+
+**Style:** Minimalist line art
+- White stroke on dark background
+- Simple, immediately recognizable shapes
+- No filled/solid icons (line art only)
+- Matches [Your Program Name] workshop aesthetic
+
+**Technical Specs:**
+- Stroke width: 2px (matches body text weight)
+- Size: 32px square (aligns with body text height)
+- Color: #ffffff (white to match text)
+- Placement: Left of bullet text or standalone
+
+**Complexity:**
+- Simple geometric shapes
+- Minimal detail (recognizable at 32px)
+- Universal symbols (avoid culture-specific icons)
+
+---
+
+### Icon Library (Common Workshop Icons)
+
+**AI & Technology:**
+- Brain: AI concepts, intelligence, thinking
+- Gear: Processes, systems, mechanics
+- Chip: Technology, computing, digital
+
+**Values & Ethics:**
+- Shield: Security, safety, protection
+- Scale: Balance, ethics, fairness
+- Heart: Empathy, human-centered, care
+
+**Growth & Learning:**
+- Plant: Growth, development, cultivation
+- Rocket: Launch, acceleration, momentum
+- Stairs: Progress, steps, journey
+
+**Collaboration:**
+- Handshake: Partnership, agreement, collaboration
+- Puzzle: Integration, complexity, problem-solving
+- Team: People, community, collective
+
+**AI Agent Rule:** Use icons sparingly (1-2 per slide maximum). Icons are optional, not required.
+
+---
+
+## VIII. AI Agent Execution Instructions
+
+### Content Generation Workflow
+
+**Step 1: Analyze Script**
+- Identify main topics (1-3 major themes)
+- Count words (optimal: 100-150 words for 60-second video)
+- Determine slide count: `words ÷ 15-18 = slides`
+- Identify frameworks, questions, or key concepts
+
+**Step 2: Structure Slides**
+- **First slide:** Title (introduce topic, set tone)
+- **Middle slides:** Content (3-5 bullets each, main information)
+- **Last slide:** Title or single-point conclusion (CTA or summary)
+- Apply nested hierarchy: presentation → section → slide → element
+
+**Step 3: Apply Brand Guidelines**
+- Use [Your Brand Color] (#2563eb) for all headings
+- Dark background (#1f2937) default theme
+- Logo bottom-right (200px width, 0.9 opacity)
+- Check text density limits (3-5 bullets, 5-12 words each)
+- Verify character counts (heading ≤50 chars, bullet ≤80 chars)
+
+**Step 4: Validate Output**
+- Each slide: 10-15 words in script
+- Bullets: 3-5 per slide, 5-12 words each
+- Total duration: 30-90 seconds
+- Tone: Professional yet conversational
+- Language: Dutch primary, English for technical terms
+
+---
+
+### Error Prevention (Common Mistakes to Avoid)
+
+**Content Errors:**
+- ❌ Too many bullets (>6 per slide) → ✅ Max 5 bullets
+- ❌ Full sentences in bullets → ✅ Use fragments, key phrases
+- ❌ Dense paragraphs → ✅ Break into bullets
+- ❌ Long words per bullet (>12) → ✅ Keep to 5-12 words
+- ❌ No heading on content slide → ✅ Always include heading
+
+**Visual Errors:**
+- ❌ Mixing too many colors (>2 accents) → ✅ Max 2 accents per slide
+- ❌ Tiny text (<32px for body) → ✅ Minimum 32px body text
+- ❌ Low contrast (gray on dark gray) → ✅ White on dark charcoal
+- ❌ Logo not visible → ✅ Always bottom-right, 200px, 0.9 opacity
+
+**Timing Errors:**
+- ❌ Slides >20 seconds (pace slows) → ✅ 10-15 seconds per slide
+- ❌ Too many slides (>7) → ✅ Optimal 3-7 slides
+- ❌ Too fast transitions (<8 seconds) → ✅ Minimum 10 seconds
+
+---
+
+### Quality Checks (Pre-Generation Validation)
+
+**Heading Clarity:**
+- ✅ Understandable in 2 seconds (scan test)
+- ✅ No jargon without context
+- ✅ Action-oriented or question-based
+
+**Bullet Conciseness:**
+- ✅ Scannable at glance (5-second test)
+- ✅ Key phrases, not full sentences
+- ✅ Parallel structure (consistent verb tense)
+
+**Visual Balance:**
+- ✅ 40-60% whitespace on slide
+- ✅ Content doesn't touch edges (80px padding)
+- ✅ Generous line spacing (0.8em minimum)
+
+**Color Contrast:**
+- ✅ WCAG AA minimum (4.5:1 for body text)
+- ✅ White (#ffffff) on dark (#1f2937) = 15:1 ratio
+- ✅ [Your Brand Color] (#2563eb) on dark = 8:1 ratio
+
+**Brand Consistency:**
+- ✅ [Your Brand Color] (#2563eb) prominent in headings
+- ✅ Logo bottom-right on every slide
+- ✅ Dark theme consistent throughout
+- ✅ Workshop tone maintained (professional yet conversational)
+
+---
+
+## IX. Example Templates
+
+### Workshop Introduction (Standard Opening)
+```json
+{
+  "script": "Welkom bij de [Your Program Name] workshop. Vandaag leren we AI gebruiken voor productiviteit. We behandelen prompt engineering, personalisatie, en jouw tweede brein.",
+  "slides": [
+    {
+      "type": "title",
+      "heading": "Automatiseren met AI",
+      "subheading": "[#YourHashtag]"
+    },
+    {
+      "type": "content",
+      "heading": "Vandaag leren we",
+      "bullets": [
+        "Prompt engineering frameworks",
+        "AI clients personaliseren",
+        "Tweede brein opbouwen"
+      ]
+    }
+  ]
+}
+```
+
+---
+
+### Framework Explanation (CRAFT Example)
+```json
+{
+  "script": "De CRAFT framework helpt je betere prompts schrijven. Het bestaat uit vijf elementen: context, rol, actie, formaat, en target. Elk element maakt je prompt sterker.",
+  "slides": [
+    {
+      "type": "content",
+      "heading": "CRAFT FRAMEWORK",
+      "bullets": [
+        "Context: Wat is de situatie?",
+        "Rol: Welke expert rol?",
+        "Actie: Wat is de taak?",
+        "Formaat: Stijl en lengte",
+        "Target: Voor wie bedoeld?"
+      ]
+    }
+  ]
+}
+```
+
+---
+
+### Engagement Question (Interactive Moment)
+```json
+{
+  "script": "Voordat we beginnen, wat wil je vandaag leren?",
+  "slides": [
+    {
+      "type": "content",
+      "heading": "Wat wil je graag leren tijdens deze workshop?"
+    }
+  ]
+}
+```
+
+---
+
+### Multi-Slide Presentation (Complete Arc)
+```json
+{
+  "script": "Automatiseren met AI begint met de juiste tools. We bespreken drie essentiële elementen: frameworks voor prompts, personalisatie van je AI client, en het opbouwen van je tweede brein. Deze combinatie maakt je een echte [Your Program Name] deelnemer.",
+  "slides": [
+    {
+      "type": "title",
+      "heading": "Automatiseren met AI",
+      "subheading": "[#YourHashtag]"
+    },
+    {
+      "type": "content",
+      "heading": "Drie Essentiële Elementen",
+      "bullets": [
+        "Prompt engineering frameworks",
+        "AI personalisatie",
+        "Tweede brein systeem"
+      ]
+    },
+    {
+      "type": "content",
+      "heading": "Word een [Your Program Name] Deelnemer",
+      "bullets": [
+        "Gebruik de juiste tools",
+        "Bouw je systeem op",
+        "Automatiseer je workflow"
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## X. Localization Guidance
+
+### Dutch vs. English (Primary Language Decision)
+
+**Default Language: Dutch**
+- Matches [Your Program Name] workshop content
+- Target audience: Dutch-speaking professionals
+- [Your Brand Name]'s primary market
+
+**Use English when:**
+- Content is technical terminology (LLM, AI, API, prompt, tokens)
+- Quotes or frameworks from English sources
+- Hashtags/branding ([#YourHashtag], #ai)
+- Code examples or technical documentation
+- International audience explicitly requested
+
+---
+
+### Multilingual Slide Rules
+
+**Headings:**
+- Use user's language (Dutch or English)
+- Technical terms: Keep original language (LLM, not "Groot Taalmodel")
+
+**Bullets:**
+- Match heading language for consistency
+- Mix is acceptable for technical terms: "Gebruik CRAFT framework voor prompts"
+
+**Technical Terms:**
+- Keep original English: prompt, AI, workflow, framework
+- Translate conceptual terms: "tweede brein" not "second brain"
+
+**Code/Examples:**
+- Always English (universal programming convention)
+- Comments can be in target language
+
+---
+
+### Language Quality Guidelines
+
+**Dutch Specifics:**
+- Use "je/jij" (informal you) not "u" (formal) - Workshop tone is accessible
+- Action verbs: "Bouw", "Leer", "Gebruik" (Build, Learn, Use)
+- Questions: "Wat wil je leren?" not "Wat wilt u leren?"
+- Avoid Anglicisms when good Dutch exists: "automatisering" not "automatie"
+
+**English Specifics:**
+- Use "you" (second person direct address)
+- Action verbs: "Build", "Learn", "Create"
+- Conversational tone: "Let's explore" not "We shall examine"
+- Avoid corporate jargon: "use" not "leverage", "help" not "facilitate"
+
+---
+
+## XI. Quality Assurance Checklist
+
+Before finalizing any video, verify all criteria:
+
+### Visual Verification
+- [ ] Logo appears (bottom-right, 200px width, 0.9 opacity)
+- [ ] Colors match brand ([Your Brand Color] #2563eb headings)
+- [ ] Font sizes correct (72px title, 48px heading, 32px body)
+- [ ] Adequate whitespace (80px padding minimum on all sides)
+- [ ] High contrast (white text on dark charcoal background)
+- [ ] Theme consistent (dark theme throughout)
+
+### Content Verification
+- [ ] 3-7 slides total (optimal: 5 slides)
+- [ ] 3-5 bullets per content slide (never exceed 6)
+- [ ] 5-12 words per bullet (optimal: 7-8 words)
+- [ ] 10-15 words script per slide (matches duration)
+- [ ] No full sentences in bullets (fragments only)
+- [ ] Heading on every content slide
+
+### Structure Verification
+- [ ] Clear narrative flow (beginning → middle → end)
+- [ ] Nested hierarchy applied (presentation → section → slide → element)
+- [ ] Title slide opens presentation (sets tone)
+- [ ] Concluding slide or CTA (clear ending)
+- [ ] Smooth topic transitions (logical flow)
+
+### Tone Verification
+- [ ] Professional yet conversational (not corporate-cold)
+- [ ] Thought leadership positioning (expert but accessible)
+- [ ] Inclusive language (we, je/you not impersonal)
+- [ ] No unexplained jargon (technical terms contextualized)
+- [ ] Workshop/training style maintained (engaging, educational)
+
+### Technical Verification
+- [ ] Character limits respected (heading ≤50, bullet ≤80)
+- [ ] Duration appropriate (30-90 seconds, optimal 45-60s)
+- [ ] Slide timing correct (10-15 seconds per slide)
+- [ ] File paths valid (images exist, logo renders)
+- [ ] Language consistent (Dutch or English throughout)
+
+---
+
+## Implementation Notes for AI Agents
+
+**Priority Order:**
+1. Content structure (nested hierarchy, density limits)
+2. Visual consistency (colors, fonts, spacing)
+3. Brand compliance (logo, theme, tone)
+4. Quality assurance (checklist validation)
+
+**When in Doubt:**
+- Default to dark theme
+- Use [Your Brand Color] for headings
+- Keep bullets to 4 items
+- Aim for 5 slides total
+- Write in Dutch unless English requested
+
+**Cross-Reference:**
+- Visual styling details: `brand/default.yaml`
+- Technical implementation: `README.md`
+- Slide templates: `templates/*.html.j2`
+
+---
+
+**Document Version:** 1.0  
+**Last Updated:** 2026-01-31  
+**Maintained By:** [Your Brand Name] / [Your Program Name] Team  
+**For AI Agents:** This is your primary instruction set for video generation. Follow these guidelines strictly for brand-consistent, professional output.

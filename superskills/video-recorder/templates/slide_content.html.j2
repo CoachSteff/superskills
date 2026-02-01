@@ -1,0 +1,19 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+<div>
+    <h2>{{ slide.heading }}</h2>
+    
+    {% if slide.bullets %}
+    <ul>
+        {% for bullet in slide.bullets %}
+        <li>{{ bullet }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    
+    {% if slide.text %}
+    <p style="margin-top: 2em; color: var(--color-text-secondary);">{{ slide.text }}</p>
+    {% endif %}
+</div>
+{% endblock %}

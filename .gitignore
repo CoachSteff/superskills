@@ -85,6 +85,12 @@ logs/
 **/voice_profiles.json
 !**/voice_profiles.json.template
 
+# Personal brand files - use brand/*.yaml.template instead
+**/brand/*.yaml
+!**/brand/*.yaml.template
+**/brand/assets/*
+!**/brand/assets/.gitkeep
+
 # Distribution
 dist/
 build/

@@ -1,0 +1,23 @@
+{% extends "base.html.j2" %}
+
+{% block content %}
+<div>
+    {% if slide.heading %}
+    <h2 style="margin-bottom: 1.5em;">{{ slide.heading }}</h2>
+    {% endif %}
+    
+    {% if slide.image_url %}
+    <div style="text-align: center; margin: 2em 0;">
+        <img src="{{ slide.image_url }}" 
+             alt="{{ slide.caption or 'Slide image' }}"
+             style="max-width: 100%; max-height: 600px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);">
+    </div>
+    {% endif %}
+    
+    {% if slide.caption %}
+    <p style="text-align: center; color: var(--color-text-secondary); font-style: italic; margin-top: 1.5em; font-size: calc(var(--body-size) * 0.9);">
+        {{ slide.caption }}
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

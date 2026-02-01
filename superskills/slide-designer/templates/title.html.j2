@@ -1,0 +1,37 @@
+{% extends "base.html.j2" %}
+
+{% block additional_styles %}
+.title-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.heading {
+    font-family: var(--font-heading);
+    font-size: {{ brand.typography.sizes.title_heading }};
+    font-weight: {{ brand.typography.heading.weight }};
+    color: var(--color-text);
+    margin-bottom: 24px;
+    max-width: 80%;
+}
+
+.subheading {
+    font-family: var(--font-body);
+    font-size: 48px;
+    font-weight: 400;
+    color: var(--color-primary);
+}
+{% endblock %}
+
+{% block content %}
+<div class="title-container">
+    <h1 class="heading">{{ slide.heading }}</h1>
+    {% if slide.subheading %}
+    <p class="subheading">{{ slide.subheading }}</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -26,11 +26,9 @@ Generate professional social media voiceovers optimized for fast-paced, engaging
 **Energy**: High and attention-grabbing
 **Pacing**: Fast with punchy delivery
 
-**Voice Profile**: CoachSteff Basic (narration optimized)
-- Stability: 0.70
-- Similarity Boost: 0.80
-- Style: 0.30
-- Speed: 1.0
+**Voice Profile**: Configured in parent skill's `voice_profiles.json` (narration or podcast profile)
+- See PROFILE.md for social media style guidance
+- Technical settings managed centrally
 
 ## Core Workflow
 

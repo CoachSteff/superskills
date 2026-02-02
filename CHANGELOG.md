@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Summary
+Configuration architecture standardization and audiobook TTS provider change: Establishes clean separation between AI instructions (PROFILE.md) and execution configs, eliminates redundancy, creates generic config loading pattern, and updates audiobook to use Gemini TTS by default.
+
 ### Changed (BREAKING)
 - **Audiobook Skill**: Default TTS provider changed from ElevenLabs to Gemini
   - Gemini offers higher character limits (100,000 vs 5,000) and generous free tier
@@ -16,6 +19,123 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Migration for existing users**: Add `"provider": "elevenlabs"` to your `voice_profiles.json` to keep using ElevenLabs
   - New users: Set `GEMINI_API_KEY` environment variable or use `voice_profiles.json.template`
   - CLI override still works: `--tts-provider elevenlabs` to use ElevenLabs explicitly
+
+### Added
+- **SkillConfigLoader Utility** (`cli/utils/skill_config.py`)
+  - Generic configuration loader for all skills
+  - Supports `brand/`, `config/`, and legacy JSON patterns
+  - Provides standardized loading: `loader.load(config_type="auto")`
+  - Backward compatible with existing hardcoded paths
+- **Configuration Audit Documentation** (`dev/CONFIG_AUDIT.md`)
+  - Comprehensive audit of all 50 skills
+  - Documents config patterns and redundancy findings
+  - Identifies unused config files (scraper, transcriber, craft, videoeditor, obsidian)
+- **Test Results Documentation** (`dev/TEST_RESULTS.md`)
+  - 10 passing tests validating config architecture
+  - Verification of CLI, Python execution, templates, gitignore
+- **config.unused/ README.md** (5 skills)
+  - Explains why config files exist but aren't loaded by Python
+  - Provides migration guide for implementing config loading
+
+### Changed
+- **Narrator Voice Configuration** (consolidated redundancy)
+  - `voice_profiles.json`: Added `_comment` header explaining purpose
+  - Main `PROFILE.md`: Added Voice Configuration section referencing execution config
+  - 5 subskill `PROFILE.md.template` files: Reference parent config instead of duplicating technical values
+  - `VoiceConfig.py`: Skip underscore-prefixed keys in validation loop
+- **SKILL.md Files Genericized** (6 files updated)
+  - Removed "CoachSteff" brand references (replaced with `[Your Brand Name]`)
+  - Removed "#superworker" tagline (replaced with `[Your Brand Tagline]`)
+  - Added references to where users configure settings (PROFILE.md, brand/default.yaml)
+  - Files: slide-designer, video-recorder, narrator (educational, podcast, marketing, social)
+- **Gitignore Protection Enhanced**
+  - Added `**/config/*.yaml` to gitignore
+  - Added `!**/config/*.yaml.template` negation for templates
+  - User execution configs now protected alongside brand and voice_profiles
+
+### Fixed
+- **Narrator Skill Configuration Loading**
+  - `voice_profiles.json` `_comment` field no longer triggers validation error
+  - VoiceConfig properly skips metadata fields during profile validation
+- **Configuration Redundancy Eliminated**
+  - Narrator subskill PROFILE.md files no longer duplicate ElevenLabs technical parameters
+  - Single source of truth: `voice_profiles.json` for execution, PROFILE.md for AI guidance
+
+### Removed
+- **Unused Config Files** (moved to `config.unused/`)
+  - `scraper/config/scraper_config.yaml` - Not loaded by WebScraper.py
+  - `transcriber/config/transcriber_config.yaml` - Not loaded by Transcriber.py
+  - `craft/config/craft_config.yaml` - Not loaded by CraftClient.py
+  - `videoeditor/config/videoeditor_config.yaml` - Not loaded by VideoEditor.py
+  - `obsidian/config/obsidian_config.yaml` - Not loaded by ObsidianParser.py
+
+### Technical Notes
+- **Configuration Architecture Clarified**:
+  - PROFILE.md: AI instructions only (loaded by CLI, passed to agents in prompt)
+  - config/*.yaml or brand/*.yaml: Python execution parameters (loaded by skill code)
+  - SKILL.md: Generic metadata (no user-specific values)
+- **Skills Audited**: All 50 skills categorized
+  - 3 with clean separation (slide-designer, video-recorder, narrator)
+  - 5 with unused configs (moved to config.unused/)
+  - 42 prompt-only skills (correct architecture, no changes needed)
+- **Backward Compatibility Maintained**:
+  - Existing hardcoded config paths continue working (narrator, slide-designer, video-recorder)
+  - SkillConfigLoader is optional helper for new skills
+  - No breaking changes to skill execution
+- **Files Changed**: 24 total
+  - 5 created (SkillConfigLoader + 4 docs)
+  - 15 modified (gitignore, narrator files, SKILL.md files)
+  - 5 moved (unused configs → config.unused/)
+
+### Documentation
+- See `dev/CONFIG_AUDIT.md` for complete audit findings
+- See `dev/TEST_RESULTS.md` for test verification details
+- See `dev/TEMPLATE_PROTECTION_SUMMARY.md` for template system overview
+
+## [2.6.0] - 2026-01-27
+
+### Summary
+New skill release: Adds offer-builder for professional training/coaching proposal generation.
+
+### Added
+- **offer-builder skill**: Professional proposal generator for L&D services
+  - Creates structured offers for training, coaching, workshops, and facilitation
+  - Language-agnostic design (output language configured via PROFILE.md)
+  - Follows CRAFTER methodology (Context, Role, Action, Format, Target, Examples, Refining)
+  - Proven structure: situation analysis, approach, program, budget, references
+  - Supports multiple languages: English, Dutch, French, German
+  - Includes PROFILE.md.template for personalization
+
+### Technical Notes
+- Skill count: 45 → 46
+- Personal data (PROFILE.md) remains gitignored per existing patterns
+- No CLI changes required (prompt-based skill)
+
+## [2.5.4] - 2026-01-27
+
+### Summary
+Housekeeping release: Cleans up repository root per project conventions, removes local-only audit files from tracking, and improves portability.
+
+### Changed
+- **Repository Root Cleanup** (per `.cursorrules` §1)
+  - Moved `IMPLEMENTATION_SUMMARY_v2.5.0_fixes.md` → `dev/`
+  - Root now contains only canonical files: README, CHANGELOG, ROADMAP, WARP, CONTRIBUTING, LICENSE, pyproject.toml, requirements.txt, setup.sh
+
+### Removed
+- **Audit Files from Git Tracking**
+  - Removed `superskills-audit/` from version control (kept locally for reference)
+  - Added to `.gitignore` to prevent future commits
+  - Audit data preserved in local workspace only
+
+### Technical Notes
+- No functional changes to skills or CLI
+- Follows `.cursorrules` root directory maintenance guidelines
+- Local audit files (`superskills-audit/`) remain accessible but won't pollute repo
+
+## [2.5.3] - 2026-01-27
+
+### Summary
+Major functionality restoration release: Enables all 49 skills (100% success rate) by implementing generic Python skill execution and fixing presenter import error. Restores 8 previously broken Python skills.
 
 ### Fixed
 - **Audiobook Skill**: Fixed Gemini TTS token limit error (8,192 tokens)

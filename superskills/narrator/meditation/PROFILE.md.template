@@ -12,6 +12,9 @@
 - **Energy**: Gentle, grounding, non-intrusive
 - **Style**: Soft presence that supports without leading
 
+## Technical Configuration
+Voice parameters (voice_id, stability, similarity_boost, style, speed, use_speaker_boost) are loaded from the parent narrator skill's `voice_profiles.json` file under the "meditation" profile key. The execution config is managed centrally; this PROFILE.md provides AI guidance for script generation and calming tone.
+
 ## Meditation Philosophy
 [Your meditation approach - e.g., "Meditation should feel safe and accessible. My voice creates a gentle container for self-discovery and peace."]
 

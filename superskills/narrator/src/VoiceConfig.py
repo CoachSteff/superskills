@@ -28,6 +28,8 @@ class VoiceConfig:
                 self._profiles = json.load(f)
 
             for profile_type, profile in self._profiles.items():
+                if profile_type.startswith("_"):
+                    continue
                 self._validate_profile(profile, profile_type)
         else:
             self._profiles = self._get_fallback_profiles()

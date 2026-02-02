@@ -12,6 +12,9 @@
 - **Energy**: High with attention-grabbing delivery
 - **Style**: Authentic and conversational (but energized)
 
+## Technical Configuration
+Voice parameters (voice_id, stability, similarity_boost, style, speed) are loaded from the parent narrator skill's `voice_profiles.json` file. Social media content may use the "podcast" profile for its energetic, conversational delivery. The execution config is managed centrally; this PROFILE.md provides AI guidance for dynamic, attention-grabbing script generation.
+
 ## Content Philosophy
 [Your content approach - e.g., "Social media is about stopping the scroll and delivering instant value. Every second counts. I hook fast, deliver quick, and leave them wanting more."]
 

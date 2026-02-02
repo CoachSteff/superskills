@@ -91,6 +91,10 @@ logs/
 **/brand/assets/*
 !**/brand/assets/.gitkeep
 
+# Personal config files - use config/*.yaml.template instead
+**/config/*.yaml
+!**/config/*.yaml.template
+
 # Distribution
 dist/
 build/

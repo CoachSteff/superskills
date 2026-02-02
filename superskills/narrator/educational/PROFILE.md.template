@@ -12,6 +12,9 @@
 - **Energy**: Focused and supportive
 - **Style**: Expert guide who makes complex topics accessible
 
+## Technical Configuration
+Voice parameters (voice_id, stability, similarity_boost, style, speed) are loaded from the parent narrator skill's `voice_profiles.json` file under the "narration" profile key. The execution config is managed centrally; this PROFILE.md provides AI guidance for script generation and tone.
+
 ## Educational Philosophy
 [Your teaching philosophy - e.g., "Great education meets students where they are and builds understanding step by step. I make complex topics simple and actionable."]
 

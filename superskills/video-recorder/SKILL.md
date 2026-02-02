@@ -16,7 +16,7 @@ Generate complete videos with branded slide presentations and professional voice
 
 ## Purpose
 
-Enable autonomous video generation for training materials, workshop recaps, educational content, and client explainer videos. Combines branded visual slides with CoachSteff's ElevenLabs voice for polished, professional output.
+Enable autonomous video generation for training materials, workshop recaps, educational content, and client explainer videos. Combines branded visual slides with AI-generated ElevenLabs voice for polished, professional output.
 
 ## Tools
 
@@ -93,7 +93,7 @@ Returns JSON with:
 - **Resolution:** 1920x1080 (Full HD)
 - **Format:** MP4 (H.264 video, AAC audio)
 - **Audio:** 192kbps, clear voiceover
-- **Branding:** Consistent colors, fonts, CoachSteff signature
+- **Branding:** Consistent colors, fonts, your brand signature (configured in brand/default.yaml)
 - **Timing:** Slides distributed evenly across audio
 
 ## Examples

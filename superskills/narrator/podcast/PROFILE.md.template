@@ -12,6 +12,9 @@
 - **Energy**: Engaging but relaxed
 - **Style**: Like talking to a friend over coffee
 
+## Technical Configuration
+Voice parameters (voice_id, stability, similarity_boost, style, speed) are loaded from the parent narrator skill's `voice_profiles.json` file under the "podcast" profile key. The execution config is managed centrally; this PROFILE.md provides AI guidance for script generation and conversational tone.
+
 ## Podcast Content Philosophy
 [Your podcasting philosophy - e.g., "Podcasts should feel like intimate conversations, not lectures. I bring authenticity and warmth to every episode."]
 

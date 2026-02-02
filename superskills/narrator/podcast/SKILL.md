@@ -33,11 +33,9 @@ Generate professional podcast voiceovers optimized for conversational, authentic
 **Energy**: Natural and engaging
 **Pacing**: Relaxed with natural pauses
 
-**Voice Profile**: CoachSteff Pro (podcast optimized)
-- Stability: 0.75
-- Similarity Boost: 0.85
-- Style: 0.35
-- Speed: 1.0
+**Voice Profile**: Configured in parent skill's `voice_profiles.json` (podcast profile)
+- See PROFILE.md for conversational style guidance
+- Technical settings managed centrally
 
 ## Core Workflow
 
@@ -82,7 +80,7 @@ Generate professional podcast voiceovers optimized for conversational, authentic
 
 **Example Optimized Script:**
 ```
-Welcome back to the show... I'm Steff, and today we're diving into 
+Welcome back to the show... I'm [Your Name], and today we're diving into 
 something I've been thinking about a lot lately.
 
 You know how we all struggle with staying focused? Well, I've got 

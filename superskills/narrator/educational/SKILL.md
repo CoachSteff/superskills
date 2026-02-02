@@ -26,11 +26,9 @@ Generate professional educational voiceovers optimized for clear, patient instru
 **Energy**: Measured and clear
 **Pacing**: Deliberate with pauses for comprehension
 
-**Voice Profile**: CoachSteff Basic (narration optimized)
-- Stability: 0.70
-- Similarity Boost: 0.80
-- Style: 0.30
-- Speed: 1.0
+**Voice Profile**: Configured in parent skill's `voice_profiles.json` (narration profile)
+- See PROFILE.md for style guidance
+- Technical settings managed centrally
 
 ## Core Workflow
 

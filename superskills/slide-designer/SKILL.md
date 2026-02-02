@@ -29,7 +29,7 @@ Bridge the gap between content creation and video production. Takes scripts, out
 
 1. **Analyze Content** - Parse input, identify slide boundaries
 2. **Select Layouts** - Match content type to visual template
-3. **Apply Branding** - CoachSteff colors, typography, logo
+3. **Apply Branding** - Your brand colors, typography, logo (configured in PROFILE.md and brand/default.yaml)
 4. **Generate HTML** - Standalone files, 1920x1080 viewport
 
 ## Usage
@@ -73,7 +73,7 @@ result = designer.design_from_outline(
 
 ```python
 slides = [
-    {"type": "title", "heading": "AI Automation", "subheading": "#superworker"},
+    {"type": "title", "heading": "AI Automation", "subheading": "[Your Brand Tagline]"},
     {"type": "content", "heading": "Today We Learn", "bullets": ["Prompt engineering", "Personalization", "Second brain"]},
     {"type": "question", "heading": "What do you want to learn?"}
 ]
@@ -127,7 +127,7 @@ video_result = recorder.record_video(
 - **Resolution:** 1920x1080 (Full HD video-ready)
 - **Density:** 3-5 bullets per slide, 5-12 words per bullet
 - **Timing:** Optimized for 10-15 seconds per slide
-- **Branding:** CoachSteff colors, logo, typography
+- **Branding:** Your brand colors, logo, typography (configured in brand/default.yaml)
 
 ## Dependencies
 

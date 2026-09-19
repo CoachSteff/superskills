@@ -14,11 +14,26 @@
       "type": "string",
       "description": "Workflow description"
     },
+    "io": {
+      "type": "object",
+      "description": "Input/output directories used by the workflow engine's watch and batch modes",
+      "properties": {
+        "input_dir": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output_dir": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
     "variables": {
       "type": "object",
-      "description": "Workflow-level variables",
+      "description": "Workflow-level variables (scalar values; substituted as text into step inputs)",
       "additionalProperties": {
-        "type": "string"
+        "type": ["string", "number", "boolean"]
       }
     },
     "io": {

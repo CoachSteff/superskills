@@ -106,7 +106,7 @@ select = ["E", "F", "I", "N", "W"]
 ignore = ["E501"]
 
 [tool.coverage.run]
-source = ["superskills"]
+source = ["superskills", "cli"]
 omit = ["*/tests/*", "*/archive/*"]
 
 [tool.coverage.report]

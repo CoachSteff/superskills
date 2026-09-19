@@ -26,12 +26,19 @@ class LLMProvider(ABC):
         """Factory method to create appropriate provider"""
         provider = provider.lower()
 
+<<<<<<< Updated upstream
+=======
+        # model=None must fall through to each provider's default, not override it
+        if model is not None:
+            kwargs['model'] = model
+
+>>>>>>> Stashed changes
         if provider == 'gemini':
-            return GeminiProvider(api_key=api_key, model=model, **kwargs)
+            return GeminiProvider(api_key=api_key, **kwargs)
         elif provider == 'anthropic':
-            return AnthropicProvider(api_key=api_key, model=model, **kwargs)
+            return AnthropicProvider(api_key=api_key, **kwargs)
         elif provider == 'openai':
-            return OpenAIProvider(api_key=api_key, model=model, **kwargs)
+            return OpenAIProvider(api_key=api_key, **kwargs)
         else:
             raise ValueError(f"Unknown provider: {provider}. Supported: gemini, anthropic, openai")
 

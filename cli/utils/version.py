@@ -7,11 +7,24 @@ from pathlib import Path
 
 def get_version() -> str:
     """
+<<<<<<< Updated upstream
     Get version from pyproject.toml.
+=======
+    Get the installed package version, falling back to pyproject.toml
+    for source checkouts.
+>>>>>>> Stashed changes
 
     Returns:
         Version string (e.g., "2.4.0") or "unknown" if not found
     """
+    # Installed package (wheel/sdist): pyproject.toml is not shipped,
+    # so ask package metadata first.
+    try:
+        from importlib.metadata import version
+        return version('superskills')
+    except Exception:
+        pass
+
     pyproject_path = Path(__file__).parent.parent.parent / 'pyproject.toml'
 
     if not pyproject_path.exists():

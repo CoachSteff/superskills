@@ -1,11 +1,20 @@
 """
 Workflow execution engine.
 """
+<<<<<<< Updated upstream
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import yaml
 
+=======
+import re
+import time
+import yaml
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, Any, List, Optional, Tuple
+>>>>>>> Stashed changes
 from cli.core.skill_executor import SkillExecutor
 from cli.utils.config import CLIConfig
 from cli.utils.logger import get_logger
@@ -45,11 +54,28 @@ class WorkflowEngine:
 
         self.logger.info(f"Workflow loaded: {workflow.get('name', workflow_name)} with {len(workflow.get('steps', []))} steps")
         return workflow
+<<<<<<< Updated upstream
+=======
+    
+    # Workflow names are used to build filesystem paths; restrict them to a
+    # safe charset so names like '../../etc/foo' cannot escape the workflow dirs.
+    WORKFLOW_NAME_PATTERN = re.compile(r'^[a-zA-Z0-9][a-zA-Z0-9_-]*$')
+>>>>>>> Stashed changes
 
     def _find_workflow_file(self, workflow_name: str) -> Optional[Path]:
         """Find workflow file, checking both simple YAML files and folder-based workflows."""
         from ..utils.paths import get_project_root
 
+<<<<<<< Updated upstream
+=======
+        if not self.WORKFLOW_NAME_PATTERN.match(workflow_name):
+            self.logger.error(f"Invalid workflow name rejected: {workflow_name!r}")
+            raise ValueError(
+                f"Invalid workflow name: {workflow_name!r}. "
+                "Names may only contain letters, digits, hyphens and underscores."
+            )
+
+>>>>>>> Stashed changes
         paths_to_check = [
             # Simple workflow definitions (YAML files in definitions/ or custom/)
             get_workflows_dir('definitions') / f"{workflow_name}.yaml",
@@ -68,6 +94,13 @@ class WorkflowEngine:
         self.logger.info(f"Starting workflow execution: {workflow_name} (dry_run={dry_run})")
         workflow = self.load_workflow(workflow_name)
 
+<<<<<<< Updated upstream
+=======
+        # Fresh context per execution: step outputs (and dry-run placeholders)
+        # from a previous run on this engine must not leak into this one.
+        self.context = {}
+
+>>>>>>> Stashed changes
         if variables:
             self.logger.debug(f"Received variables: {list(variables.keys())}")
             self.context.update(variables)
@@ -116,30 +149,76 @@ class WorkflowEngine:
             'steps': results,
             'final_output': self.context.get(workflow.get('steps', [])[-1].get('output')) if workflow.get('steps') else None
         }
+<<<<<<< Updated upstream
+=======
+    
+    VARIABLE_PATTERN = re.compile(r'\$\{([a-zA-Z_][a-zA-Z0-9_.]*)\}')
+>>>>>>> Stashed changes
 
     def _resolve_variable(self, value: Any) -> Any:
         if not isinstance(value, str):
             return value
 
+<<<<<<< Updated upstream
         if not value.startswith('${') or not value.endswith('}'):
             return value
 
         var_name = value[2:-1]
 
+=======
+        # A string that is exactly one ${var} resolves to the variable's value
+        # with its original type preserved (dict, list, bool, ...).
+        whole_match = self.VARIABLE_PATTERN.fullmatch(value)
+        if whole_match:
+            found, resolved = self._lookup_variable(whole_match.group(1))
+            if not found:
+                self.logger.warning(f"Unresolved variable in workflow input: ${{{whole_match.group(1)}}}")
+                return value
+            return resolved
+
+        # Otherwise substitute every embedded ${var} occurrence as text.
+        def replace(match: 're.Match[str]') -> str:
+            var_name = match.group(1)
+            found, resolved = self._lookup_variable(var_name)
+            if not found:
+                self.logger.warning(f"Unresolved variable in workflow input: ${{{var_name}}}")
+                return match.group(0)
+            return str(resolved)
+
+        return self.VARIABLE_PATTERN.sub(replace, value)
+
+    def _lookup_variable(self, var_name: str) -> tuple:
+        """Look up a (possibly dotted) variable in the context.
+
+        Returns (found, value) so callers can distinguish a missing
+        variable from one legitimately set to None/empty.
+        """
+>>>>>>> Stashed changes
         if '.' in var_name:
             parts = var_name.split('.')
             current = self.context
 
             for part in parts:
-                if isinstance(current, dict):
-                    current = current.get(part)
+                if isinstance(current, dict) and part in current:
+                    current = current[part]
                 else:
+<<<<<<< Updated upstream
                     return value
 
             return current if current is not None else value
 
         return self.context.get(var_name, value)
 
+=======
+                    return False, None
+
+            return True, current
+
+        if var_name in self.context:
+            return True, self.context[var_name]
+        return False, None
+    
+>>>>>>> Stashed changes
     def _dry_run_workflow(self, workflow_name: str, workflow: Dict[str, Any]) -> Dict[str, Any]:
         """
         Perform a dry-run of the workflow without executing skills.
@@ -283,6 +362,7 @@ class WorkflowEngine:
         Returns:
             Exit code (0 for success)
         """
+<<<<<<< Updated upstream
         import time
         from datetime import datetime
 
@@ -290,10 +370,27 @@ class WorkflowEngine:
 
         # Load workflow to get io configuration
         workflow = self.load_workflow(workflow_name)
+=======
+        return self._watch_and_execute_impl(workflow_name, interval)
+
+    def _resolve_io_dirs(self, workflow_name: str, workflow: Dict[str, Any],
+                         mode: str) -> Optional[Tuple[Path, Optional[Path]]]:
+        """
+        Resolve and sanitize the workflow's io.input_dir / io.output_dir.
+
+        Both directories must resolve inside the workflow's own directory —
+        a workflow file must not be able to point the engine at arbitrary
+        filesystem locations (e.g. io.input_dir: ../../../.ssh).
+
+        Returns (input_dir, output_dir) on success, None after printing an
+        error (output_dir is None when not configured).
+        """
+>>>>>>> Stashed changes
         io_config = workflow.get('io', {})
 
         if not io_config or 'input_dir' not in io_config:
             print("Error: Workflow does not have io.input_dir configured")
+<<<<<<< Updated upstream
             print("Watch mode requires a workflow with input/output directory configuration")
             return 1
 
@@ -305,10 +402,92 @@ class WorkflowEngine:
 
         workflow_dir = workflow_file.parent
         input_dir = workflow_dir / io_config['input_dir']
+=======
+            print(f"{mode} mode requires a workflow with input/output directory configuration")
+            return None
+
+        workflow_file = self._find_workflow_file(workflow_name)
+        if not workflow_file:
+            print(f"Error: Could not find workflow file for {workflow_name}")
+            return None
+
+        workflow_dir = workflow_file.parent.resolve()
+
+        try:
+            input_dir = PathSanitizer.sanitize_path(
+                str(workflow_dir / io_config['input_dir']), base_dir=workflow_dir
+            )
+            output_dir = None
+            if 'output_dir' in io_config:
+                output_dir = PathSanitizer.sanitize_path(
+                    str(workflow_dir / io_config['output_dir']), base_dir=workflow_dir
+                )
+        except ValueError as e:
+            print(f"Error: Unsafe io directory in workflow '{workflow_name}': {e}")
+            self.logger.error(f"Rejected io directory for workflow {workflow_name}: {e}")
+            return None
+>>>>>>> Stashed changes
 
         if not input_dir.exists():
             print(f"Error: Input directory does not exist: {input_dir}")
+            return None
+
+        return input_dir, output_dir
+
+    def _process_file(self, workflow_name: str, file_path: Path,
+                      output_dir: Optional[Path]) -> Optional[Path]:
+        """Run the workflow on one input file and persist its final output.
+
+        Returns the written output path, or None if nothing was written.
+        """
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+
+        variables = {
+            'input': content,
+            'input_file': content,
+            'filename': file_path.stem
+        }
+
+        result = self.execute(workflow_name, variables, dry_run=False)
+        return self._write_output(result, output_dir, file_path.stem)
+
+    def _write_output(self, result: Dict[str, Any], output_dir: Optional[Path],
+                      input_stem: str) -> Optional[Path]:
+        """Write a workflow result's final_output to the output directory."""
+        final_output = result.get('final_output')
+        if final_output is None:
+            self.logger.warning(
+                "Workflow produced no final output (last step has no 'output' variable); "
+                "nothing written to disk"
+            )
+            return None
+
+        if output_dir is None:
+            self.logger.warning(
+                "Workflow has no io.output_dir configured; final output not written to disk"
+            )
+            return None
+
+        output_dir.mkdir(parents=True, exist_ok=True)
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        output_path = output_dir / f"{input_stem}_{timestamp}.md"
+        output_path.write_text(str(final_output), encoding='utf-8')
+        self.logger.info(f"Wrote workflow output: {output_path}")
+        return output_path
+
+    def _watch_and_execute_impl(self, workflow_name: str, interval: int) -> int:
+        self.logger.info(f"Starting watch mode for workflow: {workflow_name}")
+
+        # Load workflow to get io configuration
+        workflow = self.load_workflow(workflow_name)
+        io_dirs = self._resolve_io_dirs(workflow_name, workflow, mode="Watch")
+        if io_dirs is None:
             return 1
+<<<<<<< Updated upstream
+=======
+        input_dir, output_dir = io_dirs
+>>>>>>> Stashed changes
 
         print(f"Watching directory: {input_dir}")
         print(f"Check interval: {interval} second(s)\n")
@@ -341,6 +520,7 @@ class WorkflowEngine:
                     print(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
                     print(f"{'='*60}\n")
 
+<<<<<<< Updated upstream
                     try:
                         # Read file content
                         with open(file_path, 'r', encoding='utf-8') as f:
@@ -357,9 +537,23 @@ class WorkflowEngine:
 
                         print(f"\n✓ Successfully processed: {file_path.name}")
                         processed_files.add(str(file_path))
+=======
+                    # Mark the file as seen up front: a failing file must not
+                    # be re-detected and re-executed (burning API calls) on
+                    # every polling interval.
+                    processed_files.add(str(file_path))
+
+                    try:
+                        output_path = self._process_file(workflow_name, file_path, output_dir)
+
+                        print(f"\n✓ Successfully processed: {file_path.name}")
+                        if output_path:
+                            print(f"  Output written to: {output_path}")
+>>>>>>> Stashed changes
 
                     except Exception as e:
                         print(f"\n✗ Error processing {file_path.name}: {e}")
+                        print("  (file will be skipped; fix it and re-add it to reprocess)")
                         self.logger.error(f"Failed to process {file_path}: {e}", exc_info=True)
 
                 time.sleep(interval)
@@ -382,6 +576,7 @@ class WorkflowEngine:
 
         # Load workflow to get io configuration
         workflow = self.load_workflow(workflow_name)
+<<<<<<< Updated upstream
         io_config = workflow.get('io', {})
 
         if not io_config or 'input_dir' not in io_config:
@@ -401,6 +596,12 @@ class WorkflowEngine:
         if not input_dir.exists():
             print(f"Error: Input directory does not exist: {input_dir}")
             return 1
+=======
+        io_dirs = self._resolve_io_dirs(workflow_name, workflow, mode="Batch")
+        if io_dirs is None:
+            return 1
+        input_dir, output_dir = io_dirs
+>>>>>>> Stashed changes
 
         # Collect all files
         files_to_process = []
@@ -423,6 +624,7 @@ class WorkflowEngine:
             print(f"{'='*60}\n")
 
             try:
+<<<<<<< Updated upstream
                 # Read file content
                 with open(file_path, 'r', encoding='utf-8') as f:
                     content = f.read()
@@ -435,8 +637,13 @@ class WorkflowEngine:
                 }
 
                 self.execute(workflow_name, variables, dry_run=False)
+=======
+                output_path = self._process_file(workflow_name, file_path, output_dir)
+>>>>>>> Stashed changes
 
                 print(f"\n✓ Successfully processed: {file_path.name}")
+                if output_path:
+                    print(f"  Output written to: {output_path}")
                 success_count += 1
 
             except Exception as e:

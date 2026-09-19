@@ -16,6 +16,13 @@ from cli.utils.logger import get_logger
 class WorkflowValidator:
     """Validates workflow definitions."""
 
+<<<<<<< Updated upstream
+=======
+    # Variables injected by the engine at runtime (watch/batch modes),
+    # available to every workflow without being declared.
+    RUNTIME_VARIABLES = {'input', 'input_file', 'filename'}
+
+>>>>>>> Stashed changes
     def __init__(self):
         self.logger = get_logger()
         self.skill_loader = SkillLoader()
@@ -68,22 +75,40 @@ class WorkflowValidator:
                 errors.append(f"Step {idx} ({step.get('name')}): Skill '{skill_name}' not found")
 
         # Validate variable references
-        defined_vars = set(workflow.get('variables', {}).keys())
+        defined_vars = set(workflow.get('variables', {}).keys()) | self.RUNTIME_VARIABLES
         output_vars = set()
+<<<<<<< Updated upstream
         
         # Standard runtime variables that can be provided at execution time
         # These are commonly passed via CLI flags or engine.execute() calls
         runtime_vars = {'input', 'input_file', 'filename', 'topic', 'format', 'output'}
+=======
+>>>>>>> Stashed changes
 
         for idx, step in enumerate(workflow.get('steps', []), 1):
             step_name = step.get('name')
 
+<<<<<<< Updated upstream
+=======
+            # Check input variable references BEFORE registering this step's
+            # output, so a step referencing its own output is caught.
+            input_text = step.get('input', '')
+            referenced_vars = self._extract_variables(input_text)
+
+            for var in referenced_vars:
+                if var not in defined_vars and var not in output_vars:
+                    errors.append(
+                        f"Step {idx} ({step_name}): Undefined variable '${{{var}}}' in input"
+                    )
+
+>>>>>>> Stashed changes
             # Track output variables
             if 'output' in step:
                 output_var = step['output']
                 if output_var in output_vars:
                     errors.append(f"Step {idx} ({step_name}): Duplicate output variable '{output_var}'")
                 output_vars.add(output_var)
+<<<<<<< Updated upstream
 
             # Check input variable references
             input_text = step.get('input', '')
@@ -96,6 +121,9 @@ class WorkflowValidator:
                         f"Step {idx} ({step_name}): Undefined variable '${{{var}}}' in input"
                     )
 
+=======
+        
+>>>>>>> Stashed changes
         # Check for circular dependencies (simplified check)
         if self._has_circular_dependency(workflow):
             errors.append("Circular dependency detected in workflow variables")

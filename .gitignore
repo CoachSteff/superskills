@@ -116,3 +116,7 @@ dev/
 
 # Audit/analysis folders (keep local only)
 superskills-audit/
+
+# Session hand-offs are machine-local (see ~/.agents/AGENTS.md)
+HANDOVER.md
+handover/

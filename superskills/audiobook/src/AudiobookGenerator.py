@@ -179,8 +179,11 @@ class AudiobookGenerator:
         """
         from superskills.core.credentials import load_credentials
         
+        # Voicebox runs on this machine and has no credential at all.
+        if provider == "voicebox":
+            return ""
+
         env_var_map = {
-            "elevenlabs": "ELEVENLABS_API_KEY",
             "gemini": "GEMINI_API_KEY",
             "openai": "OPENAI_API_KEY",
         }

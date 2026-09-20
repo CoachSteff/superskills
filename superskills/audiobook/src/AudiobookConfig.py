@@ -53,8 +53,10 @@ class AudiobookConfig:
         
         # Provider-specific validation
         provider = profile.get("provider", "gemini")
-        if provider == "elevenlabs":
-            required_fields.extend(["stability", "similarity_boost", "style"])
+        if provider == "voicebox":
+            # voice_id is a Voicebox profile_id; the tuning knobs have locked defaults
+            # in the provider, so nothing extra is required here.
+            pass
 
         for field in required_fields:
             if field not in profile:
@@ -63,11 +65,16 @@ class AudiobookConfig:
         if not (0.7 <= profile["speed"] <= 1.2):
             raise ValueError(f"Profile '{profile_type}': speed must be between 0.7 and 1.2")
 
-        # ElevenLabs-specific parameter validation
-        if provider == "elevenlabs":
-            for param in ["stability", "similarity_boost", "style"]:
-                if not (0.0 <= profile[param] <= 1.0):
-                    raise ValueError(f"Profile '{profile_type}': {param} must be between 0.0 and 1.0")
+        # Voicebox-specific parameter validation
+        if provider == "voicebox":
+            lang = profile.get("language_code", "nl")
+            if lang not in ("nl", "en"):
+                raise ValueError(f"Profile '{profile_type}': Voicebox language_code must be 'nl' or 'en'")
+            for param, lo, hi in (("exaggeration", 0.0, 2.0),
+                                  ("cfg_weight", 0.0, 1.0),
+                                  ("temperature", 0.0, 1.5)):
+                if param in profile and not (lo <= profile[param] <= hi):
+                    raise ValueError(f"Profile '{profile_type}': {param} must be between {lo} and {hi}")
 
     def _get_fallback_profiles(self) -> Dict:
         """Get fallback profile configuration from environment.
@@ -91,26 +98,29 @@ class AudiobookConfig:
                 }
             }
         
-        # Fallback to ElevenLabs for backward compatibility
-        voice_id = os.getenv("ELEVENLABS_VOICE_ID")
+        # Fall back to Voicebox, which is local and needs no key. Since 20 September
+        # 2026 this is the publication-quality path; ElevenLabs is retired.
+        voice_id = os.getenv("VOICEBOX_PROFILE_ID")
         if voice_id:
             return {
                 "audiobook": {
-                    "provider": "elevenlabs",
+                    "provider": "voicebox",
                     "voice_id": voice_id,
-                    "voice_name": "Default Voice",
-                    "language": "English",
-                    "model": "eleven_turbo_v2_5",
-                    "speed": 0.95,
-                    "stability": 0.65,
-                    "similarity_boost": 0.85,
-                    "style": 0.20
+                    "voice_name": "Steff NL",
+                    "language": "Dutch",
+                    "language_code": "nl",
+                    "model": "chatterbox",
+                    "speed": 1.0,
+                    "exaggeration": 1.2,
+                    "cfg_weight": 0.3,
+                    "temperature": 0.95,
                 }
             }
         
         raise ValueError(
-            "No voice_profiles.json found and no API key configured. "
-            "Set GEMINI_API_KEY or ELEVENLABS_VOICE_ID environment variable."
+            "No voice_profiles.json found and no provider configured. Either set "
+            "GEMINI_API_KEY, or set VOICEBOX_PROFILE_ID to a profile from "
+            "`curl -s http://127.0.0.1:17493/profiles` (Voicebox is local and needs no key)."
         )
 
     def get_profile(self, profile_type: str = "audiobook") -> Dict:
@@ -138,16 +148,32 @@ class AudiobookConfig:
         return profile
 
     def get_voice_settings(self, profile_type: str = "audiobook") -> Dict:
-        """Get ElevenLabs voice settings for profile.
-        
+        """Get the provider's voice settings for a profile.
+
         Args:
             profile_type: Type of profile to use
-            
+
         Returns:
-            Voice settings dictionary for ElevenLabs API
+            Settings dictionary shaped for whichever provider the profile names.
         """
         profile = self.get_profile(profile_type)
+        provider = profile.get("provider", "gemini")
 
+        if provider == "voicebox":
+            # The locked narration preset; the provider supplies these defaults too,
+            # so a profile only needs to name the ones it wants to move.
+            return {
+                "language": profile.get("language_code", "nl"),
+                "exaggeration": profile.get("exaggeration", 1.2),
+                "cfg_weight": profile.get("cfg_weight", 0.3),
+                "temperature": profile.get("temperature", 0.95),
+                "speed": profile.get("speed", 1.0),
+            }
+
+        if provider == "gemini":
+            return {"speed": profile.get("speed", 1.0)}
+
+        # Retired ElevenLabs shape, kept so an old voice_profiles.json still reads.
         return {
             "stability": profile["stability"],
             "similarity_boost": profile["similarity_boost"],
